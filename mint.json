@@ -80,13 +80,14 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Deposits",
       "pages": [
-        "api-reference/deposits/mobile-money-deposit-request",
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/deposits/mobile-money-deposit-request"
       ]
+    },
+    {
+      "group": "Payouts",
+      "pages": "api-reference/payouts/mobile-money-payouts-request"
     }
   ],
   "footerSocials": {
