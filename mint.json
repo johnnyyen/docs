@@ -1,5 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
+  "openapi": "swagger.yaml",
   "name": "Starter Kit",
   "logo": {
     "dark": "/logo/dark.svg",
