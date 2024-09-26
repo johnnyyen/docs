@@ -78,6 +78,7 @@
     {
       "group": "Endpoint Examples",
       "pages": [
+        "api-reference/deposit/mobile-money-deposit-request",
         "api-reference/endpoint/get",
         "api-reference/endpoint/create",
         "api-reference/endpoint/delete"
