@@ -1,6 +1,5 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "openapi": "swagger.yaml",
   "name": "Merchant API",
   "versions": ["v2", "v1"],
   "logo": {
@@ -71,12 +70,6 @@
       ]
     },
     {
-      "group": "API Documentation",
-      "pages": [
-        "v1/api-reference/introduction"
-      ]
-    },
-    {
       "group": "Deposits",
       "version": "v1",
       "pages": [
@@ -115,7 +108,7 @@
     },
     {
       "group": "Wallet balances",
-
+      "version": "v1",
       "pages": [
         "v1/api-reference/wallet-balances/wallet-balances",
         "v1/api-reference/wallet-balances/wallet-balances-for-country"
