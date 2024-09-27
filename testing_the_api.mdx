@@ -1,0 +1,579 @@
+---
+title: Testing the API
+---
+
+## Overview
+
+As part of using the pawaPay platform, you will have access to our sandbox environment.
+Your sandbox account will have access to all the MNOs available on our platform.
+You can safely test your integration without any real mobile money wallets and real money involved.
+In sandbox, we have also created special phone numbers (MSISDNs) that can be used to test different scenarios. 
+
+## Test phone numbers (MSISDNs) for testing in sandbox
+<AccordionGroup>
+    <Accordion title="Benin">
+        <Tabs>
+            <Tab title="MTN (MTN_MOMO_BEN)">
+                | Operation | | MSISDN |  failureCode |
+                |-----------|--------|-------------|
+                | Deposit | 22951345029 | PAYER_NOT_FOUND
+                |  | 22951345039 | PAYMENT_NOT_APPROVED
+                |  | 22951345069 | OTHER_ERROR
+                |  | 22951345129 | NO CALLBACK (stuck in SUBMITTED state)
+                |  | 22951345789 | N/A (COMPLETED)
+                | Payout | 22951345089 | RECIPIENT_NOT_FOUND
+                |  | 22951345119 | OTHER_ERROR
+                |  | 22951345129 | NO CALLBACK (stuck in SUBMITTED state)
+                |  | 22951345789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Moov (MOOV_BEN)">
+                | Operation | | MSISDN |  failureCode
+                |-----------|--------|-------------
+                | Deposit | 22995345679 | PAYMENT_NOT_APPROVED
+                |  | 22995345529 | OTHER_ERROR
+                |  | 22995345639 | NO CALLBACK (stuck in SUBMITTED state)
+                |  | 22995345789 | N/A (COMPLETED)
+                | Payout | 22995345219 | OTHER_ERROR
+                | | 22995345279 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 22995345789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Burkina Faso">
+        <Tabs>
+            <Tab title="Moov (MOOV_BFA)">
+
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 22602345048 | INSUFFICIENT_BALANCE
+                | | 22602345068 | OTHER_ERROR
+                | | 22602345138 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 22602345678 | N/A (COMPLETED)
+                | Payout | 22602345118 | OTHER_ERROR
+                | | 22602345138 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 22602345678 | N/A (COMPLETED)
+
+            </Tab>
+            <Tab title="Orange (ORANGE_BFA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 22607345148 | PAYMENT_NOT_APPROVED
+                | | 22607345128 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 22607345678 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Cameroon">
+        <Tabs>
+            <Tab title="MTN (MTN_MOMO_CMR)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 237653456019 | PAYER_LIMIT_REACHED
+                | | 237653456029 | PAYER_NOT_FOUND
+                | | 237653456039 | PAYMENT_NOT_APPROVED
+                | | 237653456069 | OTHER_ERROR
+                | | 237653456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 237653456789 | N/A (COMPLETED)
+                | Payout | 237653456089 | RECIPIENT_NOT_FOUND
+                | | 237653456119 | OTHER_ERROR
+                | | 237653456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 237653456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Orange (ORANGE_CMR)">   
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 237693456019 | PAYER_LIMIT_REACHED
+                | | 237693456029 | PAYER_NOT_FOUND
+                | | 237693456039 | PAYMENT_NOT_APPROVED
+                | | 237693456049 | INSUFFICIENT_BALANCE
+                | | 237693456069 | OTHER_ERROR
+                | | 237693456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 237693456789 | N/A (COMPLETED)
+                | Payout | 237693456099 | RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+                | | 237693456119 | OTHER_ERROR
+                | | 237693456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 237693456789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Côte d'Ivoire (Ivory Coast)">
+        <Tabs>
+            <Tab title="MTN (MTN_MOMO_CIV)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 2250503456029 | PAYER_NOT_FOUND
+                | | 2250503456039 | PAYMENT_NOT_APPROVED
+                | | 2250503456069 | OTHER_ERROR
+                | | 2250503456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 2250503456789 | N/A (COMPLETED)
+                | Payout | 2250503456089 | RECIPIENT_NOT_FOUND
+                | | 2250503456119 | OTHER_ERROR
+                | | 2250503456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 2250503456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Orange (ORANGE_CIV)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 2250734567030 | PAYMENT_NOT_APPROVED
+                | | 2250734567060 | OTHER_ERROR
+                | | 2250734567130 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 2250734567890 | N/A (COMPLETED)
+                | Payout | 2250734567110 | OTHER_ERROR
+                | | 2250734567130 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 2250734567890 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Democratic Republic of the Congo (DRC)">
+        <Tabs>
+            <Tab title="Vodacom (VODACOM_MPESA_COD)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 243813456019 | PAYER_LIMIT_REACHED
+                | | 243813456029 | PAYER_NOT_FOUND
+                | | 243813456039 | PAYMENT_NOT_APPROVED
+                | | 243813456049 | INSUFFICIENT_BALANCE
+                | | 243813456069 | OTHER_ERROR
+                | | 243813456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 243813456789 | N/A (COMPLETED)
+                | Payout | 243813456089 | RECIPIENT_NOT_FOUND
+                | | 243813456119 | OTHER_ERROR
+                | | 243813456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 243813456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Airtel (AIRTEL_COD)"> 
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 243973456069 | OTHER_ERROR
+                | | 243973456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 243973456789 | N/A (COMPLETED)
+                | Payout | 243973456089 | RECIPIENT_NOT_FOUND
+                | | 243973456119 | OTHER_ERROR
+                | | 243973456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 243973456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Orange (ORANGE_COD)">            
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 243893456029 | PAYER_NOT_FOUND
+                | | 243893456039 | PAYMENT_NOT_APPROVED
+                | | 243893456049 | INSUFFICIENT_BALANCE
+                | | 243893456069 | OTHER_ERROR
+                | | 243893456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 243893456789 | N/A (COMPLETED)
+                | Payout | 243893456119 | OTHER_ERROR
+                | | 243893456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 243893456789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Gabon">
+        <Tabs>
+            <Tab title="Airtel (AIRTEL_GAB)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 24174345048 | INSUFFICIENT_BALANCE
+                | | 24174345068 | OTHER_ERROR
+                | | 24174345128 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 24174345678 | N/A (COMPLETED)
+                | Payout | 24174345088 | RECIPIENT_NOT_FOUND
+                | | 24174345118 | OTHER_ERROR
+                | | 24174345128 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 24174345678 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Ghana">
+        <Tabs>
+            <Tab title="MTN (MTN_MOMO_GHA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 233593456019 | PAYER_LIMIT_REACHED
+                | | 233593456029 | PAYER_NOT_FOUND
+                | | 233593456039 | PAYMENT_NOT_APPROVED
+                | | 233593456069 | OTHER_ERROR
+                | | 233593456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 233593456789 | N/A (COMPLETED)
+                | Payout | 233593456089 | RECIPIENT_NOT_FOUND
+                | | 233593456119 | OTHER_ERROR
+                | | 233593456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 233593456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="AT (AIRTELTIGO_GHA)">
+
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 233273456069 | OTHER_ERROR
+                | | 233273456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 233273456789 | N/A (COMPLETED)
+                | Payout | 233273456089 | RECIPIENT_NOT_FOUND
+                | | 233273456099 | RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+                | | 233273456119 | OTHER_ERROR
+                | | 233273456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 233273456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Vodafone (VODAFONE_GHA)">
+
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 233503456039 | PAYMENT_NOT_APPROVED
+                | | 233503456049 | INSUFFICIENT_BALANCE
+                | | 233503456069 | OTHER_ERROR
+                | | 233503456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 233503456789 | N/A (COMPLETED)
+                | Payout | 233503456089 | RECIPIENT_NOT_FOUND
+                | | 233503456099 | RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+                | | 233503456119 | OTHER_ERROR
+                | | 233503456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 233503456789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Kenya">
+        <Tabs>
+            <Tab title="MPesa (MPESA_KEN)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 254703456019 | PAYER_LIMIT_REACHED
+                | | 254703456039 | PAYMENT_NOT_APPROVED
+                | | 254703456049 | INSUFFICIENT_BALANCE
+                | | 254703456059 | TRANSACTION_ALREADY_IN_PROCESS
+                | | 254703456069 | OTHER_ERROR
+                | | 254703456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 254703456789 | N/A (COMPLETED)
+                | Payout | 254703456089 | RECIPIENT_NOT_FOUND
+                | | 254703456099 | RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+                | | 254703456109 | RECIPIENT_LIMIT_REACHED
+                | | 254703456119 | OTHER_ERROR
+                | | 254703456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 254703456789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Malawi">
+        <Tabs>
+            <Tab title="Airtel (AIRTEL_MWI)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 265993456049 | INSUFFICIENT_BALANCE
+                | | 265993456069 | OTHER_ERROR
+                | | 265993456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 265993456789 | N/A (COMPLETED)
+                | Payout | 265993456089 | RECIPIENT_NOT_FOUND
+                | | 265993456119 | OTHER_ERROR
+                | | 265993456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 265993456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="TNM (TNM_MWI)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 265883456049 | INSUFFICIENT_BALANCE
+                | | 265883456069 | OTHER_ERROR
+                | | 265883456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 265883456789 | N/A (COMPLETED)
+                | Payout | 265883456089 | RECIPIENT_NOT_FOUND
+                | | 265883456119 | OTHER_ERROR
+                | | 265883456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 265883456789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Nigeria">
+        <Tabs>
+            <Tab title="Airtel (AIRTEL_NGA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 2349034567069 | OTHER_ERROR
+                | | 2349034567129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 2349034567899 | N/A (COMPLETED)
+                | Payout | 2349034567089 | RECIPIENT_NOT_FOUND
+                | | 2349034567119 | OTHER_ERROR
+                | | 2349034567129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 2349034567899 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="MTN (MTN_MOMO_NGA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 2348134567019 | PAYER_LIMIT_REACHED
+                | | 2348134567029 | PAYER_NOT_FOUND
+                | | 2348134567039 | PAYMENT_NOT_APPROVED
+                | | 2348134567069 | OTHER_ERROR
+                | | 2348134567129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 2348134567899 | N/A (COMPLETED)
+                | Payout | 2348134567089 | RECIPIENT_NOT_FOUND
+                | | 2348134567099 | RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+                | | 2348134567119 | OTHER_ERROR
+                | | 2348134567129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 2348134567899 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Republic of the Congo">
+        <Tabs>
+            <Tab title="Airtel (AIRTEL_COG)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 242053456039 | PAYMENT_NOT_APPROVED
+                | | 242053456049 | INSUFFICIENT_BALANCE
+                | | 242053456069 | OTHER_ERROR
+                | | 242053456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 242053456789 | N/A (COMPLETED)
+                | Payout | 242053456089 | RECIPIENT_NOT_FOUND
+                | | 242053456119 | OTHER_ERROR
+                | | 242053456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 242053456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="MTN (MTN_MOMO_COG)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 242063456029 | PAYER_NOT_FOUND
+                | | 242063456039 | PAYMENT_NOT_APPROVED
+                | | 242063456049 | INSUFFICIENT_BALANCE
+                | | 242063456069 | OTHER_ERROR
+                | | 242063456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 242063456789 | N/A (COMPLETED)
+                | Payout | 242063456089 | RECIPIENT_NOT_FOUND
+                | | 242063456119 | OTHER_ERROR
+                | | 242063456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 242063456789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Rwanda">
+        <Tabs>
+            <Tab title="Airtel (AIRTEL_RWA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 250733456039 | PAYMENT_NOT_APPROVED
+                | | 250733456049 | INSUFFICIENT_BALANCE
+                | | 250733456069 | OTHER_ERROR 
+                | | 250733456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 250733456789 | N/A (COMPLETED)
+                | Payout | 250733456089 | RECIPIENT_NOT_FOUND
+                | | 250733456119 | OTHER_ERROR
+                | | 250733456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 250733456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="MTN (MTN_MOMO_RWA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 250783456019 | PAYER_LIMIT_REACHED
+                | | 250783456029 | PAYER_NOT_FOUND
+                | | 250783456039 | PAYMENT_NOT_APPROVED
+                | | 250783456069 | OTHER_ERROR
+                | | 250783456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 250783456789 | N/A (COMPLETED)
+                | Payout | 250783456089 | RECIPIENT_NOT_FOUND
+                | | 250783456099 | RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+                | | 250783456119 | OTHER_ERROR
+                | | 250783456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 250783456789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Senegal">
+        <Tabs>
+            <Tab title="Free (FREE_SEN)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 221763456049 | INSUFFICIENT_BALANCE
+                | | 221763456069 | OTHER_ERROR
+                | | 221763456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 221763456789 | N/A (COMPLETED)
+                | Payout | 221763456119 | OTHER_ERROR
+                | | 221763456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 221763456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Orange (ORANGE_SEN)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 221773456029 | PAYER_NOT_FOUND
+                | | 221773456049 | INSUFFICIENT_BALANCE
+                | | 221773456069 | OTHER_ERROR
+                | | 221773456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 221773456789 | N/A (COMPLETED)
+                | Payout | 221773456119 | OTHER_ERROR
+                | | 221773456139 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 221773456789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Sierra Leone">
+        <Tabs>
+            <Tab title="Orange (ORANGE_SLE)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 23276123456 | N/A (COMPLETED)
+                | Payout | 23276123456 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Tanzania">
+        <Tabs>
+            <Tab title="Airtel (AIRTEL_TZA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 255683456019 | PAYER_LIMIT_REACHED
+                | | 255683456039 | PAYMENT_NOT_APPROVED
+                | | 255683456049 | INSUFFICIENT_BALANCE
+                | | 255683456069 | OTHER_ERROR
+                | | 255683456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 255683456789 | N/A (COMPLETED)
+                | Payout | 255683456089 | RECIPIENT_NOT_FOUND
+                | | 255683456119 | OTHER_ERROR
+                | | 255683456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 255683456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Vodacom (VODACOM_TZA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 255763456039 | PAYMENT_NOT_APPROVED
+                | | 255763456069 | OTHER_ERROR
+                | | 255763456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 255763456789 | N/A (COMPLETED)
+                | Payout | 255763456119 | OTHER_ERROR
+                | | 255763456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 255763456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Tigo (TIGO_TZA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 255713456039 | PAYMENT_NOT_APPROVED
+                | | 255713456049 | INSUFFICIENT_BALANCE
+                | | 255713456069 | OTHER_ERROR
+                | | 255713456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 255713456789 | N/A (COMPLETED)
+                | Payout | 255713456089 | RECIPIENT_NOT_FOUND
+                | | 255713456099 | RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+                | | 255713456119 | OTHER_ERROR
+                | | 255713456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 255713456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Halotel (HALOTEL_TZA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 255623456029 | PAYER_NOT_FOUND
+                | | 255623456049 | INSUFFICIENT_BALANCE
+                | | 255623456069 | OTHER_ERROR
+                | | 255623456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 255623456789 | N/A (COMPLETED)
+                | Payout | 255623456089 | RECIPIENT_NOT_FOUND
+                | | 255623456119 | OTHER_ERROR
+                | | 255623456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 255623456789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Uganda">
+        <Tabs>
+            <Tab title="Airtel (AIRTEL_OAPI_UGA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 256753456019 | PAYER_LIMIT_REACHED
+                | | 256753456039 | PAYMENT_NOT_APPROVED
+                | | 256753456049 | INSUFFICIENT_BALANCE
+                | | 256753456069 | OTHER_ERROR
+                | | 256753456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 256753456789 | N/A (COMPLETED)
+                | Payout | 256753456089 | RECIPIENT_NOT_FOUND
+                | | 256753456099 | RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+                | | 256753456119 | OTHER_ERROR
+                | | 256753456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 256753456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="MTN (MTN_MOMO_UGA)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 256783456019 | PAYER_LIMIT_REACHED
+                | | 256783456029 | PAYER_NOT_FOUND
+                | | 256783456069 | OTHER_ERROR
+                | | 256783456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 256783456789 | N/A (COMPLETED)
+                | Payout | 256783456089 | RECIPIENT_NOT_FOUND
+                | | 256783456099 | RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+                | | 256783456119 | OTHER_ERROR
+                | | 256783456789 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+    <Accordion title="Zambia">
+        <Tabs>
+            <Tab title="Airtel (AIRTEL_OAPI_ZMB)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 260973456019 | PAYER_LIMIT_REACHED
+                | | 260973456039 | PAYMENT_NOT_APPROVED
+                | | 260973456049 | INSUFFICIENT_BALANCE
+                | | 260973456069 | OTHER_ERROR
+                | | 260973456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 260973456789 | N/A (COMPLETED)
+                | Payout | 260973456089 | RECIPIENT_NOT_FOUND
+                | | 260973456119 | OTHER_ERROR
+                | | 260973456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 260973456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="MTN (MTN_MOMO_ZMB)">
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 260763456019 | PAYER_LIMIT_REACHED
+                | | 260763456029 | PAYER_NOT_FOUND
+                | | 260763456039 | PAYMENT_NOT_APPROVED
+                | | 260763456069 | OTHER_ERROR
+                | | 260763456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 260763456789 | N/A (COMPLETED)
+                | Payout | 260763456079 | RECIPIENT_NOT_FOUND
+                | | 260763456119 | OTHER_ERROR
+                | | 260763456129 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 260763456789 | N/A (COMPLETED)
+            </Tab>
+            <Tab title="Zamtel (ZAMTEL_ZMB)"> 
+                | Operation | MSISDN | failureCode
+                |------|--------|-------------
+                | Deposit | 260953456704 | INSUFFICIENT_BALANCE
+                | | 260953456712 | OTHER_ERROR
+                | | 260953456789 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 260953456700 | N/A (COMPLETED)
+                | Payout | 260953456712 | OTHER_ERROR
+                | | 260953456789 | NO CALLBACK (stuck in SUBMITTED state)
+                | | 260953456700 | N/A (COMPLETED)
+            </Tab>
+        </Tabs>
+    </Accordion>
+</AccordionGroup>
+
+ ## Technical failure codes
+
+Technical failures should not happen during live operation and are intended to provide clear information during the development of the integration.
+
+Failure Code | Operation | Description
+-------------|-----------|------------
+INVALID_RECIPIENT_FORMAT | Payouts | The financial address for the recipient is in an unrecognizable format. Please refer to <code>recipient</code> in [Mobile Money Payout Request](/#operation/createPayout)
+INVALID_PAYER_FORMAT | Deposits | The financial address for the payer is in an unrecognizable format. Please refer to <code>payer</code> in [Mobile Money Deposit Request](#operation/createDeposit).
+INVALID_CURRENCY | Both | The currency is not supported by the MNO specified as the correspondent.
+INVALID_AMOUNT | Both | The amount is in an unrecognizable format. Please refer to <code>amount</code> in [Mobile Money Deposit Request](#operation/createDeposit).
+INVALID_COUNTRY | Both | The country is not supported by the MNO specified as the correspondent.
+AMOUNT_TOO_SMALL | Both | The specified amount is smaller than the minimum allowed by the MNO specified as the correspondent.
+AMOUNT_TOO_LARGE | Both | The specified amount is larger than the maximum allowed by the MNO specified as the correspondent.
+PARAMETER_INVALID | Both | An invalid parameter was found as part of the request.
+DEPOSITS_NOT_ALLOWED | Deposits | The MNO specified as the correspondent does not support deposit transactions.
+PAYOUTS_NOT_ALLOWED | Payouts | The MNO specified as the correspondent does not support payout transactions.
+AUTHENTICATION_ERROR| Both | The token specified for authentication is not valid or missing. Please refer to [Authentication](#section/Using-the-API/Authentication).
+INVALID_INPUT | Both | We were was unable to parse the payload of the request.
+
+## Transaction failure codes
+
+Transaction failures are expected to happen during live operation and are intended to provide clear information as to why a particular payment was not successful.
+
+Failure Code | Operation | Description
+-------------|-----------|------------
+PAYER_LIMIT_REACHED | Deposits | The customer has reached a limit on their wallet. Example: Customer is only allowed to transfer a maximum of 1 000 000 a week.
+PAYER_NOT_FOUND | Deposits | The phone number (MSISDN) specified as the payer does not belong to the MNO specified as the correspondent.
+PAYMENT_NOT_APPROVED | Deposits | The customer did not authorize the payment. _Example: Customer did not enter their PIN in time._
+INSUFFICIENT_BALANCE | Deposits | The customer does not have enough funds to perform the deposit.
+TRANSACTION_ALREADY_IN_PROCESS | Deposits | The customer is initiating a transaction while an unfinished transaction is still pending. _Note: Some MNOs only allow a single transaction to be processed at any given time. When the customer does not enter the PIN to authorize a payment in time, it might take up to 10 minutes for them to be able to initiate a new transaction._
+BALANCE_INSUFFICIENT | Payouts | The balance of your pawaPay wallet does not have the funds to initiate this payout.
+RECIPIENT_NOT_FOUND | Payouts | The phone number (MSISDN) specified as the recipient, does not belong to the mobile network operator (MNO) specified as the correspondent.
+RECIPIENT_NOT_ALLOWED_TO_RECEIVE | Payouts | The recipient has reached a limit on their wallet that stops them from being able to accept this payout. _Example: The customers wallet is able to hold up to 1 000 000 and the payout would take their balance over this limit._
+MANUALLY_CANCELLED | Payouts | The payout request was enqueued and subsequently failed manually from the pawaPay Dashboard or through the [Cancel Enqueued Payout](#operation/payoutsFailEnqueued) endpoint.
+OTHER_ERROR | Both | The payment failed due to an unknown error.
+CORRESPONDENT_TEMPORARILY_UNAVAILABLE | Both | The MNO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MNO availability. 

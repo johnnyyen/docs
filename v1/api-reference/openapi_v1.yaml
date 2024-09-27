@@ -1,0 +1,3715 @@
+openapi: 3.0.0
+info:
+  title: pawaPay Merchant API
+  description: pawaPay Merchant API
+  version: v1
+  x-logo:
+    url: https://global-uploads.webflow.com/62824591015aa314fd308df1/6411b26596e3de3f52551c00_Logopawapay-p-500.png
+    href: https://pawapay.io
+    altText: pawaPay logo
+servers:
+  - url: https://api.sandbox.pawapay.cloud
+    description: pawaPay Merchant API sandbox
+  - url: https://api.pawapay.cloud
+    description: pawaPay Merchant API production
+security:
+  - bearerAuth: []
+tags:
+  - name: payouts
+    x-displayName: Payouts
+  - name: deposits
+    x-displayName: Deposits
+  - name: refunds
+    x-displayName: Refunds
+  - name: balance
+    x-displayName: Check Balance
+  - name: payment-page
+    x-displayName: Payment Page
+  - name: toolkit
+    x-displayName: Toolkit
+  - name: wallet-balances
+    x-displayName: Wallet balances
+  - name: payout_model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Payout" />
+    x-displayName: Payout Model
+  - name: deposit_model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Deposit" />
+    x-displayName: Deposit Model
+  - name: refund_model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Refund" />
+    x-displayName: Refund Model
+  - name: paymentpage_model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Session" />
+    x-displayName: Payment Page Model
+paths:
+  /payouts:
+    post:
+      tags:
+        - payouts
+      summary: Request payout
+      description: |
+        ***Please follow the guidelines in the [Implementation](#section/Implementation) section of our API docs to ensure a reliable implementation.***
+        
+        Payouts operation allows you to initiate a disbursement for asynchronous processing. Read more about [Payouts](#section/Payout-(Disbursement)).
+
+        * This API call is <em>idempotent</em>, which means it is safe to submit a request with the same <code>payoutId</code> multiple times. 
+        * Duplicate requests with the same <code>payoutId</code> will be ignored with the `DUPLICATE_IGNORED` status in the <code>PayoutCreationResponse</code>.
+        * Since the request can be rejected, you must check the <code>status</code> code in the <code>PayoutCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>PayoutCreationResponse</code> will contain information about the reason of the rejection.
+
+        Each request can become either ACCEPTED, ENQUEUED, REJECTED or DUPLICATE_IGNORED:
+
+        Status | Callback | Description
+        -------|----------|------------
+        `ACCEPTED` | Yes | The payout request has been **accepted** by pawaPay for processing.
+        `ENQUEUED` | Yes | The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](#section/Payout-(Disbursement)/Enqueued-payouts).
+        `REJECTED` | No | The payout request has been **rejected**. See <code>rejectionReason</code> for details. 
+        `DUPLICATE_IGNORED` | No | The payout request has been **ignored** as a duplicate of an already accepted payout request. Duplication logic relies upon payoutId.
+
+        __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+
+        ### What next?
+        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** payout by either:
+        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [payoutCallback](#operation/payoutWebhook) from pawaPay with the **final status**.
+        2. Periodically polling the [Get Payout Status and Details](#operation/getPayout) endpoint for a **final status**.
+        
+      operationId: createPayout
+      parameters:
+        - in: header
+          name: Content-Digest
+          schema:
+            type: string
+            format: string
+            description: SHA-256 or SHA-512 hash of the request body.
+          required: false
+        - in: header
+          name: Signature
+          schema:
+            type: string
+            format: string
+            description: Signature of the request according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Signature-Input
+          schema:
+            type: string
+            format: string
+            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Signature
+          schema:
+            type: string
+            format: string
+            description: Expected signature algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Digest
+          schema:
+            type: string
+            format: string
+            description: Expected digest algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+      requestBody:
+        $ref: '#/components/requestBodies/PayoutCreationRequest'
+      callbacks:
+        refundCallback:
+          "yourCallbackUrl":
+            post:
+              requestBody:
+                required: false
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/RefundCallback'
+              responses:
+                "200": 
+                  description: "OK"
+      responses:
+        '200':
+          description: Request has been accepted for processing by pawaPay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutCreationResponse'
+              examples:
+                ACCEPTED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: ACCEPTED
+                    created: '2020-10-19T11:17:01Z'
+                DUPLICATE_IGNORED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: DUPLICATE_IGNORED
+                    created: '2020-10-19T11:17:01Z'
+                REJECTED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: REJECTED
+                    rejectionReason:
+                      rejectionCode: AMOUNT_TOO_LARGE
+                      rejectionMessage: Amount should not be greater than 1000
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Mandatory Field Missing:
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: 'Invalid input: Missing required property ''amount'''
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /payouts/bulk:
+    post:
+      tags:
+        - payouts
+      summary: Request bulk payout
+      description: |
+        ***Please follow the guidelines in the [Implementation](#section/Implementation) section of our API docs to ensure a reliable implementation.***
+      
+        Bulk payouts operation allows you to initiate multiple disbursements for asynchronous processing.
+        Read more about [Payouts](#section/Payout-(Disbursement)).
+
+        * Bulk requests with more than 20 payout transactions can be rejected by pawaPay. 
+        * This API call is <em>idempotent</em>, which means it is safe to submit a request with the same <code>payoutId</code> multiple times. 
+        * Duplicate requests with the same <code>payoutId</code> will be ignored with the `DUPLICATE_IGNORED` status in the <code>PayoutCreationResponse</code>.
+        * Since the request can be partially or fully rejected, you must check the <code>status</code> code in the <code>PayoutCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>PayoutCreationResponse</code> will contain information about the reason of the rejection.
+        * Callback will be delivered separately for each payout in the bulk request as the payouts are resolved to their final status.
+
+        Each disbursement in a bulk request can become either ACCEPTED, ENQUEUED, REJECTED or DUPLICATE_IGNORED:
+
+        Status | Callback | Description
+        -------|----------|------------
+        `ACCEPTED` | Yes | The payout request has been **accepted** by pawaPay for processing.
+        `ENQUEUED` | Yes | The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](#section/Payout-(Disbursement)/Enqueued-payouts).
+        `REJECTED` | No | The payout request has been **rejected**. See `rejectionReason` for details.
+        `DUPLICATE_IGNORED` | No | The payout request has been **ignored** as a duplicate of an already accepted payout request. Duplication logic relies upon payoutId.
+
+        __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+        
+        ### What next?
+        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** payout by either:
+        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [payoutCallback](#operation/payoutWebhook) from pawaPay with the **final status**.
+        2. Periodically polling the [Get Payout Status and Details](#operation/getPayout) endpoint for a **final status**.
+      operationId: createPayouts
+      requestBody:
+        $ref: '#/components/requestBodies/BulkPayoutCreationRequest'
+      parameters:
+        - in: header
+          name: Content-Digest
+          schema:
+            type: string
+            format: string
+            description: SHA-256 or SHA-512 hash of the request body.
+          required: false
+        - in: header
+          name: Signature
+          schema:
+            type: string
+            format: string
+            description: Signature of the request according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Signature-Input
+          schema:
+            type: string
+            format: string
+            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Signature
+          schema:
+            type: string
+            format: string
+            description: Expected signature algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Digest
+          schema:
+            type: string
+            format: string
+            description: Expected digest algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+      responses:
+        '200':
+          description: Request has been processed by pawaPay
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PayoutCreationResponse'
+              examples:
+                Mixed Response:
+                  value:
+                    - payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                      status: ACCEPTED
+                      created: '2020-10-19T11:17:01Z'
+                    - payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                      status: DUPLICATE_IGNORED
+                      created: '2020-10-19T10:22:49Z'
+                    - payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                      status: REJECTED
+                      rejectionReason:
+                        rejectionCode: AMOUNT_TOO_LARGE
+                        ejectionMessage: Amount should not be greater than 1000
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Missing Mandatory Field:
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: 'Invalid input: Missing required property ''amount'''
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /payouts/{payoutId}:
+    get:
+      tags:
+        - payouts
+      summary: Check payout status
+      description: |
+        Get payout status and details by the `payoutId` from your initial payout request. A list with at most one <code>Payout</code> is returned. 
+
+        This operation can be used to verify the status of a payout.
+      operationId: getPayout
+      parameters:
+        - name: payoutId
+          in: path
+          description: <code>payoutId</code> which has been specified in PayoutCreationRequest.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            minLength: 36
+            maxLength: 36
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Request has been processed by pawaPay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutSearchResult'
+              examples:
+                COMPLETED:
+                  value:
+                    - payoutId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: COMPLETED
+                      amount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      correspondent: MTN_MOMO_ZMB
+                      recipient:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      statementDescription: From ACME company
+                      created: '2020-10-19T08:17:01Z'
+                      receivedByRecipient: '2020-10-19T08:17:02Z'
+                      correspondentIds:
+                        SOME_CORRESPONDENT_ID: '12356789'
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                ACCEPTED:
+                  value:
+                    - payoutId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: ACCEPTED
+                      amount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      correspondent: MTN_MOMO_ZMB
+                      recipient:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      statementDescription: From ACME company
+                      created: '2020-10-19T08:17:01Z'
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                ENQUEUED:
+                  value:
+                    - payoutId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: ENQUEUED
+                      amount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      correspondent: MTN_MOMO_ZMB
+                      recipient:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      statementDescription: From ACME company
+                      created: '2020-10-19T08:17:01Z'
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                SUBMITTED:
+                  value:
+                    - payoutId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: SUBMITTED
+                      amount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      correspondent: MTN_MOMO_ZMB
+                      recipient:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      statementDescription: From ACME company
+                      created: '2020-10-19T08:17:01Z'
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                FAILED:
+                  value:
+                    - payoutId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: FAILED
+                      amount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      correspondent: MTN_MOMO_ZMB
+                      recipient:
+                        type: MSISDN
+                        address:
+                          value: '260973456789'
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      statementDescription: From ACME company
+                      created: '2020-10-19T08:17:01Z'
+                      failureReason:
+                        failureCode: RECIPIENT_NOT_FOUND
+                        failureMessage: Recipient not found
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                Payout Not Found:
+                  value: []
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Mandatory Field Missing:
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: Invalid input
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /payouts/resend-callback:
+    post:
+      tags:
+        - payouts
+      summary: Resend payout callback
+      description: |
+        Resends the callback for a payout to your configured callback URL. The payout must have reached a final state. The callback delivery has to have failed already.
+        
+        Please ensure your implementation of callback handling follows the guidelines in [Handling callbacks](#section/Implementation/Handling-callbacks).
+      operationId: payoutsResendCallback
+      requestBody:
+        $ref: '#/components/requestBodies/PayoutIdRequest'
+      responses:
+        '200':
+          description: Request has been processed by pawaPay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutResendCallbackResponse'
+              examples:
+                ACCEPTED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: ACCEPTED
+                REJECTED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: REJECTED
+                    rejectionReason: Payout with ID \#f4401bd2-1568-4140-bf2d-eb77d2b2b639 not found
+                FAILED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: FAILED
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Mandatory Field Missing:
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: 'Invalid input: Missing required property ''payoutId'''
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /payouts/fail-enqueued/{payoutId}:
+    post:
+      tags:
+        - payouts
+      summary: Cancel enqueued payout
+      description: |
+        Cancels a payout that is currently in the ENQUEUED status. 
+        The payment will be moved to FAILED status. 
+        The payment will have the failure code `MANUALLY_CANCELLED`.
+        If you have configured callbacks, a callback will be sent. 
+      operationId: payoutsFailEnqueued
+      parameters:
+        - name: payoutId
+          in: path
+          description: <code>payoutId</code> which has been specified in PayoutCreationRequest.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            minLength: 36
+            maxLength: 36
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Request has been processed by pawaPay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailEnqueuedPayoutResponseDto'
+              examples:
+                ACCEPTED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: ACCEPTED
+                REJECTED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: REJECTED
+                    rejectionReason: Payout with ID \#f4401bd2-1568-4140-bf2d-eb77d2b2b639 not found
+                FAILED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: FAILED
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /deposits:
+    post:
+      tags:
+        - deposits
+      summary: Request deposit
+      description: |
+        <Info>Please follow the guidelines in the [Implementation](#section/Implementation) section of our API docs to ensure a reliable implementation.</Info>
+      
+        Deposits operation allows you to initiate a collection for asynchronous processing.
+        Read more about [Deposits](#section/Deposit-(Collection)).
+
+        * This API call is <em>idempotent</em>, which means it is safe to submit a request with the same `depositId` multiple times. 
+        * Duplicate requests with the same `depositId` will be ignored with the `DUPLICATE_IGNORED` status in the <code>DepositCreationResponse</code>.
+        * Since the request can rejected, you must check <code>status</code> code in the <code>DepositCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>DepositCreationResponse</code> will contain information about the reason of the rejection.
+
+        Each request can become either ACCEPTED, REJECTED or DUPLICATE_IGNORED:
+
+        Status | Callback | Description
+        -------|----------|------------
+        `ACCEPTED` | Yes | The deposit request has been **accepted** by pawaPay for processing.
+        `REJECTED` | No | The deposit request has been **rejected**. See <code>rejectionReason</code> for details.
+        `DUPLICATE_IGNORED` | No | The deposit request has been ignored as a duplicate of an already accepted deposit request. Duplication logic relies upon <code>depositId</code>.
+
+        __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+
+        ### What next?
+        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** deposit by either:
+        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [depositCallback](#operation/depositWebhook) from pawaPay with the **final status**.
+        2. Periodically polling the [Get Deposit Status and Details](#operation/getDeposit) endpoint for a **final status**.
+      operationId: createDeposit
+      requestBody:
+        $ref: '#/components/requestBodies/DepositCreationRequest'
+      parameters:
+        - in: header
+          name: Content-Digest
+          schema:
+            type: string
+            format: string
+            description: SHA-256 or SHA-512 hash of the request body.
+          required: false
+        - in: header
+          name: Signature
+          schema:
+            type: string
+            format: string
+            description: Signature of the request according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Signature-Input
+          schema:
+            type: string
+            format: string
+            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Signature
+          schema:
+            type: string
+            format: string
+            description: Expected signature algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Digest
+          schema:
+            type: string
+            format: string
+            description: Expected digest algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+      responses:
+        '200':
+          description: Request has been accepted for processing by pawaPay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepositCreationResponse'
+              examples:
+                ACCEPTED:
+                  value:
+                    depositId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: ACCEPTED
+                    created: '2020-10-19T11:17:01Z'
+                DUPLICATE_IGNORED:
+                  value:
+                    depositId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: DUPLICATE_IGNORED
+                    created: '2020-10-19T11:17:01Z'
+                REJECTED:
+                  value:
+                    depositId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: REJECTED
+                    rejectionReason:
+                      rejectionCode: AMOUNT_TOO_LARGE
+                      rejectionMessage: Amount should not be greater than 1000
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Missing Mandatory Field:
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: 'Invalid input: Missing required property ''amount'''
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /deposits/{depositId}:
+    get:
+      tags:
+        - deposits
+      summary: Check deposit status
+      description: |
+        Get deposit transaction status and details by `depositId` from your initial deposit request. A list with at most one `Deposit` is returned.
+
+        This operation can be used to verify the status of a deposit.
+      operationId: getDeposit
+      parameters:
+        - name: depositId
+          in: path
+          description: The `depositId` of the deposit transaction.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            minLength: 36
+            maxLength: 36
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Request has been processed by pawaPay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepositSearchResult'
+              examples:
+                COMPLETED:
+                  value:
+                    - depositId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: COMPLETED
+                      requestedAmount: '123.00'
+                      depositedAmount: '123.00'
+                      currency: ZMW
+                      country: ZMB
+                      payer:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      correspondent: MTN_MOMO_ZMB
+                      statementDescription: To ACME company
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      created: '2020-10-19T08:17:01Z'
+                      respondedByPayer: '2020-10-19T08:17:02Z'
+                      correspondentIds:
+                        SOME_CORRESPONDENT_ID: '12356789'
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                COMPLETED (Discrepancy):
+                  value:
+                    - depositId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: COMPLETED
+                      requestedAmount: '200.00'
+                      depositedAmount: '1.00'
+                      currency: ZMW
+                      country: ZMB
+                      payer:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      correspondent: MTN_MOMO_ZMB
+                      statementDescription: To ACME company
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      created: '2020-10-19T08:17:01Z'
+                      respondedByPayer: '2020-10-19T08:17:02Z'
+                      correspondentIds:
+                        SOME_CORRESPONDENT_ID: '12356789'
+                      suspiciousActivityReport:
+                        - activityType: AMOUNT_DISCREPANCY
+                          comment: There is a discrepancy between requested and actual deposit amount has been detected.
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                ACCEPTED:
+                  value:
+                    - depositId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: ACCEPTED
+                      requestedAmount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      payer:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      correspondent: MTN_MOMO_ZMB
+                      statementDescription: To ACME company
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      created: '2020-10-19T08:17:01Z'
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                SUBMITTED:
+                  value:
+                    - depositId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: SUBMITTED
+                      requestedAmount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      payer:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      correspondent: MTN_MOMO_ZMB
+                      statementDescription: To ACME company
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      created: '2020-10-19T08:17:01Z'
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                FAILED:
+                  value:
+                    - depositId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: FAILED
+                      requestedAmount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      payer:
+                        type: MSISDN
+                        address:
+                          value: '260961234567'
+                      correspondent: MTN_MOMO_ZMB
+                      statementDescription: From ACME company
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      created: '2020-10-19T08:17:01Z'
+                      failureReason:
+                        failureCode: PAYMENT_NOT_APPROVED
+                        failureMessage: Payment not approved
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                Deposit Not Found:
+                  value: []
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Mandatory Field Missing:
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: Invalid input
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /deposits/resend-callback:
+    post:
+      tags:
+        - deposits
+      summary: Resend deposit callback
+      description: |
+        Resends the callback for a deposit to your configured callback URL. The deposit must have reached a final state. The callback delivery has to have failed already.
+        
+        Please ensure your implementation of callback handling follows our guidelines in [Handling callbacks](#section/Implementation/Handling-callbacks).
+      operationId: depositsResendCallback
+      requestBody:
+        $ref: '#/components/requestBodies/DepositIdRequest'
+      responses:
+        '200':
+          description: Request has been accepted for processing by pawaPay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepositResendCallbackResponse'
+              examples:
+                ACCEPTED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: ACCEPTED
+                REJECTED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: REJECTED
+                    rejectionReason: Deposit with ID \#f4401bd2-1568-4140-bf2d-eb77d2b2b639 not found
+                FAILED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: FAILED
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Mandatory Field Missing:
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: 'Invalid input: Missing required property ''depositId'''
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /v1/widget/sessions:
+    post:
+      tags:
+        - payment-page
+      summary: Deposit via Payment Page
+      description: |
+        Initiates a payment session using the pawaPay Payment Page. 
+        Read more about the [Payment Page](#section/Deposit-(Collection)/Payment-Page).
+        
+        The request will return a `redirectURL`. 
+        The customer should be forwarded to this URL to start the payment process.
+        Once the customer completes the payment process on the Payment Page, they will be fowarded to the `returnUrl`. 
+        The original `depositId` will be passed as a query parameter.
+        
+        Your page on the `returnUrl` has two options to determine the status of the payment. 
+        You can use the [Get Deposit Status and Details](#operation/getDeposit) to retrive the deposit associated with this session. Read more about [possible statuses of a payment](#section/Deposit-(Collection)).
+        If you have configured [callback URLs](#section/Using-the-API/Callback-URLs) you will receive a [callback](#operation/depositWebhook) to your configured callback URL when the payment reached its final status.
+        
+        The customer experience of the Payment Page can be changed through the following parameters during initiation.
+        
+        | Parameter | Behaviour if specified | Behaviour if not specified |
+        |-----------|------------------------|----------------------------|
+        | `amount`  | The specified amount will be used for the collection. Customer is not able to change it. | The customer is able to enter the amount they wish to pay. For example, when depositing into their eWallet.
+        | `msisdn`  | The collection will be initiated from the specified mobile money wallet. Customer is not able to change it. | The customer can specify the phone number of the mobile money wallet they wish to pay from..
+        | `country` | The customer can pay only using a mobile money wallet from the specified country. | The customer can pay with a mobile money wallet from any country that is configured on your pawaPay account. You can use the [active configuration](#operation/active-conf) endpoint to verify which countries and MNOs have been configured for your account..
+        | `reason`  | The reason will be shown to the customer on the Payment Page | The customer will not be shown what they are paying for.
+
+        ### What next?
+        When the customer initiates a deposit from the payment page, the deposit will be avaialble in the system and can be handled the same way as deposits initiated with the Merchant API.        
+        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** deposit by either:
+        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [depositCallback](#operation/depositWebhook) from pawaPay with the **final status**.
+        2. Periodically polling the [Get Deposit Status and Details](#operation/getDeposit) endpoint for a **final status**.
+      operationId: create-session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSession'
+        required: true
+      responses:
+        '200':
+          description: Payment Page session is created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+                 
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                INVALID_INPUT:
+                  value:
+                    errorId: 94bd5e86-9bc4-4328-b128-c705f6496db8
+                    errorCode: 1
+                    errorMessage: "INVALID_INPUT: Missing required property 'returnUrl'"
+                    
+        '401':
+          description: Authentication Failure. Please check your authentication token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Unauthorized:
+                  value:
+                    message: Unauthorized
+        '403':
+          description: Authorization Failure. Please check your authentication token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Forbidden:
+                  value:
+                    message: Missing Authentication Token
+
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Internal Server Error:
+                  value:
+                    errorId: 94bd5e86-9bc4-4328-b128-c705f6496db8
+                    errorCode: 0
+                    errorMessage: Internal error
+  /refunds:
+    post:
+      tags:
+        - refunds
+      summary: Request refund
+      description: |
+        ***Please follow the guidelines in the [Implementation](#section/Implementation) section of our API docs to ensure a reliable implementation.***
+      
+        Refunds operation allows you to initiate a refund for asynchronous processing.
+        Read more about [Refunds](#section/Refunds).
+
+        * This API call is <em>idempotent</em>, which means it is safe to submit a request with the same <code>refundId</code> multiple times. 
+        * Duplicate requests with the same <code>refundId</code> will be ignored with the `DUPLICATE_IGNORED` status in the <code>RefundCreationResponse</code>.
+        * Since the request can be rejected, you must check the <code>status</code> code in the <code>RefundCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>RefundCreationResponse</code> will contain information about the reason of the rejection.
+
+        Each request can become either ACCEPTED, REJECTED or DUPLICATE_IGNORED:
+
+        Status | Callback | Description
+        -------|----------|------------
+        `ACCEPTED` | Yes | The refund request has been **accepted** by pawaPay for processing.
+        `REJECTED` | No | The refund request has been **rejected**. See <code>rejectionReason</code> for details.
+        `DUPLICATE_IGNORED` | No | The refund request has been ignored as a duplicate of an already accepted refund request. Duplication logic relies upon `refundId`.
+
+        __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+        
+        ### What next?
+        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** refund by either:
+        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [refundCallback](#operation/refundWebhook) from pawaPay with the **final status**.
+        2. Periodically polling the [Get Refund Status and Details](#operation/getRefund) endpoint for a **final status**.
+      operationId: createRefund
+      requestBody:
+        $ref: '#/components/requestBodies/RefundCreationRequest'
+      parameters:
+        - in: header
+          name: Content-Digest
+          schema:
+            type: string
+            format: string
+            description: SHA-256 or SHA-512 hash of the request body.
+          required: false
+        - in: header
+          name: Signature
+          schema:
+            type: string
+            format: string
+            description: Signature of the request according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Signature-Input
+          schema:
+            type: string
+            format: string
+            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Signature
+          schema:
+            type: string
+            format: string
+            description: Expected signature algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Digest
+          schema:
+            type: string
+            format: string
+            description: Expected digest algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+      responses:
+        '200':
+          description: Request has been accepted for processing by pawaPay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundCreationResponse'
+              examples:
+                ACCEPTED:
+                  value:
+                    refundId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: ACCEPTED
+                    created: '2020-10-19T11:17:01Z'
+                DUPLICATE_IGNORED:
+                  value:
+                    refundId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: DUPLICATE_IGNORED
+                    created: '2020-10-19T11:17:01Z'
+                REJECTED:
+                  value:
+                    refundId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: REJECTED
+                    rejectionReason:
+                      rejectionCode: AMOUNT_TOO_LARGE
+                      rejectionMessage: Amount should not be greater than 1000
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Mandatory Field Missing:
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: 'Invalid input: Missing required property ''amount'''
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /refunds/{refundId}:
+    get:
+      tags:
+        - refunds
+      summary: Check refund status
+      description: |
+        Get refund transaction status and details by the `refundId` from your initial refund request. A list with at most one <code>Refund</code> is returned. 
+
+        This operation can be used to verify the status of a refund. 
+      operationId: getRefund
+      parameters:
+        - name: refundId
+          in: path
+          description: <code>refundId</code> which has been specified in RefundCreationRequest.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            minLength: 36
+            maxLength: 36
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Request has been processed by pawaPay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundSearchResult'
+              examples:
+                COMPLETED:
+                  value:
+                    - refundId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: COMPLETED
+                      amount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      correspondent: MTN_MOMO_ZMB
+                      recipient:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      statementDescription: From ACME company
+                      created: '2020-10-19T08:17:01Z'
+                      receivedByRecipient: '2020-10-19T08:17:02Z'
+                      correspondentIds:
+                        SOME_CORRESPONDENT_ID: '12356789'
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                ACCEPTED:
+                  value:
+                    - refundId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: ACCEPTED
+                      amount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      correspondent: MTN_MOMO_ZMB
+                      recipient:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      statementDescription: From ACME company
+                      created: '2020-10-19T08:17:01Z'
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                SUBMITTED:
+                  value:
+                    - refundId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: SUBMITTED
+                      amount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      correspondent: MTN_MOMO_ZMB
+                      recipient:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      statementDescription: From ACME company
+                      created: '2020-10-19T08:17:01Z'
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                FAILED:
+                  value:
+                    - refundId: 8917c345-4791-4285-a416-62f24b6982db
+                      status: FAILED
+                      amount: '123.45'
+                      currency: ZMW
+                      country: ZMB
+                      correspondent: MTN_MOMO_ZMB
+                      recipient:
+                        type: MSISDN
+                        address:
+                          value: '260763456789'
+                      customerTimestamp: '2020-10-19T08:17:00Z'
+                      statementDescription: From ACME company
+                      created: '2020-10-19T08:17:01Z'
+                      failureReason:
+                        failureCode: RECIPIENT_NOT_FOUND
+                        failureMessage: Recipient not found
+                      metadata:
+                        orderId: ORD-123456789
+                        customerId: customer@email.com
+                Refund Not Found:
+                  value: []
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Mandatory Field Missing:
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: Invalid input
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /refunds/resend-callback:
+    post:
+      tags:
+        - refunds
+      summary: Resend refund callback
+      description: |
+        Resends the callback for a refund to your configured callback URL. The refund must have reached a final state. The callback delivery has to have failed already.
+        
+        Please ensure your implementation of callback handling follows our guidelines in [Handling callbacks](#section/Implementation/Handling-callbacks).
+      operationId: refundsResendCallback
+      requestBody:
+        $ref: '#/components/requestBodies/RefundIdRequest'
+      responses:
+        '200':
+          description: Request has been processed by pawaPay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundResendCallbackResponse'
+              examples:
+                ACCEPTED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: ACCEPTED
+                REJECTED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: REJECTED
+                    rejectionReason: Refund with ID \#f4401bd2-1568-4140-bf2d-eb77d2b2b639 not found
+                FAILED:
+                  value:
+                    payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+                    status: FAILED
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Mandatory Field Missing:
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: 'Invalid input: Missing required property ''refundId'''
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /availability:
+    get:
+      tags:
+        - toolkit
+      summary: MNO Availability
+      description: |
+        Mobile Network Operators (MNOs) sometimes have instability in processing payments. Read more from [MNO Stability](#section/Implementation/MNO-stability).
+        
+        Our 24/7 payment operations team constantly monitors all the MNOs available on our platform for any degraded performance or downtime.
+        From this endpoint you can get the current processing status of each MNO.
+        This endpoint returns all MNOs (correspondents) grouped by country. 
+        Each operation type has a separate status. 
+    
+        Following statuses are possible for different operations:
+
+        Status | Description
+        -------------------------------|------------
+        `OPERATIONAL` | The MNO (correspondent) is operational and open for processing requests.
+        `DELAYED` | The MNO (correspondent) is having problems processing payouts. Our payment operations team is currently monitoring the MNO. Payouts are being enqueued and will be processed once the problems have been resolved. 
+        `CLOSED` | The MNO (correspondent) is having problems and all requests are being rejected by pawaPay.
+        
+      operationId: availability
+      parameters: [ ]
+      responses:
+        '200':
+          description: If a request has been processed by pawaPay successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaysAvailabilityStatusResult'
+              examples:
+                Success:
+                  value:
+                    - country: GHA
+                      correspondents:
+                        - correspondent: VODAFONE_GHA
+                          operationTypes:
+                            - operationType: DEPOSIT
+                              status: OPERATIONAL
+                            - operationType: PAYOUT
+                              status: DELAYED
+                        - correspondent: MTN_MOMO_GHA
+                          operationTypes:
+                            - operationType: DEPOSIT
+                              status: OPERATIONAL
+                            - operationType: PAYOUT
+                              status: OPERATIONAL
+                        - correspondent: AIRTELTIGO_GHA
+                          operationTypes:
+                            - operationType: DEPOSIT
+                              status: CLOSED
+                            - operationType: PAYOUT
+                              status: DELAYED
+                    - country: ZMB
+                      correspondents:
+                        - correspondent: MTN_MOMO_ZMB
+                          operationTypes:
+                            - operationType: DEPOSIT
+                              status: CLOSED
+                            - operationType: PAYOUT
+                              status: OPERATIONAL
+                        - correspondent: AIRTEL_OAPI_ZMB
+                          operationTypes:
+                            - operationType: DEPOSIT
+                              status: OPERATIONAL
+                            - operationType: PAYOUT
+                              status: DELAYED
+        '500':
+          description: If a system error has occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+      security: [ ]
+  /v1/wallet-balances:
+    get:
+      tags:
+        - wallet-balances
+      summary: Wallet balances
+      description: |
+        Allows you to get the list of wallets and their balances configured for your account. 
+      operationId: wallet-balances
+      responses:
+        '200':
+          description: Request has been succesfully processed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckBalanceResponse'
+              examples:
+                Successful:
+                  value:
+                    balances:
+                      - country: ZMB
+                        balance: '21798.03'
+                        currency: ZMW
+                        mno: ""
+                      - country: UGA
+                        balance: '10798.03'
+                        currency: UGX
+                        mno: ""
+        '401':
+          description: Authentication Failure. Please check your authentication token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /v1/wallet-balances/{country}:
+    get:
+      tags:
+        - wallet-balances
+      summary: Wallet balances for country
+      description: |
+        Allows you to get the wallet balances for a specific country configured for your account.
+        
+        You can filter the results by the country of the wallet.
+      operationId: wallet-balances-for-country
+      parameters:
+        - name: country
+          in: path
+          description: | 
+            The country for which to get wallet balances for.
+
+            Format is ISO 3166-1 alpha-3, three character country code in upper case. Read more from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements.
+          required: true
+          schema:
+            minLength: 3
+            maxLength: 3
+            type: string
+      responses:
+        '200':
+          description: Request has been succesfully processed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckBalanceResponse'
+              examples:
+                Successful :
+                  value:
+                    balances:
+                      - country: ZMB
+                        balance: '21798.03'
+                        currency: ZMW
+                        mno: ""
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Request is rejected due to invalid country code (ZMB2):
+                  value:
+                    errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
+                    errorCode: 1
+                    errorMessage: 'Invalid input ‘country’'
+        '401':
+          description: Authentication Failure. Please check your authentication token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /active-conf:
+    get:
+      tags:
+        - toolkit
+      summary: Active Configuration
+      description: |
+        Allows you to query the MNOs that have been configured for your account. 
+        You can also get supporting information about your configuration:
+        * Your company name on your pawaPay account.
+        * The currency for the MNO.
+        * Minimum and maximum amount for deposits, payouts and refunds.
+        * The name of the company that is shown to the customer on the SMS receipt.
+        
+      operationId: active_conf
+      parameters: [ ]
+      responses:
+        '200':
+          description: If a request has been processed by pawaPay successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerActiveConfigResponse'
+              examples:
+                Success:
+                  value:
+                    merchantId: MERCHANT_INC
+                    merchantName: Merchant Inc.
+                    countries:
+                      - country: GHA
+                        correspondents:
+                          - correspondent: AIRTELTIGO_GHA
+                            currency: GHS
+                            ownerName: Merchant Inc.
+                            operationTypes:
+                              - operationType: DEPOSIT
+                                minTransactionLimit: "1"
+                                maxTransactionLimit: "1000"
+                              - operationType: PAYOUT
+                                minTransactionLimit: "1"
+                                maxTransactionLimit: "1000"
+                              - operationType: REFUND
+                                minTransactionLimit: "1"
+                                maxTransactionLimit: "1000"
+                          - correspondent: MTN_MOMO_GHA
+                            currency: GHS
+                            ownerName: Merchant Inc.
+                            operationTypes:
+                              - operationType: DEPOSIT
+                                minTransactionLimit: "1"
+                                maxTransactionLimit: "2000"
+                              - operationType: PAYOUT
+                                minTransactionLimit: "1"
+                                maxTransactionLimit: "2000"
+                              - operationType: REFUND
+                                minTransactionLimit: "1"
+                                maxTransactionLimit: "2000"
+                      - country: ZMB
+                        correspondents:
+                          - correspondent: AIRTEL_OAPI_ZMB
+                            currency: ZMW
+                            ownerName: pawaPay Zambia
+                            operationTypes:
+                              - operationType: DEPOSIT
+                                minTransactionLimit: "1"
+                                maxTransactionLimit: "10000"
+                          - correspondent: MTN_MOMO_ZMB
+                            currency: ZMW
+                            ownerName: pawaPay Zambia
+                            operationTypes:
+                              - operationType: DEPOSIT
+                                minTransactionLimit: "1"
+                                maxTransactionLimit: "10000"
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '500':
+          description: If a system error has occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                System Error:
+                  value:
+                    errorId: d428a89e-fa8b-42b8-ba20-68be20d50af1
+                    errorCode: 0
+                    errorMessage: Internal error
+  /v1/predict-correspondent:
+    post:
+      tags:
+        - toolkit
+      operationId: predict-correspondent
+      summary: Predict Correspondent
+      description: |
+        Predicts the correspondent (Mobile Network Operator) for the specified phone number (MSISDN). 
+
+        Average misprediction rate when using this endpoint is 0.12%. 
+
+        __Please note! Benin has a relatively high level of number portability and therefore has an average misprediction rate of 6%.__
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MsisdnInput'
+        required: true
+      responses:
+        '200':
+          description: Correspondent prediction was successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CorrespondentPrediction'
+                   
+        '400':
+          description: Request is rejected due to incompatibility with pawaPay API specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                INVALID_INPUT:
+                  value:
+                    errorId: 94bd5e86-9bc4-4328-b128-c705f6496db8
+                    errorCode: 1
+                    errorMessage: "INVALID_INPUT: Missing required property 'msisdn'"
+                    
+        '401':
+          description: Authentication Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authentication Failure:
+                  value:
+                    errorId: cad1529e-040b-4c9d-a21d-2ba3056ff750
+                    errorCode: 2
+                    errorMessage: Authentication error
+        '403':
+          description: Authorization Failure. Please check your authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization Failure:
+                  value:
+                    errorId: daa495f0-541d-4192-b636-a8877b25a510
+                    errorCode: 3
+                    errorMessage: Authorization error
+
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Internal Server Error:
+                  value:
+                    errorId: 94bd5e86-9bc4-4328-b128-c705f6496db8
+                    errorCode: 0
+                    errorMessage: Internal error
+  /public-key/http:
+    get:
+      tags:
+        - toolkit
+      summary: Public Keys
+      description: |
+        Provides the public keys that are used to sign callbacks sent by pawaPay. Read more about how to use [signatures](#section/Using-the-API/Signatures).
+      operationId: public_key_http
+      responses:
+        '200':
+          description: If a request has been processed by pawaPay successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicKeyResponse'
+              examples:
+                Success:
+                  value: [
+                    {
+                      "id": "HTTP_EC_P256_KEY:1",
+                      "key": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEYZe9jhnaZKw9ykMBe2IwRg6AgVMx\n2JRE3RMIdf4YazZTaQaUO19uDI5UO0QsTG699UeI+emd63/GY1PyOpf1rw==\n-----END PUBLIC KEY-----\n"
+                    }
+                  ]
+components:
+  schemas:
+    AddressValue:
+      required:
+        - value
+      type: object
+      properties:
+        value:
+          $ref: '#/components/schemas/MsisdnValue'
+    MsisdnValue:
+      type: string
+      description: |
+            The phone number (MSISDN) of the payer or recipient.
+            The format is (https://en.wikipedia.org/wiki/MSISDN). MSISDN validation has following rules:
+             * Only digits without whitespaces or any other separators or prefixes like '+'.
+             * Should not start with zero.
+             * Country code is mandatory.
+             * Should not exceed or be less than the valid length of specified country.
+             
+             Valid examples for Zambia:
+             `260763456789`
+             
+             Not valid examples for Zambia:
+             `+260763456789`, `260 763 456789`, `260-7634-56789`, `0260763456789`, `2607634567`, `260763456789543`, `999558708954`, `37255870895`
+      example: '260763456789'
+    FlexibleMsisdnValue:
+      type: string
+      description: |
+            The phone number (MSISDN) to predict the correspondent of.
+            Must contain the country code.
+            
+            The input will be sanitized by:
+            * removing the leading + sign
+            * removing all whitespace
+            * removing non-numeric characters
+      example: '+260 763-456789'
+    PredictedMsisdnValue:
+      type: string
+      description: |
+            The correctly formatted phone number (MSISDN) from your original request that is in a valid format for the rest of the pawaPay Merchant API.
+      example: '260763456789'
+    Amount:
+      minLength: 1
+      maxLength: 23
+      type: string
+      pattern: ^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[1-9])?$
+      description: |
+        The amount to be collected or disbursed. 
+
+        Amount has to follow below requirements or the request will be **rejected**:
+        * Between zero and two decimal places can be supplied, depending on what the specific MNO supports. Learn about all [MNO supported decimal places](#section/Using-the-API/Correspondents).
+        * The maximum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](#operation/active_conf) endpoint.
+        * The minimum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](#operation/active_conf) endpoint.
+        * Leading zeroes are not permitted except where the value is less than 1. For any value less than one, one and only one leading zero must be supplied.
+        * Trailing zeroes are permitted.
+        
+        Valid examples:
+        `5`, `5.0`, `5.00`, `5.5`, `5.55`, `5555555`, `0.5`
+        
+        Not valid examples:
+        `5.`, `5.555`, `5555555555555555555`, `.5`, `-5.5`, `00.5`, `00.00`, `00001.32`
+      example: '15'
+    Correspondent:
+      type: string
+      description: |
+        The correspondent code refers to the specific MNO that the specified phone number (MSISDN) has an active mobile money wallet with. 
+        
+        You can find all the supported correspondents [listed here](#section/Using-the-API/Correspondents). 
+        
+        The [active configuration](#operation/active_conf) endpoint provides the list of correspondents configured for your account.
+
+        You can use the [predict correspondent](#operation/predict-correspondent) enpoint to predict the correct correspondent to use based on the phone number (MSISDN).
+      example: MTN_MOMO_ZMB
+    Country:
+      type: string
+      description: |
+        The country in which the MNO operates. 
+        
+        Format is ISO 3166-1 alpha-3, three character country code in upper case. Read more from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements.
+      example: ZMB
+    Currency:
+      type: string
+      description: |
+        The currency in which the `amount` is specified.
+        
+        Format must be the ISO 4217 three character currency code in upper case. Read more from https://en.wikipedia.org/wiki/ISO_4217#Active_codes.
+        
+        You can find all the supported currencies that the specific `correspondent` supports [from here](#section/Using-the-API/Correspondents).
+        
+        The [active configuration](#operation/active_conf) endpoint provides the list of correspondents configured for your account together with the currencies.
+      example: ZMW
+    Deposit:
+      required:
+        - depositId
+        - status
+        - requestedAmount
+        - currency
+        - country
+        - correspondent
+        - payer
+        - customerTimestamp
+        - created
+      type: object
+      properties:
+        depositId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID specified by you, that uniquely identifies the deposit.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/DepositStatus'
+        requestedAmount:
+          $ref: '#/components/schemas/Amount'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        country:
+          $ref: '#/components/schemas/Country'
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        payer:
+          $ref: '#/components/schemas/FinancialAddress'
+        customerTimestamp:
+          type: string
+          description: The timestamp for when you initiated the deposit process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:28Z'
+        statementDescription:
+          minLength: 4
+          maxLength: 22
+          type: string
+          pattern: ^[a-zA-Z0-9 ]+$
+          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          example: Note of 4 to 22 chars
+        created:
+          type: string
+          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:29Z'
+        depositedAmount:
+          $ref: '#/components/schemas/Amount'
+        respondedByPayer:
+          type: string
+          description: When the MNO responded to this deposit request. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:30Z'
+        correspondentIds:
+          type: object
+          additionalProperties:
+            type: string
+          description: The unqiue ID for this financial transaction assigned by the MNO.
+          example:
+            MTN_INIT: ABC123
+            MTN_FINAL: DEF456
+        suspiciousActivityReport:
+          $ref: '#/components/schemas/SuspiciousDepositTransactionReport'
+        failureReason:
+          $ref: '#/components/schemas/DepositFailureReason'
+        metadata:
+          $ref: '#/components/schemas/TransactionMetadataResponse'
+    DepositCallback:
+      required:
+        - depositId
+        - status
+        - requestedAmount
+        - currency
+        - country
+        - correspondent
+        - payer
+        - customerTimestamp
+        - created
+      type: object
+      properties:
+        depositId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID specified by you, that uniquely identifies the deposit.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/CallbackStatus'
+        requestedAmount:
+          $ref: '#/components/schemas/Amount'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        country:
+          $ref: '#/components/schemas/Country'
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        payer:
+          $ref: '#/components/schemas/FinancialAddress'
+        customerTimestamp:
+          type: string
+          description: The timestamp for when you initiated the deposit process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:28Z'
+        statementDescription:
+          minLength: 4
+          maxLength: 22
+          type: string
+          pattern: ^[a-zA-Z0-9 ]+$
+          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          example: Note of 4 to 22 chars
+        created:
+          type: string
+          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:29Z'
+        depositedAmount:
+          $ref: '#/components/schemas/Amount'
+        respondedByPayer:
+          type: string
+          description: When the MNO responded to this deposit request. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:30Z'
+        correspondentIds:
+          type: object
+          additionalProperties:
+            type: string
+          description: The unqiue ID for this financial transaction assigned by the MNO.
+          example:
+            MTN_INIT: ABC123
+            MTN_FINAL: DEF456
+        suspiciousActivityReport:
+          $ref: '#/components/schemas/SuspiciousDepositTransactionReport'
+        failureReason:
+          $ref: '#/components/schemas/DepositFailureReason'
+        metadata:
+          $ref: '#/components/schemas/TransactionMetadataResponse'
+    DepositCreationRequest:
+      required:
+        - depositId
+        - amount
+        - currency
+        - correspondent
+        - payer
+        - customerTimestamp
+        - statementDescription
+      type: object
+      properties:
+        depositId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID specified by you, that uniquely identifies the deposit.
+          example: "<INSERT_UUID_FOR_DEPOSIT>"
+        amount:
+          $ref: '#/components/schemas/Amount'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        country:
+          $ref: '#/components/schemas/Country'
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        payer:
+          $ref: '#/components/schemas/FinancialAddress'
+        customerTimestamp:
+          type: string
+          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:28Z'
+        statementDescription:
+          minLength: 4
+          maxLength: 22
+          type: string
+          pattern: ^[a-zA-Z0-9 ]+$
+          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer on the PIN prompt, in the SMS receipt or within their transaction history.
+          example: Note of 4 to 22 chars
+        preAuthorisationCode:
+          minLength: 1
+          maxLength: 36
+          type: string
+          pattern: ^[a-zA-Z0-9]+$
+          description: For MNOs (correspondents) that use a preauthorisation code instead of a PIN prompt for authorising the deposit.
+        metadata:
+          $ref: '#/components/schemas/TransactionMetadataRequest'
+    CheckBalanceRequest:
+      type: object
+      properties:
+        countries:
+          type: string
+          description: ISO3 country codes
+          example: [ "ZMB", "UGA" ]
+    CheckBalanceResponse:
+      required:
+        - balances
+      type: object
+      properties:
+        balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletState'
+          description: List of wallet balances
+    WalletState:
+      required:
+        - country
+        - balance
+        - currency
+        - mno
+      type: object
+      properties:
+        country:
+          type: string
+          format: text
+          description: | 
+            Country of the wallet.
+
+            Format is ISO 3166-1 alpha-3, three character country code in upper case. Read more from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements.
+          example: ZMB
+        balance:
+          type: string
+          description: The current balance of the wallet.
+          example: '1000.0'
+        currency:
+          type: string
+          description: Currency of the wallet.
+          format: text
+          example: 'ZMW'
+        mno:
+          type: string
+          description: If you are using a wallet that is only used by a single MNO, that MNO-s correspondent code will be shown here.
+          example: 'MTN_MOMO_BEN'
+    DepositIdRequest:
+      required:
+        - depositId
+      type: object
+      properties:
+        depositId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID previously specified by you, that uniquely identifies the deposit.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+    DepositCreationResponse:
+      required:
+        - depositId
+        - status
+      type: object
+      properties:
+        depositId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: The `depositId` of the deposit transaction.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/DepositCreationStatus'
+        created:
+          type: string
+          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:29Z'
+        rejectionReason:
+          $ref: '#/components/schemas/DepositRejectionReason'
+    DepositResendCallbackResponse:
+      required:
+        - depositId
+        - status
+      type: object
+      properties:
+        depositId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID specified by you, that uniquely identifies the deposit.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/ManualCommandStatus'
+        rejectionReason:
+          type: string
+          description: Human-readable explanation why request has been rejected
+          example: Deposit with ID \#f4401bd2-1568-4140-bf2d-eb77d2b2b639 not found
+    DepositCreationStatus:
+      type: string
+      description: |
+        Enumeration presenting the status of the `Deposit`: 
+        * `ACCEPTED` - The deposit request has been **accepted** by pawaPay for processing. 
+        * `REJECTED` - The deposit request has been **rejected**. See `rejectionReason` for details 
+        * `DUPLICATE_IGNORED` - This deposit request is a duplicate and will be ignored.
+      enum:
+        - ACCEPTED
+        - REJECTED
+        - DUPLICATE_IGNORED
+    DepositFailureReason:
+      required:
+        - failureCode
+      type: object
+      properties:
+        failureCode:
+          type: string
+          description: |
+            Enumeration presenting details in case of failure: 
+            * `PAYER_NOT_FOUND` - The phone number specified as the Payer does not belong to the MNO specified as the correspondent. 
+            * `PAYMENT_NOT_APPROVED` - Payer did not approve the payment. 
+            * `PAYER_LIMIT_REACHED` - Payer has reached a transaction limit of their mobile money wallet. 
+            * `INSUFFICIENT_BALANCE` - Payer does not have enough funds. 
+            * `TRANSACTION_ALREADY_IN_PROCESS` - Payer already has an unfinalized transaction being processed by the MNO. 
+            * `OTHER_ERROR` - Any other error. Please refer to `failureMessage`.
+          example: OTHER_ERROR
+          enum:
+            - PAYER_NOT_FOUND
+            - PAYMENT_NOT_APPROVED
+            - PAYER_LIMIT_REACHED
+            - INSUFFICIENT_BALANCE
+            - TRANSACTION_ALREADY_IN_PROCESS
+            - OTHER_ERROR
+        failureMessage:
+          type: string
+          description: Additional optional failure message
+          example: Payers address is blocked
+    DepositRejectionReason:
+      required:
+        - rejectionReason
+      type: object
+      properties:
+        rejectionCode:
+          type: string
+          description: |
+            Enumeration presenting details in case of failure:
+            * `INVALID_PAYER_FORMAT` - The payer address (phone number) is invalid.
+            * `INVALID_CORRESPONDENT` - The specified correspondent is not supported.
+            * `INVALID_AMOUNT` - The specified amount is not supported. 
+            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minumum allowed by the MNO specified as the correspondent. 
+            * `AMOUNT_TOO_LARGE` - The specified amount is larger than the maximum allowed by the MNO specified as the correspondent. 
+            * `INVALID_CURRENCY` - The specified currency is not supported for the MNO specified as the correspondent. 
+            * `INVALID_COUNTRY` - The specified country is not supported for this MNO specified as the correspondent. 
+            * `PARAMETER_INVALID` - One or more parameters are invalid. 
+            * `INVALID_INPUT` - We were unable to parse the payload of the request. 
+            * `DEPOSITS_NOT_ALLOWED` - Deposits are not allowed for the merchant or the MNO specified as the correspondent.
+            * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MNO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MNO availability.
+          example: INVALID_AMOUNT
+          enum:
+            - INVALID_PAYER_FORMAT
+            - INVALID_CORRESPONDENT
+            - INVALID_AMOUNT
+            - AMOUNT_TOO_SMALL
+            - AMOUNT_TOO_LARGE
+            - INVALID_CURRENCY
+            - INVALID_COUNTRY
+            - PARAMETER_INVALID
+            - INVALID_INPUT
+            - DEPOSITS_NOT_ALLOWED
+            - CORRESPONDENT_TEMPORARILY_UNAVAILABLE
+        rejectionMessage:
+          type: string
+          description: Additional optional rejection message
+          example: You don't have access to this correspondent
+    DepositSearchResult:
+      type: array
+      items:
+        $ref: '#/components/schemas/Deposit'
+    DepositStatus:
+      type: string
+      description: |
+        Enumeration presenting the status of the deposit: 
+        * `ACCEPTED` - The deposit request has been **accepted** by pawaPay for processing. 
+        * `SUBMITTED` - The deposit request has been submitted to the MNO and is being processed. 
+        * `COMPLETED` - The deposit request has been successfully processed. This is a **final state.**
+        * `FAILED` - The deposit request has been proceessed, but failed. This is a **final state.**
+      enum:
+        - ACCEPTED
+        - SUBMITTED
+        - COMPLETED
+        - FAILED
+    CallbackStatus:
+      type: string
+      description: |
+        The final status of the payment.
+        * `COMPLETED` - The payment has been successfully processed.
+        * `FAILED` - The payment request has been proceessed, but failed.
+      enum:
+        - COMPLETED
+        - FAILED
+    SuspiciousDepositTransactionReport:
+      type: array
+      items:
+        $ref: '#/components/schemas/SuspiciousDepositTransactionReportEntry'
+    SuspiciousDepositTransactionReportEntry:
+      required:
+        - activityType
+        - comment
+      type: object
+      properties:
+        activityType:
+          type: string
+          description: |-
+            Represents a suspicious activity category.
+            
+            * <code>AMOUNT_DISCREPANCY</code> - Indicates that there is a discrepancy between requested and actual deposit amount.
+          example: AMOUNT_DISCREPANCY
+          enum:
+            - AMOUNT_DISCREPANCY
+        comment:
+          type: string
+          example: There is a discrepancy between requested and actual deposit amount.
+    CreateSession:
+      type: object
+      required:
+        - depositId
+        - returnUrl
+      properties:
+        depositId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID specified by you, that uniquely identifies the deposit.
+          example:  "<INSERT_UUID_FOR_DEPOSIT>"
+        returnUrl:
+          type: string
+          format: uri
+          example: https://merchant.com/paymentProcessed
+          description: The URL to which the user will be redirected after completion of the operation.
+        statementDescription:
+          minLength: 4
+          maxLength: 22
+          type: string
+          pattern: ^[a-zA-Z0-9 ]+$
+          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          example: Note of 4 to 22 chars
+        amount:
+          minLength: 1
+          maxLength: 23
+          type: string
+          pattern: ^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[1-9])?$
+          description: |
+            If specified, the amount will be displayed to the collection as the collection amount. For example, when paying for specific goods or services.
+            
+            If not specified, the customer will have to specify the amount they wish to pay. For example, when depositing money into their eWallet.
+    
+            Amount has to follow below requirements or the request will be **rejected**:
+            * Between zero and two decimal places can be supplied, depending on what the specific MNO supports. Learn about all [MNO supported decimal places](#section/Using-the-API/Correspondents).
+            * The maximum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](#operation/active_conf) endpoint.
+            * The minimum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](#operation/active_conf) endpoint.
+            * Leading zeroes are not permitted except where the value is less than 1. For any value less than one, one and only one leading zero must be supplied.
+            * Trailing zeroes are permitted.
+            
+            Valid examples:
+              `5`, `5.0`, `5.00`, `5.5`, `5.55`, `5555555`, `0.5`
+        
+            Not valid examples:
+              `5.`, `5.555`, `5555555555555555555`, `.5`, `-5.5`, `00.5`, `00.00`, `00001.32`
+          example: '15'
+        msisdn:
+          type: string
+          description: |
+            The phone number (MSISDN) of the payer or recipient.
+            
+            If specified, this phone number will be used to collect the deposit. If not specified, the customer paying can specify the phone number that they want to pay from.
+            
+            The format is (https://en.wikipedia.org/wiki/MSISDN). MSISDN validation has following rules:
+             * Only digits without whitespaces or any other separators or prefixes like '+'.
+             * Should not start with zero.
+             * Country code is mandatory.
+             * Should not exceed or be less than the valid length of specified country.
+             
+             Valid examples for Ghana:
+             `233558708954`
+             
+             Not valid examples for Ghana:
+             `+233558708954`, `233 558 708954`, `233-558-708954`, `0233558708954`, `233558708`, `233558708954872`, `999558708954`, `37255870895`
+          example: '233593456789'
+        country:
+          type: string
+          description: |
+            If specifified, allows payment from phone numbers only from a specific country. 
+            If not specified, the customer can select any country that is configured for your account in pawaPay. 
+            
+            You can use the [active configuration](#operation/active-conf) endpoint to verify which counrties and MNOs have been configured for your account. 
+        
+            Format must be the ISO 3166-1 alpha-3, three character country code in upper case. Read more from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements.
+          example: ZMB
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: An optional text which will be displayed to the customer on the payment page to specify what they are paying for.
+          example: 'Ticket to festival'
+    Session:
+      type: object
+      properties:
+        redirectUrl:
+          type: string
+          format: uri
+          description: |
+            The unique URL of the payment page for this specific payment session. Customer has to be forwarded to this URL where they can complete the payment. 
+            The session is valid for 15 minutes for the customer to complete the payment.
+            
+            **Please note! The URL is valid for 5 minutes.**
+          example: https://paywith.pawapay.io/?token=AgV4aA3ZxKfGcdMIo6a6Upf7X2MRptdFUrc6Oi3U53CxC0YAkAADABVhd3MtY3J5cHRvLXB1YmxpYy1rZXkAREFzdDR5WktOeWVTRTZ5bTdhVTJJeno3bG1ydkFYenFpUWZqNVQxbGQ2RUgweEpkZVZ0cWJGM3hwMzI1VWN6VGxEdz09AAdwdXJwb3NlAA5jcmVhdGUtc2Vzc2lvbgAFc3RhZ2UAD3NpZ24tY2xvdWRmcm9udAACAAdhd3Mta21zAE5hcm46YXdzOmttczpldS1jZW50cmFsLTE6MTAxOTQ0Mzc3ODY2OmtleS82ZTgzZmVjMS00MWRhLTQxMWQt
+    GatewayAvailabilityOperationType:
+      type: string
+      description: |
+        The type of financial operation for which the operation status applies.  
+        * `PAYOUT` -  Relates to payout (disbursement) and refund transactions. 
+        * `DEPOSIT` - Relates to deposit (collection) transactions.
+      enum:
+        - PAYOUT
+        - DEPOSIT
+    GatewayAvailabilityStatus:
+      type: string
+      description: |
+        Possible operation statuses for correspondents and their operation types: 
+        * `OPERATIONAL` -  The MNO (correspondent) is operational and open for processing requests.
+        * `DELAYED` - The MNO (correspondent) is having problems processing payouts. Our payment operations team is currently monitoring the MNO. Payouts are being enqueued and will be processed once the problems have been resolved.  
+        * `CLOSED` - The MNO (correspondent) is having problems and all requests are being rejected by pawaPay.
+      enum:
+        - OPERATIONAL
+        - DELAYED
+        - CLOSED
+    GatewayAvailabilityOperationTypeResult:
+      required:
+        - operationType
+        - status
+      type: object
+      properties:
+        operationType:
+          $ref: '#/components/schemas/GatewayAvailabilityOperationType'
+        status:
+          $ref: '#/components/schemas/GatewayAvailabilityStatus'
+    GatewayAvailabilityCorrespondentResult:
+      required:
+        - correspondent
+        - operationTypes
+      type: object
+      properties:
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        operationTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/GatewayAvailabilityOperationTypeResult'
+    GatewayAvailabilityStatusResult:
+      required:
+        - country
+        - correspondents
+      type: object
+      properties:
+        country:
+          $ref: '#/components/schemas/Country'
+        correspondents:
+          type: array
+          items:
+            $ref: '#/components/schemas/GatewayAvailabilityCorrespondentResult'
+    GatewaysAvailabilityStatusResult:
+      type: array
+      items:
+        $ref: '#/components/schemas/GatewayAvailabilityStatusResult'
+    ErrorResponse:
+      required:
+        - errorId
+        - errorCode
+        - errorMessage
+      type: object
+      properties:
+        errorId:
+          maxLength: 36
+          type: string
+          description: A unique error ID in the pawaPay platform.
+          example: 63743264-7292-11ea-bc55-0242ac130003
+        errorCode:
+          type: integer
+          description: pawaPay internal error code.
+          example: 1
+        errorMessage:
+          type: string
+          description: Error message.
+          example: Internal error
+    FinancialAddress:
+      required:
+        - address
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'The type of financial address. At the moment, only **MSISDN** is supported as the financial address. '
+          example: MSISDN
+          enum:
+            - MSISDN
+        address:
+          $ref: '#/components/schemas/AddressValue'
+      description: The phone number (MSISDN) of the recipient or payer must be specified as the <code>value</code> of the <code>address</code>
+    Payout:
+      required:
+        - payoutId
+        - status
+        - amount
+        - currency
+        - country
+        - correspondent
+        - recipient
+        - customerTimestamp
+        - created
+      type: object
+      properties:
+        payoutId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A payout identifier which has been specified in <code>PayoutCreationRequest</code>.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/PayoutStatus'
+        amount:
+          $ref: '#/components/schemas/Amount'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        country:
+          $ref: '#/components/schemas/Country'
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        recipient:
+          $ref: '#/components/schemas/FinancialAddress'
+        customerTimestamp:
+          type: string
+          description: The timestamp for when you initiated the payout process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          format: date-time
+          example: '2020-02-21T17:32:28Z'
+        statementDescription:
+          minLength: 4
+          maxLength: 22
+          type: string
+          pattern: ^[a-zA-Z0-9 ]+$
+          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          example: Note of 4 to 22 chars
+        created:
+          type: string
+          description: The timestamp of when the payout was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          format: date-time
+          example: '2020-02-21T17:32:29Z'
+        receivedByRecipient:
+          type: string
+          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          format: date-time
+          example: '2020-02-21T17:32:30Z'
+        correspondentIds:
+          type: object
+          additionalProperties:
+            type: string
+          description: The unqiue ID for this financial transaction assigned by the MNO.
+          example:
+            MTN_INIT: ABC123
+            MTN_FINAL: DEF456
+        failureReason:
+          $ref: '#/components/schemas/PayoutFailureReason'
+        metadata:
+          $ref: '#/components/schemas/TransactionMetadataResponse'
+    PayoutCallback:
+      required:
+        - payoutId
+        - status
+        - amount
+        - currency
+        - country
+        - correspondent
+        - recipient
+        - customerTimestamp
+        - created
+      type: object
+      properties:
+        payoutId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A payout identifier which has been specified in <code>PayoutCreationRequest</code>.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/CallbackStatus'
+        amount:
+          $ref: '#/components/schemas/Amount'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        country:
+          $ref: '#/components/schemas/Country'
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        recipient:
+          $ref: '#/components/schemas/FinancialAddress'
+        customerTimestamp:
+          type: string
+          description: The timestamp for when you initiated the payout process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          format: date-time
+          example: '2020-02-21T17:32:28Z'
+        statementDescription:
+          minLength: 4
+          maxLength: 22
+          type: string
+          pattern: ^[a-zA-Z0-9 ]+$
+          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          example: Note of 4 to 22 chars
+        created:
+          type: string
+          description: The timestamp of when the payout was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          format: date-time
+          example: '2020-02-21T17:32:29Z'
+        receivedByRecipient:
+          type: string
+          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          format: date-time
+          example: '2020-02-21T17:32:30Z'
+        correspondentIds:
+          type: object
+          additionalProperties:
+            type: string
+          description: The unqiue ID for this financial transaction assigned by the MNO.
+          example:
+            MTN_INIT: ABC123
+            MTN_FINAL: DEF456
+        failureReason:
+          $ref: '#/components/schemas/PayoutFailureReason'
+        metadata:
+          $ref: '#/components/schemas/TransactionMetadataResponse'
+    PayoutCreationRequest:
+      required:
+        - payoutId
+        - amount
+        - currency
+        - correspondent
+        - recipient
+        - customerTimestamp
+        - statementDescription
+      type: object
+      properties:
+        payoutId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID specified by you, that uniquely identifies the payout.
+          example:  "<INSERT_UUID_FOR_PAYOUT>"
+        amount:
+          $ref: '#/components/schemas/Amount'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        country:
+          $ref: '#/components/schemas/Country'
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        recipient:
+          $ref: '#/components/schemas/FinancialAddress'
+        customerTimestamp:
+          type: string
+          description: The timestamp for when you initiated the payout process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:28Z'
+        statementDescription:
+          minLength: 4
+          maxLength: 22
+          type: string
+          pattern: ^[a-zA-Z0-9 ]+$
+          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          example: Note of 4 to 22 chars
+        metadata:
+          $ref: '#/components/schemas/TransactionMetadataRequest'
+    PayoutIdRequest:
+      required:
+        - payoutId
+      type: object
+      properties:
+        payoutId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID previously specified by you, that uniquely identifies the payout.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+    PayoutCreationResponse:
+      required:
+        - payoutId
+        - status
+      type: object
+      properties:
+        payoutId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: The `payoutId` of the payout transaction.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/PayoutCreationStatus'
+        created:
+          type: string
+          description: The timestamp of when the payout was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:29Z'
+        rejectionReason:
+          $ref: '#/components/schemas/PayoutRejectionReason'
+    PayoutResendCallbackResponse:
+      required:
+        - payoutId
+        - status
+      type: object
+      properties:
+        payoutId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: The `payoutId` of the payout transaction.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/ManualCommandStatus'
+        rejectionReason:
+          type: string
+          description: Human-readable explanation why request has been rejected
+          example: Payout with ID \#f4401bd2-1568-4140-bf2d-eb77d2b2b639 not found
+    FailEnqueuedPayoutResponseDto:
+      required:
+        - payoutId
+        - status
+      type: object
+      properties:
+        payoutId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: The `payoutId` of the payout transaction.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/ManualCommandStatus'
+        rejectionReason:
+          type: string
+          description: Human-readable explanation why request has been rejected
+          example: Payout with ID \#f4401bd2-1568-4140-bf2d-eb77d2b2b639 not found
+    PayoutCreationStatus:
+      type: string
+      description: |
+        Enumeration presenting the status of the Payout Creation: 
+        * `ACCEPTED` - The payout request has been **accepted** by pawaPay for processing.
+        * `ENQUEUED` - The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](#section/Payout-(Disbursement)/Enqueued-payouts).
+        * `REJECTED` - The payout request has been **rejected** by pawaPay. See rejectionReason for details. 
+        * `DUPLICATE_IGNORED` - The payout request has been **ignored** as a duplicate of already accepted payout request. Duplication logic relies upon payoutId.
+      enum:
+        - ACCEPTED
+        - ENQUEUED
+        - REJECTED
+        - DUPLICATE_IGNORED
+    PayoutFailureReason:
+      required:
+        - failureCode
+      type: object
+      properties:
+        failureCode:
+          type: string
+          description: |
+            Enumeration presenting details in case of failure: 
+            * `BALANCE_INSUFFICIENT` - The pawaPay wallet balance is insufficient to proceed with the payout. 
+            * `RECIPIENT_NOT_FOUND` - The financial address (phone number) specified as the receipient does not belong to the MNO specified as the correspodent. 
+            * `RECIPIENT_NOT_ALLOWED_TO_RECEIVE` - The recipient has reached a limit on their wallet that stops them from being able to accept this payout. 
+            * `MANUALLY_CANCELLED` - The payout request was enqueued and subsequently cancelled from the pawaPay Dashboard or through the [Cancel Enqueued Payout](#operation/payoutsFailEnqueued) endpoint.
+            * `OTHER_ERROR` - Any other error. Please refer to `failureMessage`.
+          example: OTHER_ERROR
+          enum:
+            - BALANCE_INSUFFICIENT
+            - RECIPIENT_NOT_FOUND
+            - RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+            - MANUALLY_CANCELLED
+            - OTHER_ERROR
+        failureMessage:
+          type: string
+          description: Additional optional failure message
+          example: Recipient's address is blocked
+    PayoutRejectionReason:
+      required:
+        - rejectionReason
+      type: object
+      properties:
+        rejectionCode:
+          type: string
+          description: |
+            Enumeration presenting details in case of failure: 
+            * `BALANCE_INSUFFICIENT` - The balance of your pawaPay wallet does not have the funds to initiate this payout.
+            * `INVALID_CORRESPONDENT` - The specified correspondent is not supported.
+            * `INVALID_RECIPIENT_FORMAT` - The phone number (MISISDN) specified for the recipient is in an unrecognizable format.
+            * `INVALID_AMOUNT`- The specified amount is not supported. 
+            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minimum allowed by the MNO specified as the correspondent. 
+            * `AMOUNT_TOO_LARGE` - The specified amount is larger than the maximum allowed by the MNO specified as the correspondent. 
+            * `INVALID_CURRENCY` - The specified currency is not supported by the MNO specified as the correspondent. 
+            * `INVALID_COUNTRY` - The specified country is not supported for the MNO specified as the correspondent. 
+            * `PARAMETER_INVALID` - One or more parameters are invalid. 
+            * `INVALID_INPUT` - We were was unable to parse the payload of the request. 
+            * `PAYOUTS_NOT_ALLOWED` - Payouts are not allowed for this merchant or the MNO specified as the correspondent.
+            * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MNO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MNO availability.
+          example: INVALID_AMOUNT
+          enum:
+            - BALANCE_INSUFFICIENT
+            - INVALID_CORRESPONDENT
+            - INVALID_RECIPIENT_FORMAT
+            - INVALID_AMOUNT
+            - AMOUNT_TOO_SMALL
+            - AMOUNT_TOO_LARGE
+            - INVALID_CURRENCY
+            - INVALID_COUNTRY
+            - PARAMETER_INVALID
+            - INVALID_INPUT
+            - PAYOUTS_NOT_ALLOWED
+            - CORRESPONDENT_TEMPORARILY_UNAVAILABLE
+        rejectionMessage:
+          type: string
+          description: Additional optional rejection message
+          example: You don't have access to this correspondent (MNO)
+    PayoutSearchResult:
+      type: array
+      items:
+        $ref: '#/components/schemas/Payout'
+    PayoutStatus:
+      type: string
+      description: |
+        Enumeration presenting the status of the payout: 
+        * `ACCEPTED` - The payout request has been **accepted** by pawaPay for processing. 
+        * `ENQUEUED` - The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](#section/Payout-(Disbursement)/Enqueued-payouts). 
+        * `SUBMITTED` - The payout request has been submitted to the MNO and is being processed.
+        * `COMPLETED` - The payout request has been successfully processed. This is a **Final state.**
+        * `FAILED` - The payout request has been processed, but failed. **Final state.**
+      enum:
+        - ACCEPTED
+        - SUBMITTED
+        - ENQUEUED
+        - COMPLETED
+        - FAILED
+    Refund:
+      required:
+        - refundId
+        - status
+        - amount
+        - currency
+        - country
+        - correspondent
+        - recipient
+        - customerTimestamp
+        - created
+      type: object
+      properties:
+        refundId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID specified by you, that unqiuely identifies the refund. 
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/PayoutStatus'
+        amount:
+          $ref: '#/components/schemas/Amount'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        country:
+          $ref: '#/components/schemas/Country'
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        recipient:
+          $ref: '#/components/schemas/FinancialAddress'
+        customerTimestamp:
+          type: string
+          description: The timestamp for when you initiated the refund process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:28Z'
+        statementDescription:
+          minLength: 4
+          maxLength: 22
+          type: string
+          pattern: ^[a-zA-Z0-9 ]+$
+          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          example: Note of 4 to 22 chars
+        created:
+          type: string
+          description: The timestamp of when the refund was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:29Z'
+        receivedByRecipient:
+          type: string
+          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:30Z'
+        correspondentIds:
+          type: object
+          additionalProperties:
+            type: string
+          description: The financial ids used by the MNO to unqiuely identify this payment
+          example:
+            MTN_INIT: ABC123
+            MTN_FINAL: DEF456
+        failureReason:
+          $ref: '#/components/schemas/RefundFailureReason'
+        metadata:
+          $ref: '#/components/schemas/TransactionMetadataResponse'
+    RefundCallback:
+      required:
+        - refundId
+        - status
+        - amount
+        - currency
+        - country
+        - correspondent
+        - recipient
+        - customerTimestamp
+        - created
+      type: object
+      properties:
+        refundId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID specified by you, that unqiuely identifies the refund. 
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/CallbackStatus'
+        amount:
+          $ref: '#/components/schemas/Amount'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        country:
+          $ref: '#/components/schemas/Country'
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        recipient:
+          $ref: '#/components/schemas/FinancialAddress'
+        customerTimestamp:
+          type: string
+          description: The timestamp for when you initiated the refund process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:28Z'
+        statementDescription:
+          minLength: 4
+          maxLength: 22
+          type: string
+          pattern: ^[a-zA-Z0-9 ]+$
+          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          example: Note of 4 to 22 chars
+        created:
+          type: string
+          description: The timestamp of when the refund was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:29Z'
+        receivedByRecipient:
+          type: string
+          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:30Z'
+        correspondentIds:
+          type: object
+          additionalProperties:
+            type: string
+          description: The financial ids used by the MNO to unqiuely identify this payment
+          example:
+            MTN_INIT: ABC123
+            MTN_FINAL: DEF456
+        failureReason:
+          $ref: '#/components/schemas/RefundFailureReason'
+        metadata:
+          $ref: '#/components/schemas/TransactionMetadataResponse'
+    RefundCreationRequest:
+      required:
+        - refundId
+        - depositId
+      type: object
+      properties:
+        refundId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID specified by you, that uniquely identifies the refund.
+          example:  "<INSERT_UUID_FOR_REFUND>"
+        depositId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: The `depositId` of the deposit to be refunded.
+          example:  "<INSERT_UUID_OF_DEPOSIT_TO_REFUND>"
+        amount:
+          $ref: '#/components/schemas/Amount'
+        metadata:
+          $ref: '#/components/schemas/TransactionMetadataRequest'
+    RefundIdRequest:
+      required:
+        - refundId
+      type: object
+      properties:
+        refundId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: A UUIDv4 based ID previously specified by you, that uniquely identifies the refund.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+    RefundCreationResponse:
+      required:
+        - refundId
+        - status
+      type: object
+      properties:
+        refundId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: The `refundId` of the refund transaction.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/RefundCreationStatus'
+        created:
+          type: string
+          description: The timestamp of when the refund was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          format: date-time
+          example: '2020-02-21T17:32:29Z'
+        rejectionReason:
+          $ref: '#/components/schemas/RefundRejectionReason'
+    RefundResendCallbackResponse:
+      required:
+        - refundId
+        - status
+      type: object
+      properties:
+        refundId:
+          minLength: 36
+          maxLength: 36
+          type: string
+          format: uuid
+          description: The `refundId` of the refund transaction.
+          example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
+        status:
+          $ref: '#/components/schemas/ManualCommandStatus'
+        rejectionReason:
+          type: string
+          description: Human-readable explanation why request has been rejected
+          example: Refund with ID \#f4401bd2-1568-4140-bf2d-eb77d2b2b639 not found
+    RefundCreationStatus:
+      type: string
+      description: |
+        Enumeration presenting the status of the Refund Creation: 
+        * `ACCEPTED` - The refund request has been **accepted** by pawaPay for processing. 
+        * `REJECTED` - The refund request has been **rejected** by pawaPay. See `rejectionReason` for details. 
+        * `DUPLICATE_IGNORED` - The refund request has been **ignored** as a duplicate of already accepted refund request. Duplication logic relies upon refundId.
+      enum:
+        - ACCEPTED
+        - REJECTED
+        - DUPLICATE_IGNORED
+    RefundFailureReason:
+      required:
+        - failureCode
+      type: object
+      properties:
+        failureCode:
+          type: string
+          description: |
+            Enumeration presenting details in case of failure: 
+            * `BALANCE_INSUFFICIENT` - The pawaPay wallet balance is insufficient to proceed with the refund. 
+            * `RECIPIENT_NOT_FOUND` - The phone number specified for the receipient does not belong to the MNO specified as the correspodent. 
+            * `RECIPIENT_NOT_ALLOWED_TO_RECEIVE` - The recipient has reached a limit on their wallet that stops them from receiving this refund. 
+            * `OTHER_ERROR` - Any other error. Please refer to `failureMessage`.
+          example: OTHER_ERROR
+          enum:
+            - BALANCE_INSUFFICIENT
+            - RECIPIENT_NOT_FOUND
+            - RECIPIENT_NOT_ALLOWED_TO_RECEIVE
+            - OTHER_ERROR
+        failureMessage:
+          type: string
+          description: Additional optional failure message
+          example: Recipient's address is blocked
+    RefundRejectionReason:
+      required:
+        - rejectionReason
+      type: object
+      properties:
+        rejectionCode:
+          type: string
+          description: |
+            Enumeration presenting details in case of failure:  
+            * `DEPOSIT_NOT_FOUND`- Requested deposit for refund has not been found.  
+            * `DEPOSIT_NOT_COMPLETED`- Requested deposit was not completed.  
+            * `ALREADY_REFUNDED`- Requested deposit has been already refunded.  
+            * `IN_PROGRESS`- Another refund transaction is already in progress.  
+            * `INVALID_AMOUNT`- The specified amount is not supported. 
+            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minimum allowed by the MNO specified as the correspondent. 
+            * `AMOUNT_TOO_LARGE` - The specified amount is larger than the maximum allowed by the MNO specified as the correspondent. 
+            * `INVALID_CURRENCY` - The specified currency is not supported by the MNO specified as the correspondent. 
+            * `INVALID_COUNTRY` - The specified country is not supported for the MNO specified as the correspondent. 
+            * `PARAMETER_INVALID` - One or more parameters are invalid. 
+            * `INVALID_INPUT` - We were was unable to parse the payload of the request. 
+            * `REFUNDS_NOT_ALLOWED` - Refunds are not allowed for this merchant or the MNO specified as the correspondent.
+            * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MNO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MNO availability.
+          example: INVALID_AMOUNT
+          enum:
+            - DEPOSIT_NOT_FOUND
+            - DEPOSIT_NOT_COMPLETED
+            - ALREADY_REFUNDED
+            - IN_PROGRESS
+            - INVALID_AMOUNT
+            - AMOUNT_TOO_SMALL
+            - AMOUNT_TOO_LARGE
+            - PARAMETER_INVALID
+            - INVALID_INPUT
+            - REFUNDS_NOT_ALLOWED
+            - CORRESPONDENT_TEMPORARILY_UNAVAILABLE
+        rejectionMessage:
+          type: string
+          description: Additional optional rejection message
+          example: You don't have access to this correspondent (MNO)
+    RefundSearchResult:
+      type: array
+      items:
+        $ref: '#/components/schemas/Refund'
+    ManualCommandStatus:
+      type: string
+      description: |
+        Enumeration presenting the status of the manual command action: 
+        * `ACCEPTED` - The manual action request has been accepted by pawaPay for processing. 
+        * `REJECTED` - The manual action request has been rejected by pawaPay. See rejectionReason for details. 
+        * `FAILED` - The manual action request has failed during submitting for processing due to internal reasons.
+      enum:
+        - ACCEPTED
+        - REJECTED
+        - FAILED
+    CustomerActiveConfigResponse:
+      required:
+        - merchantId
+        - merchantName
+        - countries
+      type: object
+      properties:
+        merchantId:
+          type: string
+          description: Your unique alphanumeric ID in the pawaPay platform.
+          example: MERCHANT_INC
+        merchantName:
+          type: string
+          description: Your company name as configured in the pawaPay platform.
+          example: Merchant Inc.
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerActiveCountryConfigResponse'
+    CustomerActiveCountryConfigResponse:
+      required:
+        - country
+        - correspondents
+      type: object
+      properties:
+        country:
+          $ref: '#/components/schemas/Country'
+        correspondents:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerActiveGatewayConfigResponse'
+    CustomerActiveGatewayConfigResponse:
+      required:
+        - correspondent
+        - currency
+        - operationTypes
+      type: object
+      properties:
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        ownerName:
+          type: string
+          description: The name of the company that is shown to the customer on the SMS receipt.
+        operationTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerActiveOperationTypeConfigResponse'
+    CustomerActiveOperationTypeConfigResponse:
+      required:
+        - operationType
+        - minTransactionLimit
+        - maxTransactionLimit
+      type: object
+      properties:
+        operationType:
+          type: string
+          example: DEPOSIT
+          enum:
+            - DEPOSIT
+            - PAYOUT
+            - PUSH_DEPOSIT
+            - REFUND
+        minTransactionLimit:
+          type: string
+          pattern: ^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[1-9])?$
+          description: Minimum transaction amount allowed for this correspondent for this operation type.
+          example: '1.0000'
+        maxTransactionLimit:
+          type: string
+          pattern: ^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[1-9])?$
+          description: Maximum transaction amount allowed for this correspondent for this operation type.
+          example: '10000.0000'
+    MsisdnInput:
+      required:
+        - msisdn
+      type: object
+      properties:
+        msisdn:
+          $ref: '#/components/schemas/FlexibleMsisdnValue'
+    CorrespondentPrediction:
+      required: 
+        - country
+        - operator
+        - correspondent
+        - msisdn
+      type: object
+      properties:
+        country:
+          $ref: '#/components/schemas/Country'
+        operator:
+          type: string
+          description: The name of the MNO associated with the specified MSISDN.
+          example: MTN
+        correspondent:
+          $ref: '#/components/schemas/Correspondent'
+        msisdn:
+          $ref: '#/components/schemas/PredictedMsisdnValue'
+    PublicKeyResponse:
+        type: array
+        items:
+              $ref: '#/components/schemas/PublicKeyResponseItem'
+    PublicKeyResponseItem:
+        required:
+          - id
+          - key
+        type: object
+        properties:
+          id:
+            type: string
+            description: The ID of the public key.
+          key:
+            type: string
+            description: The public key to use when verifying the signature in a callback sent by pawaPay.
+    TransactionMetadataRequest:
+      description: | 
+        A list of metadata that you can attach to the payment for providing additional context about the payment.
+        For example, adding `orderId` to indicate for which order this payment was for or `customerId` to know which customer this payment pertains to.
+
+        Metadata will not be visible to the customer that is party to this payment. 
+        It will be visible in the pawaPay Dashboard on the payment details page and in your financial statements as a JSON object to support automated reconciliation.
+        It is also possible to search for recent payments in the pawaPay Dashboard using global search based on the values of metadata.
+
+        Up to 10 metadata fields can be attached to a payment. 
+      type: array
+      items:
+        $ref: '#/components/schemas/TransactionMetadataRequestItem'
+      example:
+        - fieldName: 'orderId'
+          fieldValue: 'ORD-123456789'
+        - fieldName: 'customerId'
+          fieldValue: 'customer@email.com'
+          isPII: true
+    TransactionMetadataRequestItem:
+      required:
+        - fieldName
+        - fieldValue
+      type: object
+      properties:
+        fieldName:
+          type: string
+          description: The name of the metadata that you are attaching to the payment. For example `orderId`.
+          example: orderId
+        fieldValue:
+          type: string
+          description: The value for this metadata field. For example `ORD-123456789`.
+          example: ORD-123456789
+        isPII:
+          type: boolean
+          default: false
+          description: Indicates whether the field contains personally identifiable information. Used for enabling compliance with GDPR or other relevant data privacy laws.
+          example: true
+    TransactionMetadataResponse:
+      description: | 
+        The metadata that was provided in the original initation request in a JSON object format.
+      type: object
+      properties:
+        value of fieldName:
+          type: string
+          description: Each passed in metadata field will be a property of the metadata JSON object. The key will be the 'fieldName' and the value will be 'fieldValue'.
+      example:
+        orderId: ORD-123456789
+        customerId: customer@email.com
+  requestBodies:
+    DepositCreationRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DepositCreationRequest'
+      required: true
+    DepositIdRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DepositIdRequest'
+    CheckBalanceRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CheckBalanceRequest'
+      required: true
+    PayoutCreationRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PayoutCreationRequest'
+      required: true
+    BulkPayoutCreationRequest:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/PayoutCreationRequest'
+      required: true
+    PayoutIdRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PayoutIdRequest'
+    RefundCreationRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RefundCreationRequest'
+      required: true
+    RefundIdRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RefundIdRequest'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: See [Authentication](/#section/Using-the-API/Authentication).
+      scheme: bearer
+      bearerFormat: JWT
+x-tagGroups:
+  - name: API Reference
+    tags:
+      - payouts
+      - deposits
+      - refunds
+      - payment-page
+      - wallet-balances
+      - toolkit
+x-webhooks:
+  payoutCallback:
+    post:
+      tags:
+        - payouts
+      summary: Payout Status Callback
+      description: |
+        If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each payout when it reaches a final status. 
+        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](#section/Using-the-API/Callback-URLs).
+        
+        If you have not configured callbacks, you can always call our [Get Payout Status and Details](/#operation/getPayout) endpoint to get the latest status and details of a specific payout request. 
+
+        __Headers related to [signatures](#section/Using-the-API/Signatures) will only be included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+      operationId: payoutWebhook
+      security: []
+      parameters:
+        - in: header
+          name: Content-Digest
+          schema:
+            type: string
+            format: string
+            description: SHA-256 or SHA-512 hash of the request body.
+          required: false
+        - in: header
+          name: Signature
+          schema:
+            type: string
+            format: string
+            description: Signature of the request according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Signature-Input
+          schema:
+            type: string
+            format: string
+            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/)
+          required: false
+        - in: header
+          name: Signature-Date
+          schema:
+            type: string
+            format: date-time
+            description: Timestamp when signature was created. This is a custom field and is not part of [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Signature
+          schema:
+            type: string
+            format: string
+            description: Expected signature algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Digest
+          schema:
+            type: string
+            format: string
+            description: Expected digest algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutCallback'
+        required: true
+      responses:
+        '200':
+          description: OK
+  depositCallback:
+    post:
+      tags:
+        - deposits
+      summary: Deposit Status Callback
+      description: |
+        If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each deposit when it reaches a final status. 
+        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](#section/Using-the-API/Callback-URLs).
+        
+        If you have not configured callbacks, you can always call our [Get Deposit Status and Details](/#operation/getDeposit) endpoint to get the latest status and details of a specific deposit request. 
+
+        __Headers related to [signatures](#section/Using-the-API/Signatures) will only be included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+      operationId: depositWebhook
+      security: []
+      parameters:
+        - in: header
+          name: Content-Digest
+          schema:
+            type: string
+            format: string
+            description: SHA-256 or SHA-512 hash of the request body.
+          required: false
+        - in: header
+          name: Signature
+          schema:
+            type: string
+            format: string
+            description: Signature of the request according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Signature-Input
+          schema:
+            type: string
+            format: string
+            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/)
+          required: false
+        - in: header
+          name: Signature-Date
+          schema:
+            type: string
+            format: date-time
+            description: Timestamp when signature was created. This is a custom field and is not part of [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Signature
+          schema:
+            type: string
+            format: string
+            description: Expected signature algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Digest
+          schema:
+            type: string
+            format: string
+            description: Expected digest algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepositCallback'
+        required: true
+      responses:
+        '200':
+          description: Callback considered delivered.
+  refundCallback:
+    post:
+      tags:
+        - refunds
+      summary: Refund Status Callback
+      description: |
+        If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each refund when it reaches a final status. 
+        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](#section/Using-the-API/Callback-URLs).
+        
+        If you have not configured callbacks, you can always call our [Get Refund Status and Details](/#operation/getRefund) endpoint to get the latest status and details of a specific refund request. 
+
+        __Headers related to [signatures](#section/Using-the-API/Signatures) will only be included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+      operationId: refundWebhook
+      security: []
+      parameters:
+        - in: header
+          name: Content-Digest
+          schema:
+            type: string
+            format: string
+            description: SHA-256 or SHA-512 hash of the request body.
+          required: false
+        - in: header
+          name: Signature
+          schema:
+            type: string
+            format: string
+            description: Signature of the request according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Signature-Input
+          schema:
+            type: string
+            format: string
+            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/)
+          required: false
+        - in: header
+          name: Signature-Date
+          schema:
+            type: string
+            format: date-time
+            description: Timestamp when signature was created. This is a custom field and is not part of [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Signature
+          schema:
+            type: string
+            format: string
+            description: Expected signature algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+        - in: header
+          name: Accept-Digest
+          schema:
+            type: string
+            format: string
+            description: Expected digest algorithm of the response according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundCallback'
+        required: true
+      responses:
+        '200':
+          description: OK

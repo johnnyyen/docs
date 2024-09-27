@@ -1,0 +1,445 @@
+---
+title: Using the API
+---
+
+## Where is the API?
+    
+    When [creating an account](https://www.pawapay.io/activate-account) with pawaPay, you will first receive access to our sandbox environemnt. 
+    The sandbox environment is completely isloated from our production environment. 
+    You can safely test your integration with pawaPay without real mobile money wallets and real money involved.
+    You will get access to your production account when you have completed the onboarding on your sandbox account.
+
+    The base URL for the pawaPay Merchant API is different between our sandbox and production environments. The specific operation can be called by appending the endpoint to the base URL. 
+
+    _Example: [https://api.sandbox.pawapay.cloud/payouts](https://api.sandbox.pawapay.cloud/payouts)_
+
+    Environment | Base URL
+    --------------|---------
+    Sandbox       | [https://api.sandbox.pawapay.cloud/](https://api.sandbox.pawapay.cloud/)
+    Production    | [https://api.pawapay.cloud/](https://api.pawapay.cloud/)
+
+    __The base URL and the authentication token are the only things that change between using pawaPay Merchant API in our sandbox and in production. These should be a part of your applications environment specific configuration.__
+
+
+## Authentication
+
+    The pawaPay Merchant API uses bearer token for authentication. An authorization header is required for all calls to the pawaPay Merchant APIs except for [MNO Availability](#operation/availability). 
+
+    The token can be generated from the pawaPay Dashboard. Instructions on how to do that can be found in the **[pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token)**.
+    
+    __The token generated from your sandbox account can only be used for authenticating against the Merchant API in sandbox. 
+    For authenticating against the Merchant API in production, a separate token must be generated with your live account.__
+
+    As our sandbox environment is completely isolated from our production environment, the URLs for each dashboard are also different.
+
+    | Environment | Dashboard URL |
+    |-------------|---------------|
+    | Sandbox     | [https://dashboard.sandbox.pawapay.cloud/](https://dashboard.sandbox.pawapay.cloud/) |
+    | Production  | [https://dashboard.pawapay.cloud/](https://dashboard.pawapay.cloud/) |
+
+    The base URL and the authentication token are the only things that change between using the Merchant API in our sandbox and in production. 
+    These should be a part of your applications environment specific configuration.
+
+    Below is an example payout request with curl:
+    ``` json
+    curl -i -X POST |
+    https://api.sandbox.pawapay.cloud/payouts \
+    -H 'Authorization: Bearer <YOUR_API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    -d '{
+    "payoutId": "<UUID>",
+    "amount": "15",
+    "currency": "ZMW",
+    "country": "ZMB",
+    "correspondent": "MTN_MOMO_ZMB",
+    "recipient": {
+    "type": "MSISDN",
+    "address": {
+        "value": "260763456789"
+    }
+    },
+    "customerTimestamp": "2020-02-21T17:32:28Z",
+    "statementDescription": "Note of 4 to 22 chars"
+    }'
+    ```
+
+## Signatures
+
+The pawaPay API is secured by the API token as explained in [Authentication](#section/Using-the-API/Authentication).
+
+To add a second layer of security, you can optionally sign your financial requests to us - deposit, payout and refund requests. 
+In this case, pawaPay will only accept financial requests that have been signed by you. 
+To utilize this additional capability, you should provide your public key in the pawaPay Dashboard and enable this feature. 
+Read how to do that from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).
+This ensures that even if your API token leaks, only you can initiate financial requests with pawaPay.
+
+If configured, pawaPay will also send callbacks to your [callback URLs](#section/Using-the-API/Callback-URLs) with the final status of your payment.  
+Your network team can whitelist the pawaPay platform IP addresses for these callback URLs.
+
+Additionally, you can also enable pawaPay to sign those callbacks. 
+You can then validate the signature that is included in the header of the callback to ensure that callbacks are in fact coming from pawaPay and have not been tampered with.
+
+### Signatures in financial requests
+
+Financial requests are requests sent to the pawaPay Merchant API to move funds. These include [deposits](#operation/createDeposit), [payouts](#operation/createPayout), [bulk payouts](#operation/createPayouts) and [refunds](#operation/createRefund).
+
+The implementation of signatures in pawaPay is based on the standard described in [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+
+When creating the financial request to send to the pawaPay Merchant API, you should create a Content-Digest, sign the request and add Signature and Signature-Input headers.
+
+#### Hash the request body
+
+For generating the `Content-Digest` you can use either SHA-256 or SHA-512 algorithm. 
+The `Content-Digest` should be created from the request body. 
+Having the request body hashed and available as a header allows verification that the content of the request has not been tampered with. 
+
+```http
+Content-Digest: sha-512=:mXRb9GJnfR/lyXOVfa27Wg+QrRgX3DVhXpQwjxbWoG3BgX7ZHmXLpvQb4il2kxgLjWmj6oSdwDdn5rUAJVYnUw==:
+
+{ 
+    "depositId": "d6df5c10-bd43-408c-b622-f10f9eaa568b",
+    "amount": "15",
+    "currency": "ZMW",
+    "correspondent": "MTN_MOMO_ZMB",
+    "payer": {
+    "type": "MSISDN",
+    "address": {
+        "value": "260763456789"
+    }
+    },
+    "customerTimestamp": "2024-05-02T15:36:45.045064Z",
+    "statementDescription": "Signed deposit"
+}
+```
+
+You can read more about it [here](https://datatracker.ietf.org/doc/html/rfc9421#name-message-content)
+
+#### Create the signature base
+
+For creating the content that will be signed, you need to create a signature base. 
+This should include all details of the request that should be verifiable. We recommend including at least the following [Derived Components](https://datatracker.ietf.org/doc/html/rfc9421#name-derived-components).
+* @method
+* @authority
+* @path
+
+Also the following headers should be included into the request and the signature base.
+* Signature-Date
+* Content-Digest
+* Content-Type
+
+Let’s take the following example request to initiate a deposit.
+```http
+Authorization: Bearer <YOUR_API_TOKEN>
+Content-Type: application/json; charset=UTF-8
+Accept-Encoding: gzip, x-gzip, deflate
+Content-Digest: sha-512=:mXRb9GJnfR/lyXOVfa27Wg+QrRgX3DVhXpQwjxbWoG3BgX7ZHmXLpvQb4il2kxgLjWmj6oSdwDdn5rUAJVYnUw==:
+Signature-Date: 2024-05-02T15:36:45.058799Z1714653405;expires=1714653465
+Accept-Signature: rsa-pss-sha512,ecdsa-p256-sha256,rsa-v1_5-sha256,ecdsa-p384-sha384
+Accept-Digest: sha-256,sha-512
+{
+    "depositId": "d6df5c10-bd43-408c-b622-f10f9eaa568b",
+    "amount": "15",
+    "currency": "ZMW",
+    "correspondent": "MTN_MOMO_ZMB",
+    "payer": {
+        "type": "MSISDN",
+        "address": {
+            "value": "260763456789"
+        }
+    },
+    "customerTimestamp": "2024-05-02T15:36:45.045064Z",
+    "statementDescription": "Signed deposit"
+}
+```
+
+The signature base for the above request would be the following.
+```http
+"@method": POST
+"@authority": localhost:8080
+"@path": /deposits
+"signature-date": 2024-05-02T15:36:45.058799Z
+"content-digest": sha-512=:mXRb9GJnfR/lyXOVfa27Wg+QrRgX3DVhXpQwjxbWoG3BgX7ZHmXLpvQb4il2kxgLjWmj6oSdwDdn5rUAJVYnUw==:
+"content-type": application/json; charset=UTF-8
+"@signature-params": ("@method" "@authority" "@path" "signature-date" "content-digest" "content-type");alg="ecdsa-p256-sha256";keyid="CUSTOMER_TEST_KEY";created=1714653405;expires=1714653465
+```
+
+You can read more about creating the signature base [here](https://datatracker.ietf.org/doc/html/rfc9421#name-creating-the-signature-base).
+
+#### Create the signature
+
+You can use your private key now to sign the signature base. You can use one of the following algorithms:
+* [RSASSA-PSS Using SHA-512](https://datatracker.ietf.org/doc/html/rfc9421#name-rsassa-pss-using-sha-512)
+* [RSASSA-PKCS1-v1_5 Using SHA-256](https://datatracker.ietf.org/doc/html/rfc9421#name-rsassa-pkcs1-v1_5-using-sha)
+* [ECDSA Using Curve P-256 DSS and SHA-256](https://datatracker.ietf.org/doc/html/rfc9421#name-ecdsa-using-curve-p-256-dss)
+* [ECDSA Using Curve P-384 DSS and SHA-384](https://datatracker.ietf.org/doc/html/rfc9421#name-ecdsa-using-curve-p-384-dss)
+
+You can read more about creating the signature [here](https://datatracker.ietf.org/doc/html/rfc9421#name-creating-a-signature).
+
+#### Include Signature and Signature-Input headers
+
+Having generated the signature, you should include it into the `Signature` header of the request. 
+You also need to create the `Signature-Input` header which outlines the parameters and their order that were used to generate the `Signature` as well as metadata about the signature.
+The metadata should include.
+* The used algorithm (`alg`)
+* The date the signature was created (`created`)
+* The expiration date of the keypair (`expires`)
+* The id of the key (`keyid`)
+
+This allows pawaPay to validate the basis for the signature against your public key. 
+Read more about it [here](https://datatracker.ietf.org/doc/html/rfc9421#name-the-signature-input-http-fi).
+
+The final request that can be sent to pawaPay would look as follows.
+```http
+Authorization: Bearer <YOUR_API_TOKEN>
+Content-Type: application/json; charset=UTF-8
+Accept-Encoding: gzip, x-gzip, deflate
+Content-Digest: sha-512=:mXRb9GJnfR/lyXOVfa27Wg+QrRgX3DVhXpQwjxbWoG3BgX7ZHmXLpvQb4il2kxgLjWmj6oSdwDdn5rUAJVYnUw==:
+Signature-Date: 2024-05-02T15:36:45.058799Z
+Signature: sig-pp=:MEQCIHoWKI71ADMmqwtwW48CHgfbDWdVItVMNlXTFJjoxmEDAiBTY30Le4wQd3RXqvmYubVwrxuP7Tz1SeZcnsNdHqjJDg==:
+Signature-Input: sig-pp=("@method" "@authority" "@path" "signature-date" "content-digest" "content-type");alg="ecdsa-p256-sha256";keyid="CUSTOMER_TEST_KEY";created=1714653405;expires=1714653465
+Accept-Signature: rsa-pss-sha512,ecdsa-p256-sha256,rsa-v1_5-sha256,ecdsa-p384-sha384
+Accept-Digest: sha-256,sha-512
+{
+    "depositId": "d6df5c10-bd43-408c-b622-f10f9eaa568b",
+    "amount": "15",
+    "currency": "ZMW",
+    "correspondent": "MTN_MOMO_ZMB",
+    "payer": {
+        "type": "MSISDN",
+        "address": {
+            "value": "260763456789"
+        }
+    },
+    "customerTimestamp": "2024-05-02T15:36:45.045064Z",
+    "statementDescription": "Signed deposit"
+}
+```
+
+The pawaPay API would respond by accepting the payment for processing with the follwoing response (headers irrelevant for signatures are omitted).
+```http
+Content-Digest: sha-512=:NkvHr2fjqMoKW6nxA6V6jeQXhZyKVAcYdOv6Rmpa2cMn7yZmYDFrPzj/1LiAvOmJkCEdfsS5Bn9N/uZL8nCLZQ==:
+Signature-Date: 2024-05-02T15:36:46.084331Z
+Signature: sig-pp=:MEUCIFPakg6tQqN33NueVBPCKK4/GJ7BmHqux2yNQqWOEfmRAiEA43SOGd4JvlX2DWuh1oe0nP+/J8POSfr24SwXw2aRHRs=:
+Signature-Input: sig-pp=("@status" "signature-date" "content-digest");alg="ecdsa-p256-sha256";keyid="HTTP_EC_P256_KEY:1";created=1714653406;expires=1714653466
+
+{"depositId":"d6df5c10-bd43-408c-b622-f10f9eaa568b","status":"ACCEPTED","created":"2024-05-02T12:36:46Z"}
+```
+
+__Do not forget to enable signed financial calls and upload your public key in the pawaPay Dashboard. Learn how to do that from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+
+#### Make the request
+
+You can now send this request to pawaPay Merchant API to initiate a [deposit](#operation/createDeposit), [payout](#operation/createPayout), [bulk payout](#operation/createPayouts) and [refund](#operation/createRefund).
+
+### Signatures in callbacks
+
+When receiving callbacks from pawaPay they will include the following headers.
+* Signature
+* Signature-Input
+* Signature-Date
+* Content-Type
+* Content-Digest
+You can verify that the request has not been tampered with and is coming from pawaPay.
+
+Here is an example callback for a deposit.
+```http
+Content-Type: application/json; charset=UTF-8
+Accept-Encoding: gzip, x-gzip, deflate
+Content-Digest: sha-512=:0ki7QBS/0MA424uwOq3k5HnJnL5SRkPjit12m0YMpd4JgWiMvm9+yNT3FunkpDaTSsKhTkliQwJlRw9bgsos9w==:
+Signature-Date: 2024-05-02T16:45:51.131905Z
+Signature: sig-pp=:MEQCIHFvGCUgyxmmowMufO4Yk20pBs3JHRax81si2QZVi9ByAiBPpg1WBhQjZ6fmi3a/gKcWiQ73Qm9Ol35On3c4K/flew==:
+Signature-Input: sig-pp=("@method" "@authority" "@path" "signature-date" "content-digest" "content-type");alg="ecdsa-p256-sha256";keyid="CUSTOMER_TEST_KEY";created=1714657551;expires=1714657611
+Accept-Signature: rsa-pss-sha512,ecdsa-p256-sha256,rsa-v1_5-sha256,ecdsa-p384-sha384
+Accept-Digest: sha-256,sha-512
+{
+    "depositId": "4985d482-454d-4ebc-abc9-ad525eef21b6",
+    "status": "COMPLETED",
+    "requestedAmount": "15",
+    "currency": "ZMW",
+    "country": "ZMB",
+    "correspondent": "MTN_MOMO_ZMB",
+    "payer": {
+        "type": "MSISDN",
+        "address": {
+            "value": "260763456789"
+        }
+    },
+    "customerTimestamp": "2024-05-02T16:45:51.120601Z",
+    "statementDescription": "Signed deposit",
+    "created": "2024-05-02T16:45:51.120601Z",
+    "depositedAmount": "15",
+    "respondedByPayer": "2024-05-02T16:45:51.120601Z",
+    "correspondentIds": {
+        "MTN_INIT": "ABC123",
+        "MTN_FINAL": "DEF456"
+    }
+}
+```
+
+#### Validate content integrity
+
+Create a hash of the request body using the algorithm specified in the `Content-Digest` header. 
+Comparing the generated value to the value in `Content-Digest` ensures the body of the request has not been tampered with.
+
+#### Validate the signature
+
+Based on the parameters in `Signature-Input`, generate the signature base for the request. You can read more about it [here](https://datatracker.ietf.org/doc/html/rfc9421#name-creating-the-signature-base).
+
+Based on the previous example, the signature base would be the following.
+```http
+"@method": POST
+"@authority": localhost:8080
+"@path": /callback
+"signature-date": 2024-05-02T16:45:51.131905Z
+"content-digest": sha-512=:0ki7QBS/0MA424uwOq3k5HnJnL5SRkPjit12m0YMpd4JgWiMvm9+yNT3FunkpDaTSsKhTkliQwJlRw9bgsos9w==:
+"content-type": application/json; charset=UTF-8
+"@signature-params": ("@method" "@authority" "@path" "signature-date" "content-digest" "content-type");alg="ecdsa-p256-sha256";keyid="CUSTOMER_TEST_KEY";created=1714657551;expires=1714657611
+```
+
+You can retrieve the public key to verify the signature from the [Public Keys](#operation/public_key_http) endpoint.
+Using the retrieved public key, the generated signature base and the signature, you can now verify that the the content (as specified by the `Signature-Input`) was in fact signed by pawaPay and therefore originates from pawaPay.
+
+
+## Callback URLs
+
+    The pawaPay Merchant API is asyncrhonous. You can read more from [Asynchronous API](#section/Implementation/Asynchronous-API).
+    
+    Callback URLs are configured from the pawaPay Dashboard. You can find instructions on how to do that from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/callback-urls).
+
+    When using callbacks, please ensure the following IP addresses are whitelisted to ensure we can reliably deliver callbacks to you.
+
+    Environment | IP
+    --------------|----
+    Sandbox       | 3.64.89.224/32
+    Production    | 18.192.208.15/32
+    Production    | 18.195.113.136/32
+    Production    | 3.72.212.107/32
+    Production    | 54.73.125.42/32
+    Production    | 54.155.38.214/32
+    Production    | 54.73.130.113/32
+
+## Correspondents
+
+Correspondents in our Merchant API refer to the specific Mobile Network Operators (MNOs) that are available through our platform. 
+The parameters that define the destination of the payment are <code>correspondent</code> and <code>payer</code> for [Deposits](/#tag/deposits) or <code>recipient</code> for [Payouts](/#tag/payouts). 
+This routes the payment to the correct person (specified by the MSISDN) on the correct mobile network (specified by the <code>correspondent</code>).
+
+You can always check which correspondents are available on your account from the [active configuration](#operation/active_conf) endpoint.
+
+You can use the [predict-correspondent](#operation/predict-correspondent) endpoint to predict the MNO for a phone number (MSISDN).
+
+The amount of decimal places that can be specified as the `amount` of the transaction vary between different MNOs. 
+You can find the list of all available correspondents, their currency and supported decimal places  below.
+
+<AccordionGroup>
+    <Accordion title="Benin">
+        | MNO | Correspondent | Country       | Currency | <Tooltip tip="Does this MNO support decimals in amount. For example: 10.50">Decimals in amount</Tooltip> |
+        |------|---------------|---------------|----------|----------------------------------------------------------------------------------------------------------|
+        | MTN | MTN_MOMO_BEN  | BEN           | XOF      | Not supported                                                                                            |
+        | Moov | MOOV_BEN      | BEN           | XOF      | Not supported                                                                                            |
+
+    </Accordion>
+    <Accordion title="Burkina Faso">
+        MNO | Correspondent | Country | Currency | <Tooltip tip="Does this MNO support decimals in amount. For example: 10.50">Decimals in amount</Tooltip>
+        ----|---------------|---------|----------|-------------------
+        Moov | MOOV_BFA | BFA | XOF | Not supported
+        Orange | ORANGE_BFA | BFA | XOF | Not supported
+    </Accordion>
+    <Accordion title="Cameroon">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        MTN | MTN_MOMO_CMR | CMR | XAF | Not supported
+        Orange | ORANGE_CMR | CMR | XAF | Not supported
+    </Accordion>
+    <Accordion title="Côte d'Ivoire (Ivory Coast)">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        MTN | MTN_MOMO_CIV | CIV | XOF | Not supported
+        Orange | ORANGE_CIV | CIV | XOF | Not supported
+    </Accordion>
+    <Accordion title="Democratic Republic of the Congo (DRC)">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Vodacom | VODACOM_MPESA_COD | COD | CDF | 2 places
+        Airtel | AIRTEL_COD | COD | CDF | 2 places
+        Orange | ORANGE_COD | COD | CDF | 2 places
+    </Accordion>
+    <Accordion title="Gabon">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Airtel | AIRTEL_GAB | GAB | XAF | 2 places
+    </Accordion>
+    <Accordion title="Ghana">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        MTN | MTN_MOMO_GHA | GHA | GHS | 2 places
+        AT | AIRTELTIGO_GHA | GHA | GHS | 2 places
+        Vodafone | VODAFONE_GHA | GHA | GHS | 2 places
+    </Accordion>
+    <Accordion title="Kenya">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        MPesa | MPESA_KEN | KEN | KES | Deposits: not supported; payouts: 2 places
+    </Accordion>
+    <Accordion title="Malawi">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Airtel | AIRTEL_MWI | MWI | MWK | 2 places
+        TNM | TNM_MWI | MWI | MWK | 2 places
+    </Accordion>
+    <Accordion title="Mozambique">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Vodacom | VODACOM_MOZ | MOZ | MZN | 2 places
+    </Accordion>
+    <Accordion title="Nigeria">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Airtel | AIRTEL_NGA | NGA | NGN | Not supported
+        MTN | MTN_MOMO_NGA | NGA | NGN | 2 places
+    </Accordion>
+    <Accordion title="Republic of the Congo">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        AIRTEL | AIRTEL_COG | COG | XAF | Not supported        
+        MTN | MTN_MOMO_COG | COG | XAF | Not supported 
+    </Accordion>
+    <Accordion title="Rwanda">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Airtel | AIRTEL_RWA | RWA | RWF | Not supported
+        MTN | MTN_MOMO_RWA | RWA | RWF | Not supported
+    </Accordion>
+    <Accordion title="Senegal">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Free | FREE_SEN | SEN | XOF | Not supported
+        Orange | ORANGE_SEN | SEN | XOF | Not supported
+    </Accordion>
+    <Accordion title="Sierra Leone">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Orange | ORANGE_SLE | SLE | SLE | 2 places
+    </Accordion>
+    <Accordion title="Tanzania">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Airtel | AIRTEL_TZA | TZA | TZS | 2 places
+        Vodacom | VODACOM_TZA | TZA | TZS | 2 places
+        Tigo | TIGO_TZA | TZA | TZS | Not supported
+        Halotel | HALOTEL_TZA | TZA | TZS | Not supported
+    </Accordion>
+    <Accordion title="Uganda">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Airtel | AIRTEL_OAPI_UGA | UGA | UGX | Not supported
+        MTN | MTN_MOMO_UGA | UGA | UGX | 2 places
+    </Accordion>
+    <Accordion title="Zambia">
+        MNO | Correspondent | Country | Currency | Decimals in amount
+        ------------------------------|---------------|---------|----------|-------------------
+        Airtel | AIRTEL_OAPI_ZMB | ZMB | ZMW | 2 places
+        MTN | MTN_MOMO_ZMB | ZMB | ZMW | 2 places
+        Zamtel | ZAMTEL_ZMB | ZMB | ZMW | 2 places
+    </Accordion>
+</AccordionGroup>

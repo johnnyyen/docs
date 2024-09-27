@@ -1,0 +1,29 @@
+---
+title: Deposit (Collection)
+---
+
+You can request payment from a customer. Funds will be moved from the customers mobile money wallet to your account in pawaPay.
+
+This operation needs to be explicitly authorised by the customer by entering their PIN code. 
+The operation can take between a few seconds up to a few minutes to be processed successfully.
+
+After the deposit request is sent to pawaPay, we forward the request to the Mobile Network Operator (MNO) specified as the [correspondent](#section/Using-the-API/Correspondents).
+The MNO sends the request to the customer for authorization. 
+The customer then authorizes the payment by entering their PIN code on their mobile phone. 
+Upon customers authorization (or rejection), the MNO informs pawaPay of the result and consequently pawaPay notifies you of the result by calling your defined [callback URL](#section/Using-the-API/Callback-URLs) with a **[Deposit Status Callback](/#operation/depositWebhook)** (if configured). 
+If you have not configured callbacks, you can always check the status of your deposit request through our **[Deposit Get Status and Details](/#operation/getDeposit)** endpoint.
+
+<Info>Please follow the guidelines in the [Implementation](#section/Implementation) section of our API docs to ensure a reliable implementation.</Info>
+
+After your deposit request has been **accepted** for processing, it can have one of the following statuses in the pawaPay platform:
+
+Status | Description
+-------|------------
+`ACCEPTED` | The deposit request has been **accepted** by pawaPay for processing.
+`SUBMITTED` | The deposit request has been submitted to the MNO and is being processed.
+`COMPLETED` | The deposit request has been successful. This is a **final state**.
+`FAILED` | The deposit request has failed. This is a **final state**.
+
+<Frame>
+    <img class="screenshot" src="https://uploads-ssl.webflow.com/62824591015aa314fd308df1/658c43eb33a9c46d1453dbd6_API%20docs%20visuals%20-%20Deposit%20with%20pawaPay%20Merchant%20API.jpg" alt="Deposit with pawaPay Merchant API" />
+</Frame>

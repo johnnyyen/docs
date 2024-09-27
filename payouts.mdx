@@ -1,0 +1,41 @@
+---
+title: Payouts (Disbursement)
+---
+
+You can disburse money from your pawaPay account to a customers mobile money wallet.
+
+This operation does not involve the recipient having to authorise the transaction by entering their PIN code. The operation is usually processed within seconds.
+
+After we receive a payout request, we send it to the MNO specified as the [correspondent](#section/Using-the-API/Correspondents). 
+When the MNO finalizes your payout request, it will inform pawaPay and consequently pawaPay notifies you of the result by calling your defined [callback URL](#section/Using-the-API/Callback-URLs) with a **[Payout Status Callback](/#operation/payoutWebhook)** (if configured). 
+If you have not configured callbacks, you can always check the status of your payout request through our **[Get Payout Status and Details](/#operation/getPayout)** endpoint. 
+
+<Info>Please follow the guidelines in the [Implementation](#section/Implementation) section of our API docs to ensure a reliable implementation.</Info>
+
+After your payout request has been **accepted** for processing, it can have one of the following statuses in the pawaPay platform:
+
+Status | Description
+-------|------------
+`ACCEPTED` | The payout request has been **accepted** by pawaPay for processing.
+`ENQUEUED` | The payout request has been **accepted**, but has been enqueued for processing later.
+`SUBMITTED` | The payout request has been submitted to the MNO and is being processed.
+`COMPLETED` | The payout request has been successful. This is a **final state**.
+`FAILED` | The payout request has failed. This is a **final state**. 
+
+## Enqueued payouts
+
+Sometimes MNOs have either degraded performance or their systems are unavailable completely.
+Read more about [MNO stability](#section/Implementation/MNO-stability).
+
+Our Payment Operations team monitors the MNOs availability 24/7 and publishes that information on our [status page](https://status.pawapay.cloud/). 
+This information is also accessible programmatically from our [availability](#operation/availability) endpoint.
+When an MNO is not able to process payouts, our platform will still accepts payout requests for processing. 
+Your payout request will return 'ENQUEUED' as the status.
+The payout will be enqueued until the MNOs systems become operational.
+
+You can always cancel the enqueued payout before it's processed using the [Cancel enqueued payout](#operation/payoutsFailEnqueued) endpoint. 
+It's also possible to cancel it from the pawaPay Dashboard as described in the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/cancel-enqueued-payout).
+
+<Frame>
+    <img class="screenshot" src="https://uploads-ssl.webflow.com/62824591015aa314fd308df1/658c43e186bdc5c173a51efe_API%20docs%20visuals%20-%20Payout%20with%20pawaPay%20Merchant%20API.jpg" alt="Payout with pawaPay Merchant API" />
+</Frame>

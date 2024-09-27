@@ -2,11 +2,12 @@
   "$schema": "https://mintlify.com/schema.json",
   "openapi": "swagger.yaml",
   "name": "Merchant API",
+  "versions": ["v2", "v1"],
   "logo": {
     "dark": "https://cdn.prod.website-files.com/62824591015aa314fd308df1/66cf1b87a6a22a3cb5511621_Logo-3.svg",
     "light": "https://cdn.prod.website-files.com/62824591015aa314fd308df1/66cf1b87a6a22a3cb5511621_Logo-3.svg"
   },
-  "favicon": "https://cdn.prod.website-files.com/62824591015aa314fd308df1/630ddef4de535e8a86daafee_pawapay32.png",
+  "favicon": "images/favicon.png",
   "colors": {
     "primary": "#56369f",
     "light": "#07C983",
@@ -18,8 +19,8 @@
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "name": "Support Discord",
+      "url": "https://discord.gg/qng8y8Y7pm"
     }
   ],
   "topbarCtaButton": {
@@ -29,7 +30,13 @@
   "tabs": [
     {
       "name": "API Reference",
-      "url": "api-reference"
+      "version": "v1",
+      "url": "v1/api-reference"
+    },
+    {
+      "name": "API Reference",
+      "version": "v2",
+      "url": "v2/api-reference"
     },
     {
       "name": "Dashboard documentation",
@@ -38,57 +45,144 @@
   ],
   "anchors": [
     {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
       "name": "Blog",
       "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "https://www.pawapay.io/blog"
     }
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Introduction",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
+        "about_mobile_money",
+        "implementation",
+        "using_the_api",
+        "testing_the_api",
+        "production"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Operations",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "deposits",
+        "payouts",
+        "refunds",
+        "payment_page"
       ]
     },
     {
       "group": "API Documentation",
       "pages": [
-        "api-reference/introduction"
+        "v1/api-reference/introduction"
       ]
     },
     {
       "group": "Deposits",
+      "version": "v1",
       "pages": [
-        "api-reference/deposits/mobile-money-deposit-request"
+        "v1/api-reference/deposits/request-deposit",
+        "v1/api-reference/deposits/check-deposit-status",
+        "v1/api-reference/deposits/resend-deposit-callback"
       ]
     },
     {
       "group": "Payouts",
+      "version": "v1",
       "pages": [
-        "api-reference/payouts/mobile-money-payouts-request"
+        "v1/api-reference/payouts/request-payout",
+        "v1/api-reference/payouts/check-payout-status",
+        "v1/api-reference/payouts/resend-payout-callback",
+        "v1/api-reference/payouts/cancel-enqueued-payout",
+        "v1/api-reference/payouts/request-bulk-payout"
+      ]
+    },
+    {
+      "group": "Refunds",
+      "version": "v1",
+      "pages": [
+        "v1/api-reference/refunds/request-refund",
+        "v1/api-reference/refunds/check-refund-status",
+        "v1/api-reference/refunds/resend-refund-callback",
+        "v1/api-reference/refunds/refund-callback"
+      ]
+    },
+    {
+      "group": "Payment page",
+      "version": "v1",
+      "pages": [
+        "v1/api-reference/payment-page/deposit-via-payment-page"
+      ]
+    },
+    {
+      "group": "Wallet balances",
+
+      "pages": [
+        "v1/api-reference/wallet-balances/wallet-balances",
+        "v1/api-reference/wallet-balances/wallet-balances-for-country"
+      ]
+    },
+    {
+      "group": "Toolkit",
+      "version": "v1",
+      "pages": [
+        "v1/api-reference/toolkit/active-configuration",
+        "v1/api-reference/toolkit/mno-availability",
+        "v1/api-reference/toolkit/predict-correspondent",
+        "v1/api-reference/toolkit/public-keys"
+      ]
+    },
+    {
+      "group": "Payouts",
+      "version": "v2",
+      "pages": [
+        "v2/api-reference/payouts/request-payout",
+        "v2/api-reference/payouts/request-bulk-payout",
+        "v2/api-reference/payouts/check-payout-status",
+        "v2/api-reference/payouts/resend-payout-callback",
+        "v2/api-reference/payouts/cancel-enqueued-payout"
+      ]
+    },
+    {
+      "group": "Deposits",
+      "version": "v2",
+      "pages": [
+        "v2/api-reference/deposits/request-deposit",
+        "v2/api-reference/deposits/check-deposit-status",
+        "v2/api-reference/deposits/resend-deposit-callback"
+      ]
+    },
+    {
+      "group": "Refunds",
+      "version": "v2",
+      "pages": [
+        "v2/api-reference/refunds/request-refund",
+        "v2/api-reference/refunds/check-refund-status",
+        "v2/api-reference/refunds/resend-refund-callback"
+      ]
+    },
+    {
+      "group": "Payment Page",
+      "version": "v2",
+      "pages": [
+        "v2/api-reference/payment-page/deposit-via-payment-page"
+      ]
+    },
+    {
+      "group": "Wallet balances",
+      "version": "v2",
+      "pages": [
+        "v2/api-reference/wallet-balances/wallet-balances",
+        "v2/api-reference/wallet-balances/wallet-balances-for-country"
+      ]
+    },
+    {
+      "group": "Toolkit",
+      "version": "v2",
+      "pages": [
+        "v2/api-reference/toolkit/mno-availability",
+        "v2/api-reference/toolkit/active-configuration",
+        "v2/api-reference/toolkit/predict-correspondent",
+        "v2/api-reference/toolkit/public-keys"
       ]
     }
   ],
