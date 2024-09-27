@@ -18,13 +18,13 @@
   },
   "topbarLinks": [
     {
-      "name": "Support Discord",
-      "url": "https://discord.gg/qng8y8Y7pm"
+      "name": "Sandbox login",
+      "url": "https://dashboard.sandbox.pawapay.io"
     }
   ],
   "topbarCtaButton": {
-    "name": "Sandbox",
-    "url": "https://dashboard.sandbox.pawapay.io"
+    "name": "Create account",
+    "url": "https://dashboard.sandbox.pawapay.cloud/#/merchant-signup"
   },
   "tabs": [
     {
