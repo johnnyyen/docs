@@ -6,6 +6,11 @@
     "dark": "https://cdn.prod.website-files.com/62824591015aa314fd308df1/66cf1b87a6a22a3cb5511621_Logo-3.svg",
     "light": "https://cdn.prod.website-files.com/62824591015aa314fd308df1/66cf1b87a6a22a3cb5511621_Logo-3.svg"
   },
+  "api": {
+    "playground": {
+      "mode": "hide"
+    }
+  },
   "favicon": "images/favicon.png",
   "colors": {
     "primary": "#56369f",
@@ -89,7 +94,8 @@
       "pages": [
         "v1/api-reference/deposits/request-deposit",
         "v1/api-reference/deposits/check-deposit-status",
-        "v1/api-reference/deposits/resend-deposit-callback"
+        "v1/api-reference/deposits/resend-deposit-callback",
+        "v1/api-reference/deposits/deposit-callback"
       ]
     },
     {
@@ -100,7 +106,8 @@
         "v1/api-reference/payouts/check-payout-status",
         "v1/api-reference/payouts/resend-payout-callback",
         "v1/api-reference/payouts/cancel-enqueued-payout",
-        "v1/api-reference/payouts/request-bulk-payout"
+        "v1/api-reference/payouts/request-bulk-payout",
+        "v1/api-reference/payouts/payout-callback"
       ]
     },
     {

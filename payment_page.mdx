@@ -13,17 +13,17 @@ The pawaPay Payment Page allows you to rapidly integrate mobile money into your 
 <Steps>
     <Step title="Enter details">
         <Frame>
-            <img class="screenshot" src="https://uploads-ssl.webflow.com/62824591015aa314fd308df1/6531543963b3356da7d34ee6_Screenshot%202023-10-19%20at%2019.07.02.png" alt="Payment page - Start" />
+            <img class="screenshot" src="/images/payment_page_enter_details.png" alt="Payment page - Start" />
         </Frame>
     </Step>
     <Step title="Authorise the payment">
         <Frame>
-            <img class="screenshot" src="https://uploads-ssl.webflow.com/62824591015aa314fd308df1/653153f2fc56773ae63c86a6_Screenshot%202023-10-19%20at%2018.46.22.png" alt="Payment page - Enter PIN" />
+            <img class="screenshot" src="/images/payment_page_auth.png" alt="Payment page - Enter PIN" />
         </Frame>
     </Step>
     <Step title="All done">
         <Frame>
-            <img class="screenshot" src="https://uploads-ssl.webflow.com/62824591015aa314fd308df1/6531534a44a80d5d49e83c3c_Screenshot%202023-10-19%20at%2018.46.34.png" alt="Payment page - Success" />
+            <img class="screenshot" src="/images/payment_page_done.png" alt="Payment page - Success" />
         </Frame>
     </Step>
 </Steps>
@@ -37,7 +37,7 @@ It is also integrated to the rest of the pawaPay merchant API, providing benefit
 * With many more improvements to come...
 
 <Frame>
-    <img class="screenshot" src="https://uploads-ssl.webflow.com/62824591015aa314fd308df1/65315333073091cee0417f51_Screenshot%202023-10-19%20at%2018.48.57.png" alt="Payment page - Features" />
+    <img class="screenshot" src="/images/payment_page_features.png" alt="Payment page - Features" />
 </Frame>
 
 ## Implementation
@@ -55,12 +55,12 @@ Using the payment flow in your deposit or checkout experience is simple:
         The customer will complete the payment on the Payment Page and will be forwarded to `returnUrl`.
     </Step>
     <Step title="Verify the payment status">
-        Your page on `returnUrl` should [verify the status](#operation/getDeposit) of the payment. The `depositId` will be passed as a URL parameter.
+        Your page on `returnUrl` should [check the status](#operation/getDeposit) of the payment. The `depositId` will be passed as a URL parameter.
     </Step>
     <Step title="Handle accordingly">
         Based on the `status` of the payment handle a successful, failed or long running payment.
         <Frame>
-            <img class="screenshot" src="https://uploads-ssl.webflow.com/62824591015aa314fd308df1/653264612cb29c000a8b7dae_Payment-page-implementation.png" alt="Payment page - Implementation flow" />
+            <img class="screenshot" src="/images/payment_page_flow.png" alt="Payment page - Implementation flow" />
         </Frame>
     </Step>
 </Steps>

@@ -1,3 +1,34 @@
 ---
 openapi: post /v1/widget/sessions
+description: ""
 ---
+
+Initiates a payment session using the pawaPay Payment Page. 
+<Card title="Learn more!" icon="readme" href="/payment_page" horizontal="true">
+    See how the Payment Page works for your customers.
+</Card>
+
+* The request will return a `redirectURL`. 
+* The customer should be forwarded to this URL to start the payment process.
+* Once the customer completes the payment process on the Payment Page, they will be fowarded to the `returnUrl`. 
+* The original `depositId` will be passed as a query parameter.
+
+Your page on the `returnUrl` has two options to determine the status of the payment. You can do that by either: 
+
+<CardGroup cols={2}>
+    <Card title="Waiting for a callback" icon="webhook" href="../deposits/deposit-callback" horizontal="true">
+        If you have configured callbacks, just wait for it.
+    </Card>
+    <Card title="Checking the status" icon="code-compare" href="../deposits/check-deposit-status" horizontal="true">
+        Or poll the Check Deposit Status endpoint.
+    </Card>
+</CardGroup>
+
+The customer experience of the Payment Page can be changed through the following parameters during initiation.
+
+| Parameter | Behaviour if specified | Behaviour if not specified |
+|-----------|------------------------|----------------------------|
+| `amount`  | The specified amount will be used for the collection. Customer is not able to change it. | The customer is able to enter the amount they wish to pay. For example, when depositing into their eWallet.
+| `msisdn`  | The collection will be initiated from the specified mobile money wallet. Customer is not able to change it. | The customer can specify the phone number of the mobile money wallet they wish to pay from..
+| `country` | The customer can pay only using a mobile money wallet from the specified country. | The customer can pay with a mobile money wallet from any country that is configured on your pawaPay account. 
+| `reason`  | The reason will be shown to the customer on the Payment Page | The customer will not be shown what they are paying for.

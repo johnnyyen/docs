@@ -1,3 +1,35 @@
 ---
 openapi: post /deposits
+description: ""
 ---
+Deposits operation allows you to initiate a collection for asynchronous processing.
+<Card title="Learn more!" icon="readme" href="/deposits" horizontal="true">
+    See what the deposit flow looks like with pawaPay and for your customers.
+</Card>
+
+* This API call is <em>idempotent</em>, which means it is safe to submit a request with the same `depositId` multiple times. 
+* Duplicate requests with the same `depositId` will be ignored with the `DUPLICATE_IGNORED` status in the response.
+* Since the request can rejected, you must check `status` code in the response for each submitted request. The `rejectionReason` in the response will contain information about the reason of the rejection.
+
+Each request can become either ACCEPTED, REJECTED or DUPLICATE_IGNORED:
+
+Status | <Tooltip tip="Will a callback be delivered after receiving this status on initiation?">Callback</Tooltip> | Description
+-------|----------|------------
+`ACCEPTED` | Yes | The deposit request has been **accepted** by pawaPay for processing.
+`REJECTED` | No | The deposit request has been **rejected**. See `rejectionReason` for details.
+`DUPLICATE_IGNORED` | No | The deposit request has been ignored as a duplicate of an already accepted deposit request. Duplication logic relies upon `depositId`.
+
+
+### How do i find out the final status of this deposit?
+As the pawaPay Merchant API is an [asynchronous API](/implementation#asynchronous-api), you can find out the final status of the `ACCEPTED` deposit by either:
+
+<CardGroup cols={2}>
+    <Card title="Waiting for a callback" icon="webhook" href="deposit-callback" horizontal="true">
+        If you have configured callbacks, just wait for it.
+    </Card>
+    <Card title="Checking the status" icon="code-compare" href="check-deposit-status" horizontal="true">
+        Or poll the Check Deposit Status endpoint.
+    </Card>
+</CardGroup>
+
+<Info>Headers related to [signatures](/using_the_api#signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation]()TODO.</Info>

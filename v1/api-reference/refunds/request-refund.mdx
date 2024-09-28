@@ -1,3 +1,36 @@
 ---
 openapi: post /refunds
+description: ""
 ---
+
+Refunds operation allows you to initiate a refund for asynchronous processing.
+<Card title="Learn more!" icon="readme" href="/refunds" horizontal="true">
+    See what the refund flow looks like with pawaPay.
+</Card>
+
+* This API call is <em>idempotent</em>, which means it is safe to submit a request with the same `refundId` multiple times. 
+* Duplicate requests with the same `refundId` will be ignored with the `DUPLICATE_IGNORED` status in the response.
+* Since the request can be rejected, you must check the `status` code in the response for each submitted request. The `rejectionReason` in the response will contain information about the reason of the rejection.
+
+Each request can become either ACCEPTED, REJECTED or DUPLICATE_IGNORED:
+
+Status | <Tooltip tip="Will a callback be delivered after receiving this status on initiation?">Callback</Tooltip> | Description
+-------|----------|------------
+`ACCEPTED` | Yes | The refund request has been **accepted** by pawaPay for processing.
+`REJECTED` | No | The refund request has been **rejected**. See `rejectionReason` for details.
+`DUPLICATE_IGNORED` | No | The refund request has been ignored as a duplicate of an already accepted refund request. Duplication logic relies upon `refundId`.
+
+### How do i find out the final status of this refund?
+
+As the pawaPay Merchant API is an [asynchronous API](/implementation#asynchronous-api), you can find out the final status of the `ACCEPTED` refund by either:
+
+<CardGroup cols={2}>
+    <Card title="Waiting for a callback" icon="webhook" href="refund-callback" horizontal="true">
+        If you have configured callbacks, just wait for it.
+    </Card>
+    <Card title="Checking the status" icon="code-compare" href="check-refund-status" horizontal="true">
+        Or poll the Check Refund Status endpoint.
+    </Card>
+</CardGroup>
+
+<Info>Headers related to [signatures](/using_the_api#signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation]()TODO.</Info>

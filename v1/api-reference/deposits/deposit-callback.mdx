@@ -1,13 +1,13 @@
 ---
-title: Refund callback
+title: Deposit callback
 icon: webhook
-openapi-schema: RefundCallback
+openapi-schema: DepositCallback
 ---
 
-If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each refund when it reaches a final status. 
+If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each deposit when it reaches a final status. 
 Read more about [handling callbacks](/implementation#handling-callbacks) and [callback URLs](/using_the_api#callback-urls).
 
-If you have not configured callbacks, you can always call our [Check Refund Status](check-refund-status) endpoint to get the latest status and details of a specific refund request. 
+If you have not configured callbacks, you can always call our [Check Deposit Status](check-deposit-status) endpoint to get the latest status and details of a specific deposit request. 
 
 ### Headers
 

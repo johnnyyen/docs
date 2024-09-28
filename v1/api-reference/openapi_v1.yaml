@@ -29,53 +29,12 @@ tags:
     x-displayName: Toolkit
   - name: wallet-balances
     x-displayName: Wallet balances
-  - name: payout_model
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/Payout" />
-    x-displayName: Payout Model
-  - name: deposit_model
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/Deposit" />
-    x-displayName: Deposit Model
-  - name: refund_model
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/Refund" />
-    x-displayName: Refund Model
-  - name: paymentpage_model
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/Session" />
-    x-displayName: Payment Page Model
 paths:
   /payouts:
     post:
       tags:
         - payouts
       summary: Request payout
-      description: |
-        ***Please follow the guidelines in the [Implementation](#section/Implementation) section of our API docs to ensure a reliable implementation.***
-        
-        Payouts operation allows you to initiate a disbursement for asynchronous processing. Read more about [Payouts](#section/Payout-(Disbursement)).
-
-        * This API call is <em>idempotent</em>, which means it is safe to submit a request with the same <code>payoutId</code> multiple times. 
-        * Duplicate requests with the same <code>payoutId</code> will be ignored with the `DUPLICATE_IGNORED` status in the <code>PayoutCreationResponse</code>.
-        * Since the request can be rejected, you must check the <code>status</code> code in the <code>PayoutCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>PayoutCreationResponse</code> will contain information about the reason of the rejection.
-
-        Each request can become either ACCEPTED, ENQUEUED, REJECTED or DUPLICATE_IGNORED:
-
-        Status | Callback | Description
-        -------|----------|------------
-        `ACCEPTED` | Yes | The payout request has been **accepted** by pawaPay for processing.
-        `ENQUEUED` | Yes | The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](#section/Payout-(Disbursement)/Enqueued-payouts).
-        `REJECTED` | No | The payout request has been **rejected**. See <code>rejectionReason</code> for details. 
-        `DUPLICATE_IGNORED` | No | The payout request has been **ignored** as a duplicate of an already accepted payout request. Duplication logic relies upon payoutId.
-
-        __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
-
-        ### What next?
-        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** payout by either:
-        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [payoutCallback](#operation/payoutWebhook) from pawaPay with the **final status**.
-        2. Periodically polling the [Get Payout Status and Details](#operation/getPayout) endpoint for a **final status**.
-        
       operationId: createPayout
       parameters:
         - in: header
@@ -206,33 +165,6 @@ paths:
       tags:
         - payouts
       summary: Request bulk payout
-      description: |
-        ***Please follow the guidelines in the [Implementation](#section/Implementation) section of our API docs to ensure a reliable implementation.***
-      
-        Bulk payouts operation allows you to initiate multiple disbursements for asynchronous processing.
-        Read more about [Payouts](#section/Payout-(Disbursement)).
-
-        * Bulk requests with more than 20 payout transactions can be rejected by pawaPay. 
-        * This API call is <em>idempotent</em>, which means it is safe to submit a request with the same <code>payoutId</code> multiple times. 
-        * Duplicate requests with the same <code>payoutId</code> will be ignored with the `DUPLICATE_IGNORED` status in the <code>PayoutCreationResponse</code>.
-        * Since the request can be partially or fully rejected, you must check the <code>status</code> code in the <code>PayoutCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>PayoutCreationResponse</code> will contain information about the reason of the rejection.
-        * Callback will be delivered separately for each payout in the bulk request as the payouts are resolved to their final status.
-
-        Each disbursement in a bulk request can become either ACCEPTED, ENQUEUED, REJECTED or DUPLICATE_IGNORED:
-
-        Status | Callback | Description
-        -------|----------|------------
-        `ACCEPTED` | Yes | The payout request has been **accepted** by pawaPay for processing.
-        `ENQUEUED` | Yes | The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](#section/Payout-(Disbursement)/Enqueued-payouts).
-        `REJECTED` | No | The payout request has been **rejected**. See `rejectionReason` for details.
-        `DUPLICATE_IGNORED` | No | The payout request has been **ignored** as a duplicate of an already accepted payout request. Duplication logic relies upon payoutId.
-
-        __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
-        
-        ### What next?
-        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** payout by either:
-        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [payoutCallback](#operation/payoutWebhook) from pawaPay with the **final status**.
-        2. Periodically polling the [Get Payout Status and Details](#operation/getPayout) endpoint for a **final status**.
       operationId: createPayouts
       requestBody:
         $ref: '#/components/requestBodies/BulkPayoutCreationRequest'
@@ -348,10 +280,6 @@ paths:
       tags:
         - payouts
       summary: Check payout status
-      description: |
-        Get payout status and details by the `payoutId` from your initial payout request. A list with at most one <code>Payout</code> is returned. 
-
-        This operation can be used to verify the status of a payout.
       operationId: getPayout
       parameters:
         - name: payoutId
@@ -524,10 +452,6 @@ paths:
       tags:
         - payouts
       summary: Resend payout callback
-      description: |
-        Resends the callback for a payout to your configured callback URL. The payout must have reached a final state. The callback delivery has to have failed already.
-        
-        Please ensure your implementation of callback handling follows the guidelines in [Handling callbacks](#section/Implementation/Handling-callbacks).
       operationId: payoutsResendCallback
       requestBody:
         $ref: '#/components/requestBodies/PayoutIdRequest'
@@ -605,11 +529,6 @@ paths:
       tags:
         - payouts
       summary: Cancel enqueued payout
-      description: |
-        Cancels a payout that is currently in the ENQUEUED status. 
-        The payment will be moved to FAILED status. 
-        The payment will have the failure code `MANUALLY_CANCELLED`.
-        If you have configured callbacks, a callback will be sent. 
       operationId: payoutsFailEnqueued
       parameters:
         - name: payoutId
@@ -685,30 +604,6 @@ paths:
       tags:
         - deposits
       summary: Request deposit
-      description: |
-        <Info>Please follow the guidelines in the [Implementation](#section/Implementation) section of our API docs to ensure a reliable implementation.</Info>
-      
-        Deposits operation allows you to initiate a collection for asynchronous processing.
-        Read more about [Deposits](#section/Deposit-(Collection)).
-
-        * This API call is <em>idempotent</em>, which means it is safe to submit a request with the same `depositId` multiple times. 
-        * Duplicate requests with the same `depositId` will be ignored with the `DUPLICATE_IGNORED` status in the <code>DepositCreationResponse</code>.
-        * Since the request can rejected, you must check <code>status</code> code in the <code>DepositCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>DepositCreationResponse</code> will contain information about the reason of the rejection.
-
-        Each request can become either ACCEPTED, REJECTED or DUPLICATE_IGNORED:
-
-        Status | Callback | Description
-        -------|----------|------------
-        `ACCEPTED` | Yes | The deposit request has been **accepted** by pawaPay for processing.
-        `REJECTED` | No | The deposit request has been **rejected**. See <code>rejectionReason</code> for details.
-        `DUPLICATE_IGNORED` | No | The deposit request has been ignored as a duplicate of an already accepted deposit request. Duplication logic relies upon <code>depositId</code>.
-
-        __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
-
-        ### What next?
-        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** deposit by either:
-        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [depositCallback](#operation/depositWebhook) from pawaPay with the **final status**.
-        2. Periodically polling the [Get Deposit Status and Details](#operation/getDeposit) endpoint for a **final status**.
       operationId: createDeposit
       requestBody:
         $ref: '#/components/requestBodies/DepositCreationRequest'
@@ -826,10 +721,6 @@ paths:
       tags:
         - deposits
       summary: Check deposit status
-      description: |
-        Get deposit transaction status and details by `depositId` from your initial deposit request. A list with at most one `Deposit` is returned.
-
-        This operation can be used to verify the status of a deposit.
       operationId: getDeposit
       parameters:
         - name: depositId
@@ -1010,10 +901,6 @@ paths:
       tags:
         - deposits
       summary: Resend deposit callback
-      description: |
-        Resends the callback for a deposit to your configured callback URL. The deposit must have reached a final state. The callback delivery has to have failed already.
-        
-        Please ensure your implementation of callback handling follows our guidelines in [Handling callbacks](#section/Implementation/Handling-callbacks).
       operationId: depositsResendCallback
       requestBody:
         $ref: '#/components/requestBodies/DepositIdRequest'
@@ -1091,33 +978,6 @@ paths:
       tags:
         - payment-page
       summary: Deposit via Payment Page
-      description: |
-        Initiates a payment session using the pawaPay Payment Page. 
-        Read more about the [Payment Page](#section/Deposit-(Collection)/Payment-Page).
-        
-        The request will return a `redirectURL`. 
-        The customer should be forwarded to this URL to start the payment process.
-        Once the customer completes the payment process on the Payment Page, they will be fowarded to the `returnUrl`. 
-        The original `depositId` will be passed as a query parameter.
-        
-        Your page on the `returnUrl` has two options to determine the status of the payment. 
-        You can use the [Get Deposit Status and Details](#operation/getDeposit) to retrive the deposit associated with this session. Read more about [possible statuses of a payment](#section/Deposit-(Collection)).
-        If you have configured [callback URLs](#section/Using-the-API/Callback-URLs) you will receive a [callback](#operation/depositWebhook) to your configured callback URL when the payment reached its final status.
-        
-        The customer experience of the Payment Page can be changed through the following parameters during initiation.
-        
-        | Parameter | Behaviour if specified | Behaviour if not specified |
-        |-----------|------------------------|----------------------------|
-        | `amount`  | The specified amount will be used for the collection. Customer is not able to change it. | The customer is able to enter the amount they wish to pay. For example, when depositing into their eWallet.
-        | `msisdn`  | The collection will be initiated from the specified mobile money wallet. Customer is not able to change it. | The customer can specify the phone number of the mobile money wallet they wish to pay from..
-        | `country` | The customer can pay only using a mobile money wallet from the specified country. | The customer can pay with a mobile money wallet from any country that is configured on your pawaPay account. You can use the [active configuration](#operation/active-conf) endpoint to verify which countries and MNOs have been configured for your account..
-        | `reason`  | The reason will be shown to the customer on the Payment Page | The customer will not be shown what they are paying for.
-
-        ### What next?
-        When the customer initiates a deposit from the payment page, the deposit will be avaialble in the system and can be handled the same way as deposits initiated with the Merchant API.        
-        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** deposit by either:
-        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [depositCallback](#operation/depositWebhook) from pawaPay with the **final status**.
-        2. Periodically polling the [Get Deposit Status and Details](#operation/getDeposit) endpoint for a **final status**.
       operationId: create-session
       requestBody:
         content:
@@ -1184,30 +1044,6 @@ paths:
       tags:
         - refunds
       summary: Request refund
-      description: |
-        ***Please follow the guidelines in the [Implementation](#section/Implementation) section of our API docs to ensure a reliable implementation.***
-      
-        Refunds operation allows you to initiate a refund for asynchronous processing.
-        Read more about [Refunds](#section/Refunds).
-
-        * This API call is <em>idempotent</em>, which means it is safe to submit a request with the same <code>refundId</code> multiple times. 
-        * Duplicate requests with the same <code>refundId</code> will be ignored with the `DUPLICATE_IGNORED` status in the <code>RefundCreationResponse</code>.
-        * Since the request can be rejected, you must check the <code>status</code> code in the <code>RefundCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>RefundCreationResponse</code> will contain information about the reason of the rejection.
-
-        Each request can become either ACCEPTED, REJECTED or DUPLICATE_IGNORED:
-
-        Status | Callback | Description
-        -------|----------|------------
-        `ACCEPTED` | Yes | The refund request has been **accepted** by pawaPay for processing.
-        `REJECTED` | No | The refund request has been **rejected**. See <code>rejectionReason</code> for details.
-        `DUPLICATE_IGNORED` | No | The refund request has been ignored as a duplicate of an already accepted refund request. Duplication logic relies upon `refundId`.
-
-        __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
-        
-        ### What next?
-        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** refund by either:
-        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [refundCallback](#operation/refundWebhook) from pawaPay with the **final status**.
-        2. Periodically polling the [Get Refund Status and Details](#operation/getRefund) endpoint for a **final status**.
       operationId: createRefund
       requestBody:
         $ref: '#/components/requestBodies/RefundCreationRequest'
@@ -1313,10 +1149,6 @@ paths:
       tags:
         - refunds
       summary: Check refund status
-      description: |
-        Get refund transaction status and details by the `refundId` from your initial refund request. A list with at most one <code>Refund</code> is returned. 
-
-        This operation can be used to verify the status of a refund. 
       operationId: getRefund
       parameters:
         - name: refundId
@@ -1459,10 +1291,6 @@ paths:
       tags:
         - refunds
       summary: Resend refund callback
-      description: |
-        Resends the callback for a refund to your configured callback URL. The refund must have reached a final state. The callback delivery has to have failed already.
-        
-        Please ensure your implementation of callback handling follows our guidelines in [Handling callbacks](#section/Implementation/Handling-callbacks).
       operationId: refundsResendCallback
       requestBody:
         $ref: '#/components/requestBodies/RefundIdRequest'
@@ -1540,22 +1368,6 @@ paths:
       tags:
         - toolkit
       summary: MNO Availability
-      description: |
-        Mobile Network Operators (MNOs) sometimes have instability in processing payments. Read more from [MNO Stability](#section/Implementation/MNO-stability).
-        
-        Our 24/7 payment operations team constantly monitors all the MNOs available on our platform for any degraded performance or downtime.
-        From this endpoint you can get the current processing status of each MNO.
-        This endpoint returns all MNOs (correspondents) grouped by country. 
-        Each operation type has a separate status. 
-    
-        Following statuses are possible for different operations:
-
-        Status | Description
-        -------------------------------|------------
-        `OPERATIONAL` | The MNO (correspondent) is operational and open for processing requests.
-        `DELAYED` | The MNO (correspondent) is having problems processing payouts. Our payment operations team is currently monitoring the MNO. Payouts are being enqueued and will be processed once the problems have been resolved. 
-        `CLOSED` | The MNO (correspondent) is having problems and all requests are being rejected by pawaPay.
-        
       operationId: availability
       parameters: [ ]
       responses:
@@ -1620,8 +1432,6 @@ paths:
       tags:
         - wallet-balances
       summary: Wallet balances
-      description: |
-        Allows you to get the list of wallets and their balances configured for your account. 
       operationId: wallet-balances
       responses:
         '200':
@@ -1683,10 +1493,6 @@ paths:
       tags:
         - wallet-balances
       summary: Wallet balances for country
-      description: |
-        Allows you to get the wallet balances for a specific country configured for your account.
-        
-        You can filter the results by the country of the wallet.
       operationId: wallet-balances-for-country
       parameters:
         - name: country
@@ -1768,14 +1574,6 @@ paths:
       tags:
         - toolkit
       summary: Active Configuration
-      description: |
-        Allows you to query the MNOs that have been configured for your account. 
-        You can also get supporting information about your configuration:
-        * Your company name on your pawaPay account.
-        * The currency for the MNO.
-        * Minimum and maximum amount for deposits, payouts and refunds.
-        * The name of the company that is shown to the customer on the SMS receipt.
-        
       operationId: active_conf
       parameters: [ ]
       responses:
@@ -1865,13 +1663,6 @@ paths:
         - toolkit
       operationId: predict-correspondent
       summary: Predict Correspondent
-      description: |
-        Predicts the correspondent (Mobile Network Operator) for the specified phone number (MSISDN). 
-
-        Average misprediction rate when using this endpoint is 0.12%. 
-
-        __Please note! Benin has a relatively high level of number portability and therefore has an average misprediction rate of 6%.__
-        
       requestBody:
         content:
           application/json:
@@ -1941,8 +1732,6 @@ paths:
       tags:
         - toolkit
       summary: Public Keys
-      description: |
-        Provides the public keys that are used to sign callbacks sent by pawaPay. Read more about how to use [signatures](#section/Using-the-API/Signatures).
       operationId: public_key_http
       responses:
         '200':

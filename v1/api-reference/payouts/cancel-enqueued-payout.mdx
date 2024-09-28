@@ -1,3 +1,9 @@
 ---
 openapi: post /payouts/fail-enqueued/{payoutId}
+description: ""
 ---
+
+Cancels a payout that is currently in the `ENQUEUED` status. 
+* The payment will be moved to `FAILED` status. 
+* The payment will have the failure code `MANUALLY_CANCELLED`.
+* If you have configured callbacks, a callback will be sent. 

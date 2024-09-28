@@ -1,3 +1,8 @@
 ---
 openapi: post /payouts/resend-callback
+description: ""
 ---
+
+Resends the callback for a payout to your configured callback URL. The payout must have reached a final state. The callback delivery has to have failed already.
+
+<Info>Please ensure your implementation of callback handling follows the guidelines in [Handling callbacks](/implementation#handling-callbacks).</Info>
