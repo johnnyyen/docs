@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: pawaPay Merchant API
   description: pawaPay Merchant API
-  version: v1
+  version: v2
   x-logo:
     url: https://global-uploads.webflow.com/62824591015aa314fd308df1/6411b26596e3de3f52551c00_Logopawapay-p-500.png
     href: https://pawapay.io
@@ -1523,7 +1523,7 @@ paths:
     get:
       tags:
         - toolkit
-      summary: MNO Availability
+      summary: Provider Availability
       description: |
         Mobile Network Operators (MNOs) sometimes have instability in processing payments. Read more from [MNO Stability](#section/Implementation/MNO-stability).
         

@@ -1,0 +1,43 @@
+---
+title: Platform and MNO status
+---
+
+Any relevant information about incidents and maintenance that affect your merchant account will be displayed on the top right corner of the pawaPay dashboard.
+<Frame>
+    <img src="images/dashboard/incident_widget.png" />
+</Frame>
+
+Pressing on the icon will expand your view and give more details on the ongoing incidents and upcoming maintenances.
+
+<Frame>
+    <img src="images/dashboard/incidents_expanded.png" />
+</Frame>
+
+Pressing on "Read more" will direct you to the incident page with more information about it.
+
+The "Status Page" button will direct you to the our [status page](https://status.pawapay.cloud/).
+
+<Info>
+    On the [status page](https://status.pawapay.cloud/) you can subscribe to receive updates about incidents through different channels like e-mail, Slack and more.
+</Info>
+
+## Availability statuses of MNOs
+
+| Status | Description |
+|--------|-------------|
+| Operational | Service is operating as expected. |
+| Degraded performance | Degraded performance for some transactions. |
+| Partial outage | Degraded performance with intermittent unavailability. |
+| Major outage | Service is unavailable and no transactions are accepted for processing. |
+| Under maintenance | There is an active maintenance window. Degraded performance or intermittent unavailability might occur. |
+
+<Info>
+    Our support and payment operation teams work 24/7 and are aware of, and acting on, any statuses shown on our status page. We provide regular updates on the progress of resolving all issues that arise. 
+</Info>
+
+## More about MNO availability
+
+To provide the best experience for your customers, we suggest implementing our Correspondend Availability Status endpoints. 
+This allows you to inform your customers proactively about MNO downtime. 
+
+Read more from our [API docs](/v1/api-reference/toolkit/availability).

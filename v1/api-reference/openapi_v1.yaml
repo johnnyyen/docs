@@ -1367,7 +1367,7 @@ paths:
     get:
       tags:
         - toolkit
-      summary: MNO Availability
+      summary: Correspondent Availability
       operationId: availability
       parameters: [ ]
       responses:

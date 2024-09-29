@@ -1,10 +1,11 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Merchant API",
+  "name": "pawaPay Merchant API",
   "versions": ["v2", "v1"],
   "logo": {
-    "dark": "https://cdn.prod.website-files.com/62824591015aa314fd308df1/66cf1b87a6a22a3cb5511621_Logo-3.svg",
-    "light": "https://cdn.prod.website-files.com/62824591015aa314fd308df1/66cf1b87a6a22a3cb5511621_Logo-3.svg"
+    "dark": "/images/pawapay_logo_dark.png",
+    "light": "/images/pawapay_logo_light.png",
+    "href": "https://pawapay.io"
   },
   "api": {
     "playground": {
@@ -12,10 +13,23 @@
     }
   },
   "favicon": "images/favicon.png",
+  "background": {
+    "style": "gradient"
+  },
+  "font": {
+    "headings": {
+      "family": "Poppins",
+      "weight": 600
+    },
+    "body": {
+      "family": "Poppins",
+      "weight": 400
+    }
+  },
   "colors": {
     "primary": "#56369f",
     "light": "#00dcb4",
-    "dark": "#0D9373",
+    "dark": "#545454",
     "anchors": {
       "from": "#0D9373",
       "to": "#07C983"
@@ -46,8 +60,8 @@
       "url": "v2/api-reference"
     },
     {
-      "name": "Dashboard documentation",
-      "url": "https://pawapay.document360.io/docs"
+      "name": "pawaPay dashboard",
+      "url": "dashboard"
     }
   ],
   "anchors": [
@@ -80,7 +94,7 @@
       ]
     },
     {
-      "group": "Operations",
+      "group": "Learn about",
       "pages": [
         "deposits",
         "payouts",
@@ -140,7 +154,7 @@
       "version": "v1",
       "pages": [
         "v1/api-reference/toolkit/active-configuration",
-        "v1/api-reference/toolkit/mno-availability",
+        "v1/api-reference/toolkit/availability",
         "v1/api-reference/toolkit/predict-correspondent",
         "v1/api-reference/toolkit/public-keys"
       ]
@@ -193,16 +207,28 @@
       "group": "Toolkit",
       "version": "v2",
       "pages": [
-        "v2/api-reference/toolkit/mno-availability",
+        "v2/api-reference/toolkit/availability",
         "v2/api-reference/toolkit/active-configuration",
         "v2/api-reference/toolkit/predict-correspondent",
         "v2/api-reference/toolkit/public-keys"
       ]
+    },
+    {
+      "group": "Overview",
+      "pages": [
+        "dashboard/introduction",
+        "dashboard/signing_in",
+        "dashboard/global_search",
+        "dashboard/support",
+        "dashboard/topping_up",
+        "dashboard/requesting_settlement",
+        "dashboard/status"
+      ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "website": "https://pawapay.io",
+    "discord": "https://discord.gg/qng8y8Y7pm",
+    "linkedin": "https://www.linkedin.com/company/pawapay"
   }
 }
