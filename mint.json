@@ -45,6 +45,10 @@
   },
   "tabs": [
     {
+      "name": "API docs",
+      "url": "/"
+    },
+    {
       "name": "API Reference",
       "version": "v1",
       "url": "v1/api-reference"
@@ -55,7 +59,7 @@
       "url": "v2/api-reference"
     },
     {
-      "name": "pawaPay dashboard",
+      "name": "Dashboard docs",
       "url": "dashboard"
     }
   ],
