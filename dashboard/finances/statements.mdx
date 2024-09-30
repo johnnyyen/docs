@@ -10,7 +10,7 @@ To see every single transaction on your wallet, please start by choosing:
 - The time period
 - A wallet
 
-![Wallet Search](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1668415873845.png)
+![Wallet Search](/images/dashboard/finances/wallet_search.png)
 
 Pressing "Show" will display a table with the transactions on this wallet for the selected period. You can also limit the results to specific Mobile Network Operators (MNOs) or transaction types.
 
@@ -24,12 +24,12 @@ By default, results are shown starting from the most recent transaction. You can
 
 After having selected the wallet and time period you are interested in, you can press the "Export statement" button to generate a CSV file with the results.
 
-You will be asked to confirm this action and then taken to the [History](https://docs.pawapay.co.uk/#operation/createDesposit) page to download the resulting CSV file.
+You will be asked to confirm this action and then taken to the [History]() page to download the resulting CSV file.
 
 > **Please note!**  
 > - You can choose up to a **one month period** at a time.
 > - All transactions for the period will be exported (no 10,000 transaction limit).
-> - The export might take some time to generate. The [History](https://docs.pawapay.co.uk/#operation/createDesposit) page will refresh itself automatically to show the latest status.
+> - The export might take some time to generate. The [History](/dashboard/finances/history) page will refresh itself automatically to show the latest status.
 
 ## Data in statements
 
@@ -39,12 +39,12 @@ After either exporting or viewing the statement data in our portal, the followin
 |------------------|------------------------------------------------------------------------------------------------------|
 | Creation Date    | The date and time at which this transaction was recorded on our platform. Time is in the UTC time zone. |
 | MSISDN           | The phone number of the mobile money wallet that was involved in the transaction.                     |
-| Transaction ID   | The ID of this transaction as specified by you through our API. You can read more about transaction IDs from [our API docs](https://docs.pawapay.co.uk/#operation/createDesposit). |
+| Transaction ID   | The ID of this transaction as specified by you through our API. You can read more about transaction IDs from [our API docs](/v1/api-reference/deposits/request-deposit). |
 | Amount           | The amount of the transaction.                                                                        |
 | Currency         | The currency in which the transaction took place.                                                     |
 | Country          | The country in which this transaction took place.                                                     |
 | MNO              | The Mobile Network Operator (MNO) that fulfilled this transaction.                                    |
-| Type             | The type of this transaction. See the list of all [transaction types](https://docs.pawapay.co.uk/#operation/createDesposit) below. |
+| Type             | The type of this transaction. See the list of all [transaction types](/dashboard/finances/statements#transaction-types) below. |
 | Balance          | Your balance after this transaction.                                                                  |
 | Reason           | The reason for this transaction. For example "Initial top-up" for your first top-up of this wallet.   |
 | Metadata         | Metadata that you can attach to the payment for providing additional context about the payment. Stored in JSON. |
@@ -69,8 +69,8 @@ You may encounter the following transaction types in your statements:
 | pawaPay deposit fee           | A fee charged by pawaPay for a deposit.                                                              |
 | pawaPay payout fee            | A fee charged by pawaPay for a payout.                                                               |
 | pawaPay refund fee            | A fee charged by pawaPay for a refund.                                                               |
-| Top up                         | Funds sent by you have been added to your wallet. Read more about [Topping up your wallets](https://docs.pawapay.co.uk/#operation/createDesposit). |
-| Withdrawal                    | Funds withdrawn from your wallet to be settled to your bank. Read more about [Settling your wallets](https://docs.pawapay.co.uk/#operation/createDesposit). |
+| Top up                         | Funds sent by you have been added to your wallet. Read more about [Topping up your wallets](/dashboard/topping_up). |
+| Withdrawal                    | Funds withdrawn from your wallet to be settled to your bank. Read more about [requesting a settlement](/dashboard/requesting_settlement). |
 
 > **Please note!**  
 > For all Adjustments and Compensations, we provide additional information in the Details column.

@@ -25,7 +25,7 @@ title: Using the API
 
     The pawaPay Merchant API uses bearer token for authentication. An authorization header is required for all calls to the pawaPay Merchant APIs except for [MNO Availability](#operation/availability). 
 
-    The token can be generated from the pawaPay Dashboard. Instructions on how to do that can be found in the **[pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token)**.
+    The token can be generated from the pawaPay Dashboard. Instructions on how to do that can be found in the **[pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens)**.
     
     __The token generated from your sandbox account can only be used for authenticating against the Merchant API in sandbox. 
     For authenticating against the Merchant API in production, a separate token must be generated with your live account.__
@@ -70,7 +70,7 @@ The pawaPay API is secured by the API token as explained in [Authentication](#se
 To add a second layer of security, you can optionally sign your financial requests to us - deposit, payout and refund requests. 
 In this case, pawaPay will only accept financial requests that have been signed by you. 
 To utilize this additional capability, you should provide your public key in the pawaPay Dashboard and enable this feature. 
-Read how to do that from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).
+Read how to do that from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens).
 This ensures that even if your API token leaks, only you can initiate financial requests with pawaPay.
 
 If configured, pawaPay will also send callbacks to your [callback URLs](#section/Using-the-API/Callback-URLs) with the final status of your payment.  
@@ -225,7 +225,7 @@ Signature-Input: sig-pp=("@status" "signature-date" "content-digest");alg="ecdsa
 {"depositId":"d6df5c10-bd43-408c-b622-f10f9eaa568b","status":"ACCEPTED","created":"2024-05-02T12:36:46Z"}
 ```
 
-__Do not forget to enable signed financial calls and upload your public key in the pawaPay Dashboard. Learn how to do that from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+__Do not forget to enable signed financial calls and upload your public key in the pawaPay Dashboard. Learn how to do that from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens#signed-requests).__
 
 #### Make the request
 
@@ -304,7 +304,7 @@ Using the retrieved public key, the generated signature base and the signature, 
 
     The pawaPay Merchant API is asyncrhonous. You can read more from [Asynchronous API](#section/Implementation/Asynchronous-API).
     
-    Callback URLs are configured from the pawaPay Dashboard. You can find instructions on how to do that from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/callback-urls).
+    Callback URLs are configured from the pawaPay Dashboard. You can find instructions on how to do that from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/callback_urls).
 
     When using callbacks, please ensure the following IP addresses are whitelisted to ensure we can reliably deliver callbacks to you.
 

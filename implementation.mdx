@@ -65,7 +65,7 @@ You will have to implement a callback handler that is able to receive calls from
 
 Second, you can use the corresponding `Get Status and Details` endpoint for the transaction type to periodically __check the status of a payment__.
 
-<img class="screenshot" src="https://uploads-ssl.webflow.com/62824591015aa314fd308df1/658c43eb33a9c46d1453dbd6_API%20docs%20visuals%20-%20Deposit%20with%20pawaPay%20Merchant%20API.jpg" alt="Deposit with pawaPay Merchant API" />
+<img class="screenshot" src="/images/deposit_flow.jpg" alt="Deposit with pawaPay Merchant API" />
 
 ## Handling callbacks
 
@@ -81,7 +81,7 @@ When implementing your callback handler, please consider the following points.
 * We will attempt to deliver callbacks for __15 minutes__.
 * If the callback delivery fails, you can always trigger a resend of the callback. This can be done by:
     * Calling the respective `Resend callback` endpoint 
-    * Manually from the [pawaPay Dashboard](https://pawapay.document360.io/docs/callback-resend).
+    * Manually from the [pawaPay Dashboard](/dashboard/transactions/callback_resend).
 
 ## Safe handling
 

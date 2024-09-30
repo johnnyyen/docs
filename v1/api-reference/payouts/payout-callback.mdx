@@ -7,11 +7,11 @@ openapi-schema:  PayoutCallback
 If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each payout when it reaches a final status. 
 Read more about [handling callbacks](/implementation#handling-callbacks) and [callback URLs](/using_the_api#callback-urls).
 
-If you have not configured callbacks, you can always call our [Check Payout Status](check-payout-status) endpoint to get the latest status and details of a specific payout request. 
+If you have not configured callbacks, you can always call our [Check Payout Status](/v1/api-reference/payouts/check-payout-status) endpoint to get the latest status and details of a specific payout request. 
 
 ### Headers
 
-<Info> Following headers are only included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the pawaPay Dashboard documentation TODO.</Info>
+<Info> Following headers are only included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens#signed-callbacks).</Info>
 
 <ParamField header="Content-Digest" type="string">
     SHA256 or SHA-512 hash of the request body.

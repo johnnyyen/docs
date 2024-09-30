@@ -17,7 +17,7 @@ Each request can become either ACCEPTED, ENQUEUED, REJECTED or DUPLICATE_IGNORED
 Status | <Tooltip tip="Will a callback be delivered after receiving this status on initiation?">Callback</Tooltip> | Description
 -------|----------|------------
 `ACCEPTED` | Yes | The payout request has been **accepted** by pawaPay for processing.
-`ENQUEUED` | Yes | The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](/payouts/enqueued-payouts).
+`ENQUEUED` | Yes | The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](/payouts#enqueued-payouts).
 `REJECTED` | No | The payout request has been **rejected**. See `rejectionReason` for details. 
 `DUPLICATE_IGNORED` | No | The payout request has been **ignored** as a duplicate of an already accepted payout request. Duplication logic relies upon `payoutId`.
 
@@ -26,12 +26,12 @@ Status | <Tooltip tip="Will a callback be delivered after receiving this status 
 As the pawaPay Merchant API is an [asynchronous API](/implementation#asynchronous-api), you can find out the final status of the `ACCEPTED` or `ENQUEUED` payout by either:
 
 <CardGroup cols={2}>
-    <Card title="Waiting for a callback" icon="webhook" href="payout-callback" horizontal="true">
+    <Card title="Waiting for a callback" icon="webhook" href="/v1/api-reference/payouts/payout-callback" horizontal="true">
         If you have configured callbacks, just wait for it.
     </Card>
-    <Card title="Checking the status" icon="code-compare" href="check-payout-status" horizontal="true">
+    <Card title="Checking the status" icon="code-compare" href="/v1/api-reference/payouts/check-payout-status" horizontal="true">
         Or poll the Check Payout Status endpoint.
     </Card>
 </CardGroup>
 
-<Info>Headers related to [signatures](/using_the_api#signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation]()TODO.</Info>
+<Info>Headers related to [signatures](/using_the_api#signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens#signed-requests).</Info>

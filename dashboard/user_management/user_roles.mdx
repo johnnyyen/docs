@@ -2,91 +2,27 @@
 title: User roles
 ---
 
-Users on the dashboard can be managed by pressing the tab "Manage users" on the User Management page.
+To ensure functionality and data is visible to only the people you need, we provide user roles and country-based limitations for users.
 
-This functionality is available to users with the User Management role. Read more about [User roles](/v1/docs/user-roles).
+## Country based limitations
 
-You can navigate between active, pending, and disabled users by pressing on the respective tab.
+Users' access in our dashboard can be limited to specific countries.
 
-![Manage Users Tab](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1668417932753.png)
+For example, limiting a user's access to Ghana only as their tasks involve providing support for Ghana customers.
 
-## Active users
+## User roles
 
-On the **Active users** tab, you can see the currently active users on the dashboard.
+Roles limit users to specific functionality in the dashboard. For example, User Management could only be enabled for the Team Leads of your different support teams. They are then able to invite new users independently. They are only able to invite users with all or some of the roles they have for their user.
 
-> **Please note!**  
-> Your roles might affect which users you are able to see and manage.
+| Role                        | Description                                                                                                                                                                                       |
+|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Administrator**           | Full access to all functionality in the dashboard.                                                                                                                                                |
+| **Batch disbursements**     | Able to use the [Batch disbursements](/dashboard/other/batch_disbursements) functionality of our platform.                                                                                                |
+| **Finances**                | Has access to [Finances](/dashboard/finances/wallets) to see the financial data in [Wallets](/dashboard/finances/wallets), [Statements](/dashboard/finances/statements), etc.<br />Includes Transactions role automatically.          |
+| **Transactions**            | Has access to [Transactions](/dashboard/transactions/deposits) to see deposits, payouts, and refunds in the countries they are limited to.                                                                    |
+| **User management**         | Able to invite new and manage existing users with the same or fewer roles that they have.<br /><br/ >**Please note!**<br />This role can only be combined with other roles.                              |
+| **Technical Administration**| Able to see [System configuration](/dashboard/other/system_conf/callback_urls) to configure technical aspects of the platform.                                                                                  |
 
-### User Information
-
-The following information is available for each user:
-
-| Column     | Description                                                                 |
-|------------|-----------------------------------------------------------------------------|
-| Name       | The first and last name of the user.                                        |
-| E-mail     | The email address of the user they were invited into the dashboard with.    |
-| Role       | The roles the user has.                                                     |
-| Geo Roles  | The countries this user is limited to.                                      |
-| Actions    | The actions that can be done for this user.                                 |
-
-> **Please note!**  
-> If the user has many roles, you can see all of them by hovering on the "+ more" label.
-
-### Changing users' country limitations
-
-- You can change the countries a user has access to by opening the "Geo Roles" dropdown and checking the countries they need.
-
-![Changing Geo Roles](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/Frame%20830.png)
-
-> **Please note!**  
-> Changes to country limitations take effect immediately.
-
-### Changing users' roles
-
-- User roles can be changed by pressing the pencil icon in the user's "Actions" column.
-
-![Change User Roles](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1668084086570.png)
-
-- You can then make the changes needed and press "Save changes."
-
-![Save Changes](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/Frame%20831.png)
-
-### Disabling users
-
-- You can disable a user by pressing the disable icon in the user's "Actions" column.
-
-![Disable User](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1668084265526.png)
-
-- You will be asked to confirm this action by pressing "Yes."
-
-![Confirm Disable](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1668084338359.png)
-
-- You can find the disabled user in the "Disabled" tab.
-
-## Pending users
-
-- Users who have yet to activate their account from their invite email are found in the **Pending** tab.
-- You can change their role and country limitations just like for active users.
-- In case their invite has expired or is lost, you can resend the invitation email with a new activation link by pressing the "Resend invitation" button.
-
-- You will be asked to confirm this action by pressing "Yes."
-
-![Resend Invitation](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1668084669190.png)
-
-- You may also choose to delete the invitation by clicking on this icon under the Actions column:
-
-![Delete Invitation](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1696254559536.png)
-
-## Disabled users
-
-- Users who have been disabled are found in the **Disabled** tab.
-- You can still change country limitations and roles for disabled users.
-- You can enable users by pressing on the enable icon in the user's "Actions" column.
-
-![Enable User](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1668084926078.png)
-
-- You will be asked to confirm this action by pressing "Yes."
-
-![Confirm Enable](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1668084982320.png)
-
-- You can find the enabled user in the "Active" tab.
+> **Please note!**
+>
+> Dependent roles get assigned automatically. For example, adding the Finances role automatically adds the Transactions role to the user.

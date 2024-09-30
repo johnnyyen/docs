@@ -25,12 +25,12 @@ Status | <Tooltip tip="Will a callback be delivered after receiving this status 
 As the pawaPay Merchant API is an [asynchronous API](/implementation#asynchronous-api), you can find out the final status of the `ACCEPTED` refund by either:
 
 <CardGroup cols={2}>
-    <Card title="Waiting for a callback" icon="webhook" href="refund-callback" horizontal="true">
+    <Card title="Waiting for a callback" icon="webhook" href="/v1/api-reference/refunds/refund-callback" horizontal="true">
         If you have configured callbacks, just wait for it.
     </Card>
-    <Card title="Checking the status" icon="code-compare" href="check-refund-status" horizontal="true">
+    <Card title="Checking the status" icon="code-compare" href="/v1/api-reference/refunds/check-refund-status" horizontal="true">
         Or poll the Check Refund Status endpoint.
     </Card>
 </CardGroup>
 
-<Info>Headers related to [signatures](/using_the_api#signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation]()TODO.</Info>
+<Info>Headers related to [signatures](/using_the_api#signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens#signed-requests).</Info>
