@@ -56,8 +56,8 @@ paths:
         __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
 
         ### What next?
-        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** payout by either:
-        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [payoutCallback](#operation/payoutWebhook) from pawaPay with the **final status**.
+        As the pawaPay Merchant API is an [asynchronous API](/implementation#asynchronous-api), you can find out the final status of the **accepted** payout by either:
+        1. Configuring [callback URLs](/using_the_api#callback-urls) and waiting for [payoutCallback](#operation/payoutWebhook) from pawaPay with the **final status**.
         2. Periodically polling the [Get Payout Status and Details](#operation/getPayout) endpoint for a **final status**.
         
       operationId: createPayout
@@ -214,8 +214,8 @@ paths:
         __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
         
         ### What next?
-        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** payout by either:
-        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [payoutCallback](#operation/payoutWebhook) from pawaPay with the **final status**.
+        As the pawaPay Merchant API is an [asynchronous API](/implementation#asynchronous-api), you can find out the final status of the **accepted** payout by either:
+        1. Configuring [callback URLs](/using_the_api#callback-urls) and waiting for [payoutCallback](#operation/payoutWebhook) from pawaPay with the **final status**.
         2. Periodically polling the [Get Payout Status and Details](#operation/getPayout) endpoint for a **final status**.
       operationId: createPayouts
       requestBody:
@@ -690,8 +690,8 @@ paths:
         __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
 
         ### What next?
-        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** deposit by either:
-        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [depositCallback](#operation/depositWebhook) from pawaPay with the **final status**.
+        As the pawaPay Merchant API is an [asynchronous API](/implementation#asynchronous-api), you can find out the final status of the **accepted** deposit by either:
+        1. Configuring [callback URLs](/using_the_api#callback-urls) and waiting for [depositCallback](#operation/depositWebhook) from pawaPay with the **final status**.
         2. Periodically polling the [Get Deposit Status and Details](#operation/getDeposit) endpoint for a **final status**.
       operationId: createDeposit
       requestBody:
@@ -1086,7 +1086,7 @@ paths:
         
         Your page on the `returnUrl` has two options to determine the status of the payment. 
         You can use the [Get Deposit Status and Details](#operation/getDeposit) to retrive the deposit associated with this session. Read more about [possible statuses of a payment](#section/Deposit-(Collection)).
-        If you have configured [callback URLs](#section/Using-the-API/Callback-URLs) you will receive a [callback](#operation/depositWebhook) to your configured callback URL when the payment reached its final status.
+        If you have configured [callback URLs](/using_the_api#callback-urls) you will receive a [callback](#operation/depositWebhook) to your configured callback URL when the payment reached its final status.
         
         The customer experience of the Payment Page can be changed through the following parameters during initiation.
         
@@ -1099,8 +1099,8 @@ paths:
 
         ### What next?
         When the customer initiates a deposit from the payment page, the deposit will be avaialble in the system and can be handled the same way as deposits initiated with the Merchant API.        
-        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** deposit by either:
-        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [depositCallback](#operation/depositWebhook) from pawaPay with the **final status**.
+        As the pawaPay Merchant API is an [asynchronous API](/implementation#asynchronous-api), you can find out the final status of the **accepted** deposit by either:
+        1. Configuring [callback URLs](/using_the_api#callback-urls) and waiting for [depositCallback](#operation/depositWebhook) from pawaPay with the **final status**.
         2. Periodically polling the [Get Deposit Status and Details](#operation/getDeposit) endpoint for a **final status**.
       operationId: create-session
       requestBody:
@@ -1189,8 +1189,8 @@ paths:
         __Headers related to [signatures](#section/Using-the-API/Signatures) must only be included if you have enabled “Only accept signed requests”. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
         
         ### What next?
-        As the pawaPay Merchant API is an [asynchronous API](#section/Implementation/Asynchronous-API), you can find out the final status of the **accepted** refund by either:
-        1. Configuring [callback URLs](#section/Using-the-API/Callback-URLs) and waiting for [refundCallback](#operation/refundWebhook) from pawaPay with the **final status**.
+        As the pawaPay Merchant API is an [asynchronous API](/implementation#asynchronous-api), you can find out the final status of the **accepted** refund by either:
+        1. Configuring [callback URLs](/using_the_api#callback-urls) and waiting for [refundCallback](#operation/refundWebhook) from pawaPay with the **final status**.
         2. Periodically polling the [Get Refund Status and Details](#operation/getRefund) endpoint for a **final status**.
       operationId: createRefund
       requestBody:
@@ -2903,7 +2903,7 @@ components:
             * `BALANCE_INSUFFICIENT` - The pawaPay wallet balance is insufficient to proceed with the payout. 
             * `RECIPIENT_NOT_FOUND` - The financial address (phone number) specified as the receipient does not belong to the MNO specified as the correspodent. 
             * `RECIPIENT_NOT_ALLOWED_TO_RECEIVE` - The recipient has reached a limit on their wallet that stops them from being able to accept this payout. 
-            * `MANUALLY_CANCELLED` - The payout request was enqueued and subsequently cancelled from the pawaPay Dashboard or through the [Cancel Enqueued Payout](#operation/payoutsFailEnqueued) endpoint.
+            * `MANUALLY_CANCELLED` - The payout request was enqueued and subsequently cancelled from the pawaPay Dashboard or through the [Cancel Enqueued Payout](/v1/api-reference/payouts/cancel-enqueued-payout) endpoint.
             * `OTHER_ERROR` - Any other error. Please refer to `failureMessage`.
           example: OTHER_ERROR
           enum:
@@ -3486,7 +3486,7 @@ components:
   securitySchemes:
     bearerAuth:
       type: http
-      description: See [Authentication](/#section/Using-the-API/Authentication).
+      description: See [Authentication](//using_the_api#authentication).
       scheme: bearer
       bearerFormat: JWT
 x-tagGroups:
@@ -3506,7 +3506,7 @@ x-webhooks:
       summary: Payout Status Callback
       description: |
         If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each payout when it reaches a final status. 
-        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](#section/Using-the-API/Callback-URLs).
+        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](/using_the_api#callback-urls).
         
         If you have not configured callbacks, you can always call our [Get Payout Status and Details](/#operation/getPayout) endpoint to get the latest status and details of a specific payout request. 
 
@@ -3572,7 +3572,7 @@ x-webhooks:
       summary: Deposit Status Callback
       description: |
         If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each deposit when it reaches a final status. 
-        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](#section/Using-the-API/Callback-URLs).
+        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](/using_the_api#callback-urls).
         
         If you have not configured callbacks, you can always call our [Get Deposit Status and Details](/#operation/getDeposit) endpoint to get the latest status and details of a specific deposit request. 
 
@@ -3638,7 +3638,7 @@ x-webhooks:
       summary: Refund Status Callback
       description: |
         If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each refund when it reaches a final status. 
-        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](#section/Using-the-API/Callback-URLs).
+        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](/using_the_api#callback-urls).
         
         If you have not configured callbacks, you can always call our [Get Refund Status and Details](/#operation/getRefund) endpoint to get the latest status and details of a specific refund request. 
 

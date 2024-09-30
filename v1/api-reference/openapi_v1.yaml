@@ -2284,9 +2284,8 @@ components:
             If not specified, the customer will have to specify the amount they wish to pay. For example, when depositing money into their eWallet.
     
             Amount has to follow below requirements or the request will be **rejected**:
-            * Between zero and two decimal places can be supplied, depending on what the specific MNO supports. Learn about all [MNO supported decimal places](#section/Using-the-API/Correspondents).
-            * The maximum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](#operation/active_conf) endpoint.
-            * The minimum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](#operation/active_conf) endpoint.
+            * Between zero and two decimal places can be supplied, depending on what the specific MNO supports. Learn about all [MNO supported decimal places](/using_the_api#correspondents).
+            * The minimum and maximum amounts depend on the limits of the specific MNO. You can find them from the [Active Configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
             * Leading zeroes are not permitted except where the value is less than 1. For any value less than one, one and only one leading zero must be supplied.
             * Trailing zeroes are permitted.
             
@@ -2687,7 +2686,7 @@ components:
       description: |
         Enumeration presenting the status of the Payout Creation: 
         * `ACCEPTED` - The payout request has been **accepted** by pawaPay for processing.
-        * `ENQUEUED` - The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](#section/Payout-(Disbursement)/Enqueued-payouts).
+        * `ENQUEUED` - The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](/payouts#enqueued-payouts).
         * `REJECTED` - The payout request has been **rejected** by pawaPay. See rejectionReason for details. 
         * `DUPLICATE_IGNORED` - The payout request has been **ignored** as a duplicate of already accepted payout request. Duplication logic relies upon payoutId.
       enum:
@@ -2707,7 +2706,7 @@ components:
             * `BALANCE_INSUFFICIENT` - The pawaPay wallet balance is insufficient to proceed with the payout. 
             * `RECIPIENT_NOT_FOUND` - The financial address (phone number) specified as the receipient does not belong to the MNO specified as the correspodent. 
             * `RECIPIENT_NOT_ALLOWED_TO_RECEIVE` - The recipient has reached a limit on their wallet that stops them from being able to accept this payout. 
-            * `MANUALLY_CANCELLED` - The payout request was enqueued and subsequently cancelled from the pawaPay Dashboard or through the [Cancel Enqueued Payout](#operation/payoutsFailEnqueued) endpoint.
+            * `MANUALLY_CANCELLED` - The payout request was enqueued and subsequently cancelled from the pawaPay Dashboard or through the [Cancel Enqueued Payout](/v1/api-reference/payouts/cancel-enqueued-payout) endpoint.
             * `OTHER_ERROR` - Any other error. Please refer to `failureMessage`.
           example: OTHER_ERROR
           enum:
@@ -2768,7 +2767,7 @@ components:
       description: |
         Enumeration presenting the status of the payout: 
         * `ACCEPTED` - The payout request has been **accepted** by pawaPay for processing. 
-        * `ENQUEUED` - The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](#section/Payout-(Disbursement)/Enqueued-payouts). 
+        * `ENQUEUED` - The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](/payouts#enqueued-payouts). 
         * `SUBMITTED` - The payout request has been submitted to the MNO and is being processed.
         * `COMPLETED` - The payout request has been successfully processed. This is a **Final state.**
         * `FAILED` - The payout request has been processed, but failed. **Final state.**
@@ -3290,7 +3289,7 @@ components:
   securitySchemes:
     bearerAuth:
       type: http
-      description: See [Authentication](/#section/Using-the-API/Authentication).
+      description: See [Authentication](/using_the_api#authentication).
       scheme: bearer
       bearerFormat: JWT
 x-tagGroups:
@@ -3310,11 +3309,11 @@ x-webhooks:
       summary: Payout Status Callback
       description: |
         If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each payout when it reaches a final status. 
-        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](#section/Using-the-API/Callback-URLs).
+        Read more about [handling callbacks](/implementation#handling-callbacks) and [callback URLs](/using_the_api#callback-urls).
         
-        If you have not configured callbacks, you can always call our [Get Payout Status and Details](/#operation/getPayout) endpoint to get the latest status and details of a specific payout request. 
+        If you have not configured callbacks, you can always call our [Check Payout Status](/v1/api-reference/payouts/check-payout-status) endpoint to get the latest status and details of a specific payout request. 
 
-        __Headers related to [signatures](#section/Using-the-API/Signatures) will only be included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+        __Headers related to [signatures](/using_the_api#signatures) will only be included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens).__
       operationId: payoutWebhook
       security: []
       parameters:
@@ -3376,11 +3375,11 @@ x-webhooks:
       summary: Deposit Status Callback
       description: |
         If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each deposit when it reaches a final status. 
-        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](#section/Using-the-API/Callback-URLs).
+        Read more about [handling callbacks](/implementation#handling-callbacks) and [callback URLs](/using_the_api#callback-urls).
         
-        If you have not configured callbacks, you can always call our [Get Deposit Status and Details](/#operation/getDeposit) endpoint to get the latest status and details of a specific deposit request. 
+        If you have not configured callbacks, you can always call our [Check Deposit Status](/v1/api-reference/deposits/check-deposit-status) endpoint to get the latest status and details of a specific deposit request. 
 
-        __Headers related to [signatures](#section/Using-the-API/Signatures) will only be included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+        __Headers related to [signatures](/using_the_api#signatures) will only be included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens).__
       operationId: depositWebhook
       security: []
       parameters:
@@ -3442,11 +3441,11 @@ x-webhooks:
       summary: Refund Status Callback
       description: |
         If you have configured callbacks, pawaPay will `POST` a callback to your configured callback URL for each refund when it reaches a final status. 
-        Read more about [handling callbacks](#section/Implementation/Handling-callbacks) and [callback URLs](#section/Using-the-API/Callback-URLs).
+        Read more about [handling callbacks](/implementation#handling-callbacks) and [callback URLs](/using_the_api#callback-urls).
         
-        If you have not configured callbacks, you can always call our [Get Refund Status and Details](/#operation/getRefund) endpoint to get the latest status and details of a specific refund request. 
+        If you have not configured callbacks, you can always call our [Check Refund Status](/v1/api-reference/refunds/check-refund-status) endpoint to get the latest status and details of a specific refund request. 
 
-        __Headers related to [signatures](#section/Using-the-API/Signatures) will only be included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](https://pawapay.document360.io/docs/api-token).__
+        __Headers related to [signatures](/using_the_api#signatures) will only be included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens).__
       operationId: refundWebhook
       security: []
       parameters:

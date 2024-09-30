@@ -46,7 +46,7 @@ Using the payment flow in your deposit or checkout experience is simple:
 
 <Steps>
     <Step title="Start the session">
-        When it's time for the customer to pay, [start a new session](#operation/create-session). **The session will time out after 15 minutes.**
+        When it's time for the customer to pay, [start a new session](/v1/api-reference/payment-page/deposit-via-payment-page). **The session will time out after 15 minutes.**
     </Step>
     <Step title="Forward the customer">
         Forward the customer to the `redirectUrl` that you received in the response. 
@@ -55,7 +55,7 @@ Using the payment flow in your deposit or checkout experience is simple:
         The customer will complete the payment on the Payment Page and will be forwarded to `returnUrl`.
     </Step>
     <Step title="Verify the payment status">
-        Your page on `returnUrl` should [check the status](#operation/getDeposit) of the payment. The `depositId` will be passed as a URL parameter.
+        Your page on `returnUrl` should [check the status](/v1/api-reference/deposits/check-deposit-status) of the payment. The `depositId` will be passed as a URL parameter.
     </Step>
     <Step title="Handle accordingly">
         Based on the `status` of the payment handle a successful, failed or long running payment.

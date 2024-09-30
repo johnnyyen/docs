@@ -8,21 +8,21 @@ Following chapters introduce some important aspects of mobile money and working 
 
 ## MNO stability
 
-As described in the [Introduction](#section/What-does-a-payment-look-like), mobile money transaction chains are complex. 
+As described in the [Introduction](/about_mobile_money#what-does-a-payment-look-like), mobile money transaction chains are complex. 
 This means that payment services stability needs to be taken into account when implementing a high-quality payment flow. 
 pawaPay provides multiple solutions to make this easy to manage.
 
 Our 24/7 payment operations team monitors all MNOs on our platform for instability and downtime. We stop accepting payments to those MNOs if the success rate is too low. 
-This information is accessible from our [availability](#operation/availability) endpoint. 
+This information is accessible from our [availability](/v1/api-reference/toolkit/availability) endpoint. 
 You can verify before initiating the payment if the MNO is currently experiencing any problems and inform the user before they attempt the payment. 
 Knowing that your mobile money provider is currently unavailable is a better customer experience than having your payment fail. 
-Failed payments usually take longer to process, leaving the customer waiting for clarity for longer. Read more about our [availability](#operation/availability) endpoint.
+Failed payments usually take longer to process, leaving the customer waiting for clarity for longer. Read more about our [availability](/v1/api-reference/toolkit/availability) endpoint.
 
 For customer support purposes, information about MNOs availability is also published on our [status page](https://status.pawapay.cloud). 
 You can subscribe to updates over e-mail, slack and other channels to ensure your support team is always informed about any potential problems with the MNOs.
 
 When an MNO is experiencing difficulties in successfully processing disbursements, our platform will enqueue them to be processed once the MNO is operational. 
-Read more about [enqueued payouts](#section/Payout-(Disbursement)/Enqueued-payouts).
+Read more about [enqueued payouts](/payouts#enqueued-payouts).
 
 Sometimes MNOs systems have degraded performance. 
 When that happens, the MNOs APIs might have trouble returning the final status of payments. 
@@ -47,13 +47,13 @@ For example, an MNO has a 1,000 GHS maximum deposit amount.
 In reality the wallet has a limitation of 1,000 GHS total transaction value per day/week/month. 
 If the user has already transacted 500 GHS during this period, a transaction of 700 might still fail.
 
-You can easily find the transaction limits from our [active configuration](#operation/active_conf) endpoint.
+You can easily find the transaction limits from our [active configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
 
 ## Asynchronous API
 
 The pawaPay Merchant API is asynchronous. This is necessary to provide high performance and quality payment infrastructure that is able to process millions of payments every day.
 
-When you call any financial endpoint ([payout](#operation/createPayout), [deposit](#operation/createDeposit), [refund](#operation/createRefund)) the response will confirm whether the transaction was __accepted for processing or rejected__. 
+When you call any financial endpoint ([payout](/v1/api-reference/payouts/request-payout), [deposit](/v1/api-reference/deposits/request-deposit), [refund](/v1/api-reference/refunds/request-refund)) the response will confirm whether the transaction was __accepted for processing or rejected__. 
 Reasons for rejecting a transaction might be using the same ID for transaction more than once or the MNO being unavailable at the moment.
 
 If the response confirms that the payment has been __accepted for processing__, it will take some time for it to process (remember that for deposits, the user needs to enter their PIN on their phone). 
@@ -72,7 +72,7 @@ Second, you can use the corresponding `Get Status and Details` endpoint for the 
 When implementing your callback handler, please consider the following points.
 
 * The endpoint should be __accessible to our platform__. 
-    * If you are using IP whitelisting, our sending IP-s are documented [here](#section/Using-the-API/Callback-URLs).
+    * If you are using IP whitelisting, our sending IP-s are documented [here](/using_the_api#callback-urls).
     * Ensure that you have excluded the callback endpoint from your applications regular authentication system.
 * Your endpoint for receiving callbacks must be __idempotent__.
 * Your endpoint needs to allow us to `POST` the callback.

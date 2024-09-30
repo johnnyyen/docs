@@ -1,16 +1,11 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "pawaPay Merchant API",
-  "versions": ["v2", "v1"],
+  "versions": ["v1", "v2"],
   "logo": {
     "dark": "/images/pawapay_logo_dark.png",
     "light": "/images/pawapay_logo_light.png",
     "href": "https://pawapay.io"
-  },
-  "api": {
-    "playground": {
-      "mode": "hide"
-    }
   },
   "favicon": "/images/favicon.png",
   "background": {
