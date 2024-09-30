@@ -12,7 +12,7 @@
       "mode": "hide"
     }
   },
-  "favicon": "images/favicon.png",
+  "favicon": "/images/favicon.png",
   "background": {
     "style": "gradient"
   },
