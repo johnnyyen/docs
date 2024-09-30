@@ -3,8 +3,8 @@
   "name": "pawaPay Merchant API",
   "versions": ["v1", "v2"],
   "logo": {
-    "dark": "/images/pawapay_logo_dark.png",
-    "light": "/images/pawapay_logo_light.png",
+    "dark": "/images/pawapay_logo_green.png",
+    "light": "/images/pawapay_logo_purple.png",
     "href": "https://pawapay.io"
   },
   "favicon": "/images/favicon.png",
