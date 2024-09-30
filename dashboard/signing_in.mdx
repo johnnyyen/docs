@@ -4,71 +4,82 @@ title: Signing into the pawaPay dashboard
 
 The pawaPay dashboard supports two methods of user authentication: traditional password-based authentication and Google-based authentication.
 
-Should you opt for Google-based authentication, your organization must already utilize Google Workspace, or a comparable service where Google manages email addresses. This feature facilitates a seamless login process, allowing users to access our portal using their existing Google accounts.
+Should you opt for Google-based authentication, your organization must already utilize [Google Workspace](https://workspace.google.com/), or a comparable service where Google manages email addresses. This feature facilitates a seamless login process, allowing users to access our portal using their existing Google accounts.
 
-<Info>
-    We recommend forcing 2-step verification on your Google Workspace account for increased security.
-</Info>
+> **Note**  
+> We recommend forcing 2-step verification on your Google Workspace account for increased security.
 
-## Password based authentication
+## Password-based authentication
 
-When using password based authentication, you need to choose a password when activating your account. This password is then used to sign into the dashboard. 
+When using password-based authentication, you need to choose a password when activating your account. This password is then used to sign into the dashboard.
 
-<Info>
-    Our dashboard follows OWASP AVSV Level 3 password policy.
-</Info>
+> **Note**  
+> Our dashboard follows [OWASP AVSV Level 3](https://owasp.org/www-pdf-archive/OWASPApplicationSecurityVerificationStandard3.0.pdf) password policy.
 
+### Activating your account
 
+When invited to our dashboard, you will receive an invitation email with an activation link.
 
-## Activating your account
+![Account Activation Email](/images/dashboard/signing_in/activation_email.png)
 
-<Steps>
-    <Step title="Check your email">
-        When invited to our dashboard, you will receive an invitation e-mail with an activation link.
-    </Step>
-    <Step title="Verify your email address and activate your account">
-        Pressing on "Activate" will take you to the account activation page. 
-        Read and accept our Terms and Conditions and Privacy Policy. 
-        Choose your authentication method - Google or username and password.
-    </Step>
-    <Step title="">
-    </Step>
-    <Step title="">
-    </Step>
-    <Step title="">
-    </Step>
-    <Step title="">
-    </Step>
-</Steps>
+Pressing on "Activate" will take you to the account activation page where you are asked to read and accept our Terms and Conditions and Privacy Policy, and choose your authentication method - Google or username and password.
 
+> **Note**  
+> The password meter at the bottom of the "Password" input helps you to choose a strong password to secure your account.
 
+![Password Strength Meter](/images/dashboard/signing_in/password_meter.png)
 
-Pressing "Activate" will take you directly to our dashboard.
+Pressing "Activate" will take you to our Dashboard [sign-in page](https://dashboard.pawapay.cloud/).
 
-Signing into the dashboard
+### Signing into the dashboard
 
-To sign into our dashboard, go to our sign-in page, enter your e-mail address and press "Continue".
+#### Authentication with username and password
 
+Go to our [sign-in page](https://dashboard.pawapay.cloud/), enter your email address, and press "Continue".
 
+![Enter Email Address](/images/dashboard/signing_in/enter_email.png)
 
+Enter your password and press "Sign in".
 
+![Enter Password](/images/dashboard/signing_in/enter_password.png)
 
-After entering your password and pressing "Sign in", you will be forwarded to our dashboard.
+You will be prompted for a verification code which was sent to your email. Enter it and press "Continue" to be redirected to the pawaPay Dashboard landing page.
 
-If you have chosen Google as your authentication method you will be presented an option to authenticate via signing in your Google account.
+![Verification Code](/images/dashboard/signing_in/verification_code.png)
 
-Please note! When using multiple google accounts (i.e. business and personal) make sure you choose the account that was used to invite you to our dashboard. 
+#### Authentication with Google
 
-Resetting your password 
+Go to our [sign-in page](https://dashboard.pawapay.cloud/), enter your email address, and press "Continue".
 
-Enter your e-mail on our sign-in page and press "Continue".
+![Enter Email Address](/images/dashboard/signing_in/enter_email.png)
 
-Press on the "Reset password" link. 
+If you have chosen Google as your authentication method, the Dashboard will present you an option to authenticate via signing in with your Google account.
 
-Enter your e-mail and press "Reset my password".
+![Google Sign-In](/images/dashboard/signing_in/google_signin.png)
 
-You will receive an e-mail with a link to reset your password. Press on the "Reset password" button.
+> **Note**  
+> When using multiple Google accounts (i.e., business and personal), make sure you choose the account that was used to invite you to our dashboard.
 
-You will be forwarded to the password reset page where you can enter your new password. When done, press on "Change my password" 
+### Resetting your password
 
-You will then be forwarded to our sign-in page to sign in with your new password.
+Enter your email on our [sign-in page](https://dashboard.pawapay.cloud/) and press "Continue".
+
+![Enter Email Address](/images/dashboard/signing_in/enter_email.png)
+
+Press on the "Reset password" link.
+
+![Reset Password Link](/images/dashboard/signing_in/reset_password.png)
+
+Enter your email and press "Reset my password".
+
+![Reset Password](/images/dashboard/signing_in/confirm_reset_password.png)
+
+You will receive an email with a link to reset your password. Press on the "Reset password" button.
+
+![Email Reset Link](/images/dashboard/signing_in/password_reset_email.png)
+
+You will be forwarded to the password reset page where you can enter your new password. When done, press on "Change my password".
+
+![Change Password](/images/dashboard/signing_in/change_password.png)
+
+You will then be forwarded to our [sign-in page](https://dashboard.pawapay.cloud/) to sign in with your new password.
