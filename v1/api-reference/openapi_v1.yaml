@@ -1798,9 +1798,8 @@ components:
         The amount to be collected or disbursed. 
 
         Amount has to follow below requirements or the request will be **rejected**:
-        * Between zero and two decimal places can be supplied, depending on what the specific MNO supports. Learn about all [MNO supported decimal places](#section/Using-the-API/Correspondents).
-        * The maximum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](#operation/active_conf) endpoint.
-        * The minimum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](#operation/active_conf) endpoint.
+        * Between zero and two decimal places can be supplied, depending on what the specific MNO supports. Learn about all [MNO supported decimal places](/using_the_api#correspondents).
+        * The minimum and maximum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
         * Leading zeroes are not permitted except where the value is less than 1. For any value less than one, one and only one leading zero must be supplied.
         * Trailing zeroes are permitted.
         
@@ -1815,29 +1814,29 @@ components:
       description: |
         The correspondent code refers to the specific MNO that the specified phone number (MSISDN) has an active mobile money wallet with. 
         
-        You can find all the supported correspondents [listed here](#section/Using-the-API/Correspondents). 
+        You can find all the supported correspondents [listed here](/using_the_api#correspondents). 
         
-        The [active configuration](#operation/active_conf) endpoint provides the list of correspondents configured for your account.
+        The [active configuration](/v1/api-reference/toolkit/active-configuration) endpoint provides the list of correspondents configured for your account.
 
-        You can use the [predict correspondent](#operation/predict-correspondent) enpoint to predict the correct correspondent to use based on the phone number (MSISDN).
+        You can use the [predict correspondent](/v1/api-reference/toolkit/predict-correspondent) enpoint to predict the correct correspondent to use based on the phone number (MSISDN).
       example: MTN_MOMO_ZMB
     Country:
       type: string
       description: |
         The country in which the MNO operates. 
         
-        Format is ISO 3166-1 alpha-3, three character country code in upper case. Read more from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements.
+        Format is ISO 3166-1 alpha-3, three character country code in upper case. Read more from [Wikipedia](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements).
       example: ZMB
     Currency:
       type: string
       description: |
         The currency in which the `amount` is specified.
         
-        Format must be the ISO 4217 three character currency code in upper case. Read more from https://en.wikipedia.org/wiki/ISO_4217#Active_codes.
+        Format must be the ISO 4217 three character currency code in upper case. Read more from [Wikipedia](https://en.wikipedia.org/wiki/ISO_4217#Active_codes).
         
-        You can find all the supported currencies that the specific `correspondent` supports [from here](#section/Using-the-API/Correspondents).
+        You can find all the supported currencies that the specific `correspondent` supports [from here](/using_the_api#correspondents).
         
-        The [active configuration](#operation/active_conf) endpoint provides the list of correspondents configured for your account together with the currencies.
+        The [active configuration](/v1/api-reference/toolkit/active-configuration) endpoint provides the list of correspondents configured for your account together with the currencies.
       example: ZMW
     Deposit:
       required:
@@ -1873,7 +1872,7 @@ components:
           $ref: '#/components/schemas/FinancialAddress'
         customerTimestamp:
           type: string
-          description: The timestamp for when you initiated the deposit process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp for when you initiated the deposit process. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:28Z'
         statementDescription:
@@ -1885,14 +1884,14 @@ components:
           example: Note of 4 to 22 chars
         created:
           type: string
-          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:29Z'
         depositedAmount:
           $ref: '#/components/schemas/Amount'
         respondedByPayer:
           type: string
-          description: When the MNO responded to this deposit request. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: When the MNO responded to this deposit request. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:30Z'
         correspondentIds:
