@@ -1,0 +1,80 @@
+---
+title: API tokens
+---
+
+The pawaPay Merchant API can only be used with an authentication token. You can read more about how this token can be used to access our API from our [API docs](https://docs.pawapay.co.uk/#section/Using-the-API/Authentication).
+
+This functionality is available to users with the Technical Administration role. Read more about [User roles](/v1/docs/user-roles).
+
+## Generating an API token
+
+Press the "Generate Token" button to generate an API token. You can have at most 2 active API tokens at a time. 
+
+![Generate Token](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/api1(1).png)
+
+You can use the "Copy to clipboard" button to easily copy the API token.
+
+> **Please note!**
+> - **Store your token safely as pawaPay does not store your token after generating it for security reasons.**
+> - **You need to configure your [Callback URLs](/v1/docs/callback-urls) to be able to generate API tokens.**
+
+## Active API tokens
+
+Your active API tokens are listed together with the information about who generated them, when they were generated, and the Token ID. Note that the Token ID is not usable as the token itself but is only used for identifying a specific token when contacting our support team.
+
+![Active API Tokens](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/api2(1).png)
+
+## Revoking tokens
+
+If you need to revoke an API token, you can press the "Revoke" button which is found under the "Actions" column.
+
+![Revoke Token](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1704976745135(1).png)
+
+> **Please note!**
+> **Revoking an API token will immediately stop all payments that use the given token to authenticate API calls!**
+
+## Signed requests
+
+**You can enable pawaPay to only accept signed requests for financial calls. You will need to provide us with the public key of the key pair you are signing your requests with.**
+
+### Accepted algorithms
+
+We accept 4 kinds of encryption algorithms:
+
+- [RSASSA-PSS Using SHA-512](https://datatracker.ietf.org/doc/html/rfc9421#name-rsassa-pss-using-sha-512)
+- [RSASSA-PKCS1-v1_5 Using SHA-256](https://datatracker.ietf.org/doc/html/rfc9421#name-rsassa-pkcs1-v1_5-using-sha)
+- [ECDSA Using Curve P-256 DSS and SHA-256](https://datatracker.ietf.org/doc/html/rfc9421#name-ecdsa-using-curve-p-256-dss)
+- [ECDSA Using Curve P-384 DSS and SHA-384](https://datatracker.ietf.org/doc/html/rfc9421#name-ecdsa-using-curve-p-384-dss)
+
+### Adding a public key
+
+You can add your public key by navigating to the Security tab and pressing on “Add public key”.
+
+![Add Public Key](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image(13).png)
+
+You will then be presented a window where you can:
+
+1. Name your key
+2. Add the key
+3. Choose if you wish to enable the feature by adding this key or not
+
+![Add Key Details](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image(10).png)
+
+> **Please note!**
+> You can choose to either add a key alone or add a key and enable the feature.
+
+After successfully adding a key you will be able to view and remove it.
+
+![View and Remove Key](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image(11).png)
+
+You can also switch this feature on and off by using this slider. Switching the feature off **will not** remove any existing keys.
+
+![Switch Feature On/Off](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image(12).png)
+
+## Signed callbacks
+
+Enable this feature to make pawaPay sign all callbacks. You can then verify those signatures when receiving the callback to ensure they have not been tampered with and are coming from pawaPay.
+
+![Signed Callbacks](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image(14).png)
+
+Read more about signed callbacks in our [API docs](https://docs.pawapay.co.uk/#section/Using-the-API/Signatures).

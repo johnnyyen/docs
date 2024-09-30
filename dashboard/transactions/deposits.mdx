@@ -1,0 +1,37 @@
+---
+title: Deposits
+---
+
+You can find all collections made on our platform on the Deposits page.
+
+![Deposits Page](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1667825694606.png)
+
+This functionality is available to users with the Transactions role. Read more about [User roles](/v1/docs/user-roles).
+
+## Search for deposits
+
+Please choose the time period you are interested in by clicking on the time period selector. You can also use the quick links below the selector to quickly see transactions made in the last hour, today, yesterday, or the current week.
+
+If you are interested in transactions of a specific Mobile Network Operator (MNO), you can filter by picking them from the MNO dropdown.
+
+Pressing "Search" will show you the results.
+
+> **Please note!**  
+> A maximum of 10,000 records will be shown. If your search results in more than that, the oldest 10,000 will be visible in your results.
+
+## Glossary of results
+
+| Column                 | Description                                                                                         |
+|------------------------|-----------------------------------------------------------------------------------------------------|
+| Creation Date          | The date and time at which this deposit was initiated. Time is in the UTC time zone.                |
+| MSISDN                 | The phone number of the party being collected from.                                                 |
+| Financial Transaction ID | The ID for this transaction specified by the MNO.                                                 |
+|                        | > **Please note!** This ID is visible to your customers in their SMS receipts or Mobile Money applications transaction history. |
+| Requested amount       | The amount on the original collection request.                                                      |
+| Deposited amount       | The amount deposited in your wallet in pawaPay.                                                     |
+| Currency               | The currency in which this transaction took place.                                                  |
+| Status                 | The current status of this transaction. Read more about statuses from [Transaction statuses](/v1/docs/transaction-statuses). |
+| Country                | The country in which this transaction took place.                                                   |
+| MNO                    | The Mobile Network Operator who carried out the transaction.                                        |
+| Reason                 | The reason for this payment specified by you as the `statementDescription` in our API. Read more about our deposits in our API from our [API docs](https://docs.pawapay.co.uk/#operation/createDesposit). |
+| Metadata               | A list of metadata that you can attach to the payment for providing additional context about the payment. |

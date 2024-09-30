@@ -1,0 +1,46 @@
+---
+title: Audit logs
+---
+
+Every action taken in our dashboard is kept track of and visible on our Audit Log. You can find here any changes to user permissions, new users invited, who signed into the portal and when, etc.
+
+This functionality is available to users with the Administrator role. Read more about [User roles](/v1/docs/user-roles).
+
+> **Please note!**  
+> We strongly recommend only using personal accounts on our platform - all accounts should be accessible to a single person. This allows for compliant auditability of all actions taken on our dashboard.
+
+## Searching and filtering
+
+Please choose the time period you are interested in and press "Search".  
+![Search Audit Log](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1667890810603.png)
+
+The following information will be available for each action:
+
+| Column       | Description                                                                                     |
+|--------------|-------------------------------------------------------------------------------------------------|
+| Time         | The date and time when this action took place.                                                  |
+| Action       | The type of action that took place. Find below the glossary of all actions tracked.             |
+| Performed by | The user who took this action.                                                                  |
+| Description  | Further details about the action. *As an example, for action ROLE CHANGED, it would include which role was set to the user.* |
+| Affected user| The user who was affected by this action. *As an example, for whom the Role was changed.*       |
+
+You can always further filter down the results from the search bar or by pressing on the column header.  
+![Filter Audit Log](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1667899852575.png)
+
+As an example, you could search for the name of the user, which would filter the results to show all actions taken by this particular person during the selected time period.
+
+## Glossary of actions
+
+| Action                | Description                                                                                           |
+|-----------------------|-------------------------------------------------------------------------------------------------------|
+| Log in                | User has signed into the dashboard.                                                                   |
+| User invited          | A new user has been invited into the dashboard.                                                       |
+| User invite re-sent   | A user has been resent the invitation email.                                                          |
+| User registered       | A user has activated their account in the dashboard.                                                  |
+| User status change    | User has been disabled or re-enabled to access the dashboard.                                         |
+| Password changed      | A user has changed their password.                                                                    |
+| Role changed          | A user's role has changed. Read more about [User roles](/v1/docs/user-roles).                         |
+| Country access changed| The countries that the user is able to see in the dashboard have changed. Read more about country-level access restrictions from [User roles](/v1/docs/user-roles). |
+| API token generated   | A new API token has been generated for your account.                                                  |
+| Batch disbursement    | A new batch disbursement has been initiated.                                                          |
+| Domain added          | A new email domain has been added to the email domain whitelist. Read more about email domain whitelist from [Inviting users](/v1/docs/inviting-users). |

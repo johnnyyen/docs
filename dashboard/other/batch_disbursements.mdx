@@ -1,0 +1,75 @@
+---
+title: Batch disbursements
+---
+
+You can use our Batch disbursements page to initiate multiple disbursements at the same time directly from our dashboard.
+
+This functionality is available to users with the Batch Disbursements role. Read more about [User roles](/v1/docs/user-roles).
+
+### Creating your batch disbursements file
+
+You can download a template directly from the dashboard to create a new batch disbursement file.
+
+![Batch Disbursement Template](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/bd1.png)
+
+The template contains the following columns to be filled in by you.
+
+| Column      | Description                                                       |
+|-------------|-------------------------------------------------------------------|
+| Country     | The country in which the recipient of the disbursement resides in.|
+| Telco       | The Mobile Network Operator (MNO) that the recipient's mobile money wallet is registered with. |
+| Currency    | The currency for this disbursement.                               |
+| MSISDN      | The phone number of the recipient of this disbursement.           |
+| Amount      | The amount you wish to disburse.                                  |
+| Description | The description of this disbursement.                             |
+
+> **Please note!**  
+> The MSISDN should:  
+> - Not start with a + sign  
+> - Start with the country code
+
+> **Please note!**  
+> The description should:  
+> - Be at least 4 characters  
+> - Not be longer than 22 characters  
+> - Contain only characters and numbers  
+> - Not contain any special characters
+
+> **Please note!**  
+> You can find all the supported Country, Telco, and Currency combinations from [our API docs](https://docs.pawapay.co.uk/#section/Using-the-API/Correspondents).
+
+### Example batch disbursement file
+
+![Example Batch Disbursement File](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/bd3.png)
+
+> **Please note!**  
+> A maximum of 1000 disbursements can be added to a single batch disbursement file.
+
+### Uploading your batch disbursement file
+
+After filling in your file, you can proceed to upload it into our system for validation. Your file will be validated for formatting errors and to ensure your account has configuration in place to disburse to the specified MNOs.
+
+The results of validation will be shown directly in the dashboard.
+
+![Batch Disbursement Validation](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/bd4.png)
+
+| Result | Description                                                       |
+|--------|-------------------------------------------------------------------|
+| Ready  | The transaction is ready to be disbursed.                         |
+| Failed | Transaction is not valid. You can hover on the transaction to see the failure reason. |
+
+### Fixing validation failures
+
+When encountering failures in your batch disbursement file, you can press the "Download Results" button to retrieve your batch disbursement file together with the failure reasons.
+
+You can fix the errors in this file and attempt to upload again.
+
+> **Please note!**  
+> You can upload the file downloaded by pressing the "Download Results" button to attempt again.  
+> You do not need to remove the failure reasons from this file.
+
+### Initiating the batch disbursements
+
+If every transaction is "Ready", you can press the "Schedule payment" button to initiate the disbursements.
+
+![Schedule Payment](https://cdn.document360.io/32e6fd9e-30a7-4a81-b2d6-2f89eb3bbb0d/Images/Documentation/image-1668419693254.png)

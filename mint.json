@@ -224,6 +224,49 @@
         "dashboard/requesting_settlement",
         "dashboard/status"
       ]
+    },
+    {
+      "group": "Finances",
+      "pages": [
+        "dashboard/finances/wallets",
+        "dashboard/finances/statements",
+        "dashboard/finances/history"
+      ]
+    },
+    {
+      "group": "Transactions",
+      "pages": [
+        "dashboard/transactions/deposits",
+        "dashboard/transactions/deposit_details",
+        "dashboard/transactions/payouts",
+        "dashboard/transactions/payout_details",
+        "dashboard/transactions/transaction_statuses",
+        "dashboard/transactions/callback_resend",
+        "dashboard/transactions/cancel_enqueued"
+      ]
+    },
+    {
+      "group": "User management",
+      "pages": [
+        "dashboard/user_management/inviting_users",
+        "dashboard/user_management/managing_users",
+        "dashboard/user_management/user_roles",
+        "dashboard/user_management/security"
+      ]
+    },
+    {
+      "group": "Everything else",
+      "pages": [
+        "dashboard/other/audit_log",
+        {
+          "group": "System configuration",
+          "pages": [
+            "dashboard/other/system_conf/callback_urls",
+            "dashboard/other/system_conf/api_tokens"
+          ]
+        },
+        "dashboard/other/batch_disbursements"
+      ]
     }
   ],
   "footerSocials": {
