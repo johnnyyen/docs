@@ -36,13 +36,30 @@
   "topbarLinks": [
     {
       "name": "Sandbox login",
-      "url": "https://dashboard.sandbox.pawapay.io"
+      "url": "https://dashboard.sandbox.pawapay.cloud"
     }
   ],
   "topbarCtaButton": {
     "name": "Create account",
     "url": "https://dashboard.sandbox.pawapay.cloud/#/merchant-signup"
   },
+  "anchors": [
+    {
+      "name": "Run in Postman",
+      "icon": "circle-play",
+      "url": "https://app.getpostman.com/run-collection/25129489-6a341d8f-4bd0-4699-9152-3cd6af8c3e50?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D25129489-6a341d8f-4bd0-4699-9152-3cd6af8c3e50%26entityType%3Dcollection%26workspaceId%3D8c3e7775-3da5-4bab-8a8c-ffb331ccfe27"
+    },
+    {
+      "name": "Blog",
+      "icon": "newspaper",
+      "url": "https://www.pawapay.io/blog"
+    },
+    {
+      "name": "Support Discord",
+      "icon": "discord",
+      "url": "https://discord.gg/qng8y8Y7pm"
+    }
+  ],
   "tabs": [
     {
       "name": "API docs",
@@ -63,33 +80,16 @@
       "url": "dashboard"
     }
   ],
-  "anchors": [
-    {
-      "name": "Run in Postman",
-      "icon": "circle-play",
-      "url": "https://app.getpostman.com/run-collection/25129489-6a341d8f-4bd0-4699-9152-3cd6af8c3e50?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D25129489-6a341d8f-4bd0-4699-9152-3cd6af8c3e50%26entityType%3Dcollection%26workspaceId%3D8c3e7775-3da5-4bab-8a8c-ffb331ccfe27"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://www.pawapay.io/blog"
-    },
-    {
-      "name": "Support Discord",
-      "icon": "discord",
-      "url": "https://discord.gg/qng8y8Y7pm"
-    }
-  ],
   "navigation": [
     {
       "group": "Introduction",
       "pages": [
+        "getting_started",
         "about_mobile_money",
         "implementation",
         "using_the_api",
         "testing_the_api",
-        "production",
-        "postman"
+        "production"
       ]
     },
     {
