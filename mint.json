@@ -2,6 +2,11 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "pawaPay Merchant API",
   "versions": ["v1", "v2"],
+  "analytics": {
+    "mixpanel": {
+      "projectToken": "b877b7fe27113f1d7e427b2cdbe8515f"
+    }
+  },
   "logo": {
     "dark": "/images/pawapay_logo_green.png",
     "light": "/images/pawapay_logo_purple.png",
