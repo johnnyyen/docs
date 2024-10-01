@@ -6,11 +6,12 @@ All transactions on our platform can be in one of five possible statuses.
 
 | Status               | Description                                                                                               |
 |----------------------|-----------------------------------------------------------------------------------------------------------|
-| ![Completed](/images/dashboard/transactions/completed_chip.png) | Transaction has been **successfully** processed. This is a **final** status and will not change. |
-| ![Failed](/images/dashboard/transactions/failed_chip.png) | Transaction **failed** to process and no funds have been moved. This is a **final** status and will not change. |
-| ![In reconciliation](/images/dashboard/transactions/in_reconciliation_chip.png) | There was a problem processing this transaction, and it has been moved to our reconciliation engine to determine its final status. The transaction will be moved to its final status as soon as it’s been reconciled. |
-| ![Processing](/images/dashboard/transactions/processing_chip.png) | The transaction is currently being processed. |
-| ![Enqueued](/images/dashboard/transactions/enqueued_chip.png) | The transaction has been **accepted** by us for processing but is currently **enqueued** and not being shared with the MNO. Transactions with this status can be manually cancelled on the transaction details page. |
+| `Completed` | Transaction has been **successfully** processed. This is a **final** status and will not change. |
+| `Failed` | Transaction **failed** to process and no funds have been moved. This is a **final** status and will not change. |
+| `In reconciliation` | There was a problem processing this transaction, and it has been moved to our reconciliation engine to determine its final status. The transaction will be moved to its final status as soon as it’s been reconciled. |
+| `Processing` | The transaction is currently being processed. |
+| `Enqueued` | The transaction has been **accepted** by us for processing but is currently **enqueued** and not being shared with the MNO. Transactions with this status can be manually cancelled on the transaction details page. |
 
-> **Please note!**  
-> Transaction statuses **Completed** and **Failed** are final statuses and will not change.
+<Tip>
+    Transaction statuses `Completed` and `Failed` are final statuses and will not change.
+</Tip>

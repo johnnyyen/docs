@@ -11,7 +11,11 @@ If you have not configured callbacks, you can always call our [Check Deposit Sta
 
 ### Headers
 
-<Info> Following headers are only included if you have enabled "Sign all callbacks" from the pawaPay Dashboard. Read more about it from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens#signed-callbacks).</Info>
+<Info> 
+    Following headers are only included if you have enabled signed callbacks.
+
+    Read more about how to implement [signed callbacks](/using_the_api#signatures-in-callbacks).
+</Info>
 
 <ParamField header="Content-Digest" type="string">
     SHA256 or SHA-512 hash of the request body.

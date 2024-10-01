@@ -13,7 +13,7 @@ The customer then authorizes the payment by entering their PIN code on their mob
 Upon customers authorization (or rejection), the MNO informs pawaPay of the result and consequently pawaPay notifies you of the result by calling your defined [callback URL](/using_the_api#callback-urls) with a **[Deposit Status Callback](/v1/api-reference/deposits/deposit-callback)** (if configured). 
 If you have not configured callbacks, you can always check the status of your deposit request through our **[Deposit Get Status and Details](/v1/api-reference/deposits/check-deposit-status)** endpoint.
 
-<Info>Please follow the guidelines in the [Implementation](/implementation) section of our API docs to ensure a reliable implementation.</Info>
+<Tip>Please follow the guidelines in the [Implementation](/implementation) section of our API docs to ensure a reliable implementation.</Tip>
 
 After your deposit request has been **accepted** for processing, it can have one of the following statuses in the pawaPay platform:
 

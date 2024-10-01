@@ -6,11 +6,13 @@ You can use our Batch disbursements page to initiate multiple disbursements at t
 
 This functionality is available to users with the Batch Disbursements role. Read more about [User roles](/dashboard/user_management/user_roles).
 
-### Creating your batch disbursements file
+## Creating your batch disbursements file
 
 You can download a template directly from the dashboard to create a new batch disbursement file.
 
+<Frame>
 ![Batch Disbursement Template](/images/dashboard/other/batch_disbursement_template.png)
+</Frame>
 
 The template contains the following columns to be filled in by you.
 
@@ -23,53 +25,63 @@ The template contains the following columns to be filled in by you.
 | Amount      | The amount you wish to disburse.                                  |
 | Description | The description of this disbursement.                             |
 
-> **Please note!**  
-> The MSISDN should:  
-> - Not start with a + sign  
-> - Start with the country code
+<Info>
+    The MSISDN must 
+        - not start with a + sign
+        - start with the country code
 
-> **Please note!**  
-> The description should:  
-> - Be at least 4 characters  
-> - Not be longer than 22 characters  
-> - Contain only characters and numbers  
-> - Not contain any special characters
+    The description must:  
+        - Be at least 4 characters  
+        - Not be longer than 22 characters  
+        - Contain only characters and numbers  
+        - Not contain any special characters
+</Info>
 
-> **Please note!**  
-> You can find all the supported Country, Telco, and Currency combinations from [our API docs](using_the_api#correspondents).
+<Tip>
+    You can find all the supported Country, Telco, and Currency combinations from [our API docs](using_the_api#correspondents).
+</Tip>
 
 ### Example batch disbursement file
 
-![Example Batch Disbursement File](/images/dashboard/other/example_batch_disbursement_file.png)
+<Frame>
+    ![Example Batch Disbursement File](/images/dashboard/other/example_batch_disbursement_file.png)
+</Frame>
 
-> **Please note!**  
-> A maximum of 1000 disbursements can be added to a single batch disbursement file.
+<Info>
+    A maximum of 1000 disbursements can be added to a single batch disbursement file.
+</Info>
 
-### Uploading your batch disbursement file
+## Uploading your batch disbursement file
 
 After filling in your file, you can proceed to upload it into our system for validation. Your file will be validated for formatting errors and to ensure your account has configuration in place to disburse to the specified MNOs.
 
 The results of validation will be shown directly in the dashboard.
 
-![Batch Disbursement Validation](/images/dashboard/other/batch_disbursement_validation.png)
+<Frame>
+    ![Batch Disbursement Validation](/images/dashboard/other/batch_disbursement_validation.png)
+</Frame>
 
 | Result | Description                                                       |
 |--------|-------------------------------------------------------------------|
 | Ready  | The transaction is ready to be disbursed.                         |
 | Failed | Transaction is not valid. You can hover on the transaction to see the failure reason. |
 
-### Fixing validation failures
+## Fixing validation failures
 
 When encountering failures in your batch disbursement file, you can press the "Download Results" button to retrieve your batch disbursement file together with the failure reasons.
 
 You can fix the errors in this file and attempt to upload again.
 
-> **Please note!**  
-> You can upload the file downloaded by pressing the "Download Results" button to attempt again.  
-> You do not need to remove the failure reasons from this file.
+<Tip>
+    You can upload the file downloaded by pressing the "Download Results" button to attempt again.  
+    
+    You do not need to remove the failure reasons from this file.
+</Tip>
 
-### Initiating the batch disbursements
+## Initiating the batch disbursements
 
 If every transaction is "Ready", you can press the "Schedule payment" button to initiate the disbursements.
 
-![Schedule Payment](/images/dashboard/other/schedule_payment.png)
+<Frame>
+    ![Schedule Payment](/images/dashboard/other/schedule_payment.png)
+</Frame>

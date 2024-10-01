@@ -92,33 +92,33 @@ All our financial transaction endpoints __require you to specify a unique ID for
 All statuses of payment initiations, status checks (Get Status and Details) and callbacks should be explicitly handled.
 
 Following handling should NOT be used:
-```
+```java
     if( status == "COMPLETED" ) {
-    creditCustomer();
+        creditCustomer();
     } else {
-    failPayment();
+        failPayment();
     }
 ```
 
 Instead, all statuses should be explcitly listed and __unknown situations should be escalated__.
-```
+```java
     if( status == "COMPLETED" ) {
-    creditCustomer();
+        creditCustomer();
     } else if ( status == "FAILED" ) {
-    failPayment();
+        failPayment();
     } else {
-    //escalate and leave transaction as pending.
-    informOperations();
+        //escalate and leave transaction as pending.
+        informOperations();
     }
 ```
 Special attention needs to be given to network related errors as well.
 
 The following handling should NOT be used:
-```
+```java
     try  {
-    pawaPay.deposit();
+        pawaPay.deposit();
     } catch (InterruptedException e) {
-    failPayment();
+        failPayment();
     }
 ```
 

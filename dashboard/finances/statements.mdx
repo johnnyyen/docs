@@ -10,13 +10,17 @@ To see every single transaction on your wallet, please start by choosing:
 - The time period
 - A wallet
 
-![Wallet Search](/images/dashboard/finances/wallet_search.png)
+<Frame>
+    ![Wallet Search](/images/dashboard/finances/wallet_search.png)
+</Frame>
 
 Pressing "Show" will display a table with the transactions on this wallet for the selected period. You can also limit the results to specific Mobile Network Operators (MNOs) or transaction types.
 
-> **Please note!**  
-> - You can choose up to a **one month period at a time**.
-> - When viewing statements in the dashboard, a maximum of 10,000 transactions are displayed.
+<Info>
+    You can choose up to a **one month period at a time**.
+
+    When viewing statements in the dashboard, a maximum of 10,000 transactions are displayed.
+</Info>
 
 By default, results are shown starting from the most recent transaction. You can change the order by pressing on the respective column in the header of the table.
 
@@ -26,10 +30,13 @@ After having selected the wallet and time period you are interested in, you can 
 
 You will be asked to confirm this action and then taken to the [History](/dashboard/finances/history) page to download the resulting CSV file.
 
-> **Please note!**  
-> - You can choose up to a **one month period** at a time.
-> - All transactions for the period will be exported (no 10,000 transaction limit).
-> - The export might take some time to generate. The [History](/dashboard/finances/history) page will refresh itself automatically to show the latest status.
+<Info>
+    You can choose up to a **one month period** at a time.
+
+    There is not limit on the amount of transactions.
+    
+    The export might take some time to generate. The [History](/dashboard/finances/history) page will refresh itself automatically to show the latest status.
+</Info>
 
 ## Data in statements
 
@@ -47,10 +54,11 @@ After either exporting or viewing the statement data in our portal, the followin
 | Type             | The type of this transaction. See the list of all [transaction types](/dashboard/finances/statements#transaction-types) below. |
 | Balance          | Your balance after this transaction.                                                                  |
 | Reason           | The reason for this transaction. For example "Initial top-up" for your first top-up of this wallet.   |
-| Metadata         | Metadata that you can attach to the payment for providing additional context about the payment. Stored in JSON. |
+| Metadata         | Metadata in JSON format you attached to the payments for providing additional context about the payment. |
 
-> **Please note!**  
-> Not all columns are populated for all transactions. For example, transactions that represent a settlement of your balance do not have an MSISDN and MNO specified.
+<Info>
+    Not all columns are populated for all transactions. For example, transactions that represent a settlement of your balance do not have an MSISDN and MNO specified.
+</Info>
 
 ## Transaction types
 
@@ -72,5 +80,6 @@ You may encounter the following transaction types in your statements:
 | Top up                         | Funds sent by you have been added to your wallet. Read more about [Topping up your wallets](/dashboard/topping_up). |
 | Withdrawal                    | Funds withdrawn from your wallet to be settled to your bank. Read more about [requesting a settlement](/dashboard/requesting_settlement). |
 
-> **Please note!**  
-> For all Adjustments and Compensations, we provide additional information in the Details column.
+<Info>
+    For all Adjustments and Compensations, we provide additional information in the Details column.
+</Info>

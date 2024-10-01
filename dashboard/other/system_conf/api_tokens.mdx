@@ -10,32 +10,44 @@ This functionality is available to users with the Technical Administration role.
 
 Press the "Generate Token" button to generate an API token. You can have at most 2 active API tokens at a time. 
 
-![Generate Token](/images/dashboard/other/generate_token.png)
+<Frame>
+    ![Generate Token](/images/dashboard/other/generate_token.png)
+</Frame>
 
-You can use the "Copy to clipboard" button to easily copy the API token.
+<Tip>
+    You can use the "Copy to clipboard" button to easily copy the API token.
+</Tip>
 
-> **Please note!**
-> - **Store your token safely as pawaPay does not store your token after generating it for security reasons.**
-> - **You need to configure your [Callback URLs](/using_the_api#callback-urls) to be able to generate API tokens.**
+<Warning>
+    **Store your token safely as pawaPay does not store your token after generating it for security reasons.**
+
+    **You need to configure your [Callback URLs](/using_the_api#callback-urls) to be able to generate API tokens.**
+</Warning>
 
 ## Active API tokens
 
-Your active API tokens are listed together with the information about who generated them, when they were generated, and the Token ID. Note that the Token ID is not usable as the token itself but is only used for identifying a specific token when contacting our support team.
+Your active API tokens are listed together with the information about who generated them, when they were generated, and the Token ID. 
+Note that the Token ID is not usable as the token itself but is only used for identifying a specific token when contacting our support team.
 
-![Active API Tokens](/images/dashboard/other/active_tokens.png)
+<Frame>
+    ![Active API Tokens](/images/dashboard/other/active_tokens.png)
+</Frame>
 
 ## Revoking tokens
 
 If you need to revoke an API token, you can press the "Revoke" button which is found under the "Actions" column.
 
-![Revoke Token](/images/dashboard/other/revoke_token.png)
+<Frame>
+    ![Revoke Token](/images/dashboard/other/revoke_token.png)
+</Frame>
 
-> **Please note!**
-> **Revoking an API token will immediately stop all payments that use the given token to authenticate API calls!**
+<Warning>
+    **Revoking an API token will immediately stop all payments that use the given token to authenticate API calls!**
+</Warning>
 
 ## Signed requests
 
-**You can enable pawaPay to only accept signed requests for financial calls. You will need to provide us with the public key of the key pair you are signing your requests with.**
+You can enable pawaPay to only accept signed requests for financial calls. You will need to provide us with the public key of the key pair you are signing your requests with.
 
 ### Accepted algorithms
 
@@ -48,33 +60,49 @@ We accept 4 kinds of encryption algorithms:
 
 ### Adding a public key
 
-You can add your public key by navigating to the Security tab and pressing on “Add public key”.
+<Steps>
+    <Step title="Add you public key">
+        You can add your public key by navigating to the Security tab and pressing on “Add public key”.
 
-![Add Public Key](/images/dashboard/other/add_public_key.png)
+        <Frame>
+            ![Add Public Key](/images/dashboard/other/add_public_key.png)
+        </Frame>
+    </Step>
+    <Step title="Enter public key details">
+        You will then be presented a window where you can:
 
-You will then be presented a window where you can:
+        1. Name your public key
+        2. Enter the publc key itself
+        3. Choose if you wish to imediately start accepting only signed requests
 
-1. Name your key
-2. Add the key
-3. Choose if you wish to enable the feature by adding this key or not
-
-![Add Key Details](/images/dashboard/other/enter_public_key.png)
-
-> **Please note!**
-> You can choose to either add a key alone or add a key and enable the feature.
+        <Frame>
+            ![Add Key Details](/images/dashboard/other/enter_public_key.png)
+        </Frame>
+    </Step>
+    <Steps title="And done!">
+        
+    </Steps>
+</Steps>
 
 After successfully adding a key you will be able to view and remove it.
 
-![View and Remove Key](/images/dashboard/other/view_key.png)
+<Frame>
+    ![View and Remove Key](/images/dashboard/other/view_key.png)
+</Frame>
 
-You can also switch this feature on and off by using this slider. Switching the feature off **will not** remove any existing keys.
+You can also switch this feature on and off by using the toggle. Switching the feature off **will not** remove any existing keys.
 
-![Switch Feature On/Off](/images/dashboard/other/signed_only.png)
+<Frame>
+    ![Switch Feature On/Off](/images/dashboard/other/signed_only.png)
+</Frame>
 
 ## Signed callbacks
 
-Enable this feature to make pawaPay sign all callbacks. You can then verify those signatures when receiving the callback to ensure they have not been tampered with and are coming from pawaPay.
+Enable this feature to make pawaPay sign all callbacks. 
+You can then verify those signatures when receiving the callback to ensure they have not been tampered with and are coming from pawaPay.
 
-![Signed Callbacks](/images/dashboard/other/signed_callbacks.png)
+<Frame>
+    ![Signed Callbacks](/images/dashboard/other/signed_callbacks.png)
+</Frame>
 
 Read more about signed callbacks in our [API docs](/using_the_api#signatures-in-callbacks).

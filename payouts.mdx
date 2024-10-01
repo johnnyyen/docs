@@ -10,7 +10,7 @@ After we receive a payout request, we send it to the MNO specified as the [corre
 When the MNO finalizes your payout request, it will inform pawaPay and consequently pawaPay notifies you of the result by calling your defined [callback URL](/using_the_api#callback-urls) with a **[Payout Status Callback](/v1/api-reference/payouts/payout-callback)** (if configured). 
 If you have not configured callbacks, you can always check the status of your payout request through our **[Get Payout Status and Details](/v1/api-reference/payouts/check-payout-status)** endpoint. 
 
-<Info>Please follow the guidelines in the [Implementation](/implementation) section of our API docs to ensure a reliable implementation.</Info>
+<Tip>Please follow the guidelines in the [Implementation](/implementation) section of our API docs to ensure a reliable implementation.</Tip>
 
 After your payout request has been **accepted** for processing, it can have one of the following statuses in the pawaPay platform:
 

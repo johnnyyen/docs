@@ -225,7 +225,7 @@ Signature-Input: sig-pp=("@status" "signature-date" "content-digest");alg="ecdsa
 {"depositId":"d6df5c10-bd43-408c-b622-f10f9eaa568b","status":"ACCEPTED","created":"2024-05-02T12:36:46Z"}
 ```
 
-__Do not forget to enable signed financial calls and upload your public key in the pawaPay Dashboard. Learn how to do that from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens#signed-requests).__
+<Tip>Do not forget to enable signed financial calls and upload your public key in the pawaPay Dashboard. Learn how to do that from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens#signed-requests).</Tip>
 
 #### Make the request
 
@@ -299,6 +299,7 @@ Based on the previous example, the signature base would be the following.
 You can retrieve the public key to verify the signature from the [Public Keys](/v1/api-reference/toolkit/public-keys) endpoint.
 Using the retrieved public key, the generated signature base and the signature, you can now verify that the the content (as specified by the `Signature-Input`) was in fact signed by pawaPay and therefore originates from pawaPay.
 
+<Tip>Do not forget to enable signed callbacks in the pawaPay Dashboard. Learn how to do that from the [pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens#signed-callbacks).</Tip>
 
 ## Callback URLs
 
@@ -321,8 +322,8 @@ Using the retrieved public key, the generated signature base and the signature, 
 ## Correspondents
 
 Correspondents in our Merchant API refer to the specific Mobile Network Operators (MNOs) that are available through our platform. 
-The parameters that define the destination of the payment are <code>correspondent</code> and <code>payer</code> for [Deposits](/v1/api-reference/deposits/request-deposit) or <code>recipient</code> for [Payouts](/v1/api-reference/payouts/request-payout). 
-This routes the payment to the correct person (specified by the MSISDN) on the correct mobile network (specified by the <code>correspondent</code>).
+The parameters that define the destination of the payment are `correspondent` and `payer` for [Deposits](/v1/api-reference/deposits/request-deposit) or `recipient` for [Payouts](/v1/api-reference/payouts/request-payout). 
+This routes the payment to the correct person (specified by the MSISDN) on the correct mobile network (specified by the `correspondent`).
 
 You can always check which correspondents are available on your account from the [active configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
 

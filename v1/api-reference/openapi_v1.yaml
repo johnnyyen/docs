@@ -284,7 +284,7 @@ paths:
       parameters:
         - name: payoutId
           in: path
-          description: <code>payoutId</code> which has been specified in PayoutCreationRequest.
+          description: The `payoutId` of the payout you want to check the status of.
           required: true
           style: simple
           explode: false
@@ -533,7 +533,8 @@ paths:
       parameters:
         - name: payoutId
           in: path
-          description: <code>payoutId</code> which has been specified in PayoutCreationRequest.
+          description: |
+            The `payoutId` of the payout you want cancel.
           required: true
           style: simple
           explode: false
@@ -1153,7 +1154,7 @@ paths:
       parameters:
         - name: refundId
           in: path
-          description: <code>refundId</code> which has been specified in RefundCreationRequest.
+          description: The `refundId` of the refund you want to check the status of.
           required: true
           style: simple
           explode: false
@@ -1880,7 +1881,11 @@ components:
           maxLength: 22
           type: string
           pattern: ^[a-zA-Z0-9 ]+$
-          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          description: |
+            Short description for the transaction. 
+            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+
+            Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
         created:
           type: string
@@ -1942,7 +1947,7 @@ components:
           $ref: '#/components/schemas/FinancialAddress'
         customerTimestamp:
           type: string
-          description: The timestamp for when you initiated the deposit process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp for when you initiated the deposit process. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:28Z'
         statementDescription:
@@ -1950,18 +1955,22 @@ components:
           maxLength: 22
           type: string
           pattern: ^[a-zA-Z0-9 ]+$
-          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          description: |
+            Short description for the transaction. 
+            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            
+            Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
         created:
           type: string
-          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:29Z'
         depositedAmount:
           $ref: '#/components/schemas/Amount'
         respondedByPayer:
           type: string
-          description: When the MNO responded to this deposit request. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: When the MNO responded to this deposit request. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:30Z'
         correspondentIds:
@@ -2008,7 +2017,7 @@ components:
           $ref: '#/components/schemas/FinancialAddress'
         customerTimestamp:
           type: string
-          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:28Z'
         statementDescription:
@@ -2016,7 +2025,11 @@ components:
           maxLength: 22
           type: string
           pattern: ^[a-zA-Z0-9 ]+$
-          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer on the PIN prompt, in the SMS receipt or within their transaction history.
+          description: |
+            Short description for the transaction. 
+            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+
+            Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
         preAuthorisationCode:
           minLength: 1
@@ -2101,7 +2114,7 @@ components:
           $ref: '#/components/schemas/DepositCreationStatus'
         created:
           type: string
-          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp of when the deposit was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:29Z'
         rejectionReason:
@@ -2241,7 +2254,7 @@ components:
           description: |-
             Represents a suspicious activity category.
             
-            * <code>AMOUNT_DISCREPANCY</code> - Indicates that there is a discrepancy between requested and actual deposit amount.
+            * `AMOUNT_DISCREPANCY` - Indicates that there is a discrepancy between requested and actual deposit amount.
           example: AMOUNT_DISCREPANCY
           enum:
             - AMOUNT_DISCREPANCY
@@ -2271,7 +2284,11 @@ components:
           maxLength: 22
           type: string
           pattern: ^[a-zA-Z0-9 ]+$
-          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          description: |
+            Short description for the transaction. 
+            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+
+            Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
         amount:
           minLength: 1
@@ -2434,7 +2451,7 @@ components:
             - MSISDN
         address:
           $ref: '#/components/schemas/AddressValue'
-      description: The phone number (MSISDN) of the recipient or payer must be specified as the <code>value</code> of the <code>address</code>
+      description: The phone number (MSISDN) of the recipient or payer must be specified as the `value` of the `address`.
     Payout:
       required:
         - payoutId
@@ -2453,7 +2470,7 @@ components:
           maxLength: 36
           type: string
           format: uuid
-          description: A payout identifier which has been specified in <code>PayoutCreationRequest</code>.
+          description: The payoutId which was used to initiate this payout.
           example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
         status:
           $ref: '#/components/schemas/PayoutStatus'
@@ -2469,7 +2486,7 @@ components:
           $ref: '#/components/schemas/FinancialAddress'
         customerTimestamp:
           type: string
-          description: The timestamp for when you initiated the payout process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          description: The timestamp for when you initiated the payout process. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6).
           format: date-time
           example: '2020-02-21T17:32:28Z'
         statementDescription:
@@ -2477,16 +2494,20 @@ components:
           maxLength: 22
           type: string
           pattern: ^[a-zA-Z0-9 ]+$
-          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          description: |
+            Short description for the transaction. 
+            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            
+            Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
         created:
           type: string
-          description: The timestamp of when the payout was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          description: The timestamp of when the payout was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6).
           format: date-time
           example: '2020-02-21T17:32:29Z'
         receivedByRecipient:
           type: string
-          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6).
           format: date-time
           example: '2020-02-21T17:32:30Z'
         correspondentIds:
@@ -2519,7 +2540,7 @@ components:
           maxLength: 36
           type: string
           format: uuid
-          description: A payout identifier which has been specified in <code>PayoutCreationRequest</code>.
+          description: The `payoutId` of the payout this callback is for.
           example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
         status:
           $ref: '#/components/schemas/CallbackStatus'
@@ -2535,7 +2556,7 @@ components:
           $ref: '#/components/schemas/FinancialAddress'
         customerTimestamp:
           type: string
-          description: The timestamp for when you initiated the payout process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          description: The timestamp for when you initiated the payout process. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6).
           format: date-time
           example: '2020-02-21T17:32:28Z'
         statementDescription:
@@ -2543,16 +2564,20 @@ components:
           maxLength: 22
           type: string
           pattern: ^[a-zA-Z0-9 ]+$
-          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          description: |
+            Short description for the transaction. 
+            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+
+            Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
         created:
           type: string
-          description: The timestamp of when the payout was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          description: The timestamp of when the payout was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6).
           format: date-time
           example: '2020-02-21T17:32:29Z'
         receivedByRecipient:
           type: string
-          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6).
+          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6).
           format: date-time
           example: '2020-02-21T17:32:30Z'
         correspondentIds:
@@ -2597,7 +2622,7 @@ components:
           $ref: '#/components/schemas/FinancialAddress'
         customerTimestamp:
           type: string
-          description: The timestamp for when you initiated the payout process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp for when you initiated the payout process. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:28Z'
         statementDescription:
@@ -2605,7 +2630,11 @@ components:
           maxLength: 22
           type: string
           pattern: ^[a-zA-Z0-9 ]+$
-          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          description: |
+            Short description for the transaction. 
+            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            
+            Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
         metadata:
           $ref: '#/components/schemas/TransactionMetadataRequest'
@@ -2638,7 +2667,7 @@ components:
           $ref: '#/components/schemas/PayoutCreationStatus'
         created:
           type: string
-          description: The timestamp of when the payout was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp of when the payout was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:29Z'
         rejectionReason:
@@ -2811,7 +2840,7 @@ components:
           $ref: '#/components/schemas/FinancialAddress'
         customerTimestamp:
           type: string
-          description: The timestamp for when you initiated the refund process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp for when you initiated the refund process. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:28Z'
         statementDescription:
@@ -2819,16 +2848,20 @@ components:
           maxLength: 22
           type: string
           pattern: ^[a-zA-Z0-9 ]+$
-          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          description: |
+            Short description for the transaction. 
+            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            
+            Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
         created:
           type: string
-          description: The timestamp of when the refund was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp of when the refund was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:29Z'
         receivedByRecipient:
           type: string
-          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:30Z'
         correspondentIds:
@@ -2877,7 +2910,7 @@ components:
           $ref: '#/components/schemas/FinancialAddress'
         customerTimestamp:
           type: string
-          description: The timestamp for when you initiated the refund process. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp for when you initiated the refund process. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:28Z'
         statementDescription:
@@ -2885,16 +2918,19 @@ components:
           maxLength: 22
           type: string
           pattern: ^[a-zA-Z0-9 ]+$
-          description: Short description for the transaction. Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+          description: |
+            Short description for the transaction. 
+            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
         created:
           type: string
-          description: The timestamp of when the refund was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp of when the refund was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:29Z'
         receivedByRecipient:
           type: string
-          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: When the payment was received by the recipient. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:30Z'
         correspondentIds:
@@ -2962,7 +2998,7 @@ components:
           $ref: '#/components/schemas/RefundCreationStatus'
         created:
           type: string
-          description: The timestamp of when the refund was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 (https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: The timestamp of when the refund was created in the pawaPay platform. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:29Z'
         rejectionReason:
