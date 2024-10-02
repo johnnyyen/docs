@@ -2331,6 +2331,14 @@ components:
              Not valid examples for Ghana:
              `+233558708954`, `233 558 708954`, `233-558-708954`, `0233558708954`, `233558708`, `233558708954872`, `999558708954`, `37255870895`
           example: '233593456789'
+        language:
+          type: string
+          description: |
+            The language in which the Payment Page will be presented to the customer. If the user has explicitly changed their languages preferences, their selection will override this parameter.
+          example: "EN"
+          enum: 
+            - "EN"
+            - "FR"
         country:
           type: string
           description: |
@@ -2347,6 +2355,8 @@ components:
           maxLength: 50
           description: An optional text which will be displayed to the customer on the payment page to specify what they are paying for.
           example: 'Ticket to festival'
+        metadata: 
+          $ref: '#/components/schemas/TransactionMetadataRequest'
     Session:
       type: object
       properties:
