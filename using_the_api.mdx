@@ -87,6 +87,8 @@ The implementation of signatures in pawaPay is based on the standard described i
 
 When creating the financial request to send to the pawaPay Merchant API, you should create a Content-Digest, sign the request and add Signature and Signature-Input headers.
 
+You can find sample node code for signing your requests from [github](https://github.com/pawaPay/signatures-node-example).
+
 #### Hash the request body
 
 For generating the `Content-Digest` you can use either SHA-256 or SHA-512 algorithm. 
