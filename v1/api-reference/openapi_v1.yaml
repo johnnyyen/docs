@@ -1,11 +1,11 @@
 openapi: 3.0.0
 info:
-  title: pawaPay Merchant API
-  description: pawaPay Merchant API
+  title: pawaPay Merchant API v1
+  description: Please find complete documentation from https://docs.pawapay.io/.
   version: v1
   x-logo:
     url: https://global-uploads.webflow.com/62824591015aa314fd308df1/6411b26596e3de3f52551c00_Logopawapay-p-500.png
-    href: https://pawapay.io
+    href: https://docs.pawapay.io/
     altText: pawaPay logo
 servers:
   - url: https://api.sandbox.pawapay.cloud
@@ -21,8 +21,6 @@ tags:
     x-displayName: Deposits
   - name: refunds
     x-displayName: Refunds
-  - name: balance
-    x-displayName: Check Balance
   - name: payment-page
     x-displayName: Payment Page
   - name: toolkit
