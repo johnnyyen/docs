@@ -16,20 +16,19 @@ Our 24/7 payment operations team monitors all MNOs on our platform for instabili
 This information is accessible from our [availability](/v1/api-reference/toolkit/availability) endpoint. 
 You can verify before initiating the payment if the MNO is currently experiencing any problems and inform the user before they attempt the payment. 
 Knowing that your mobile money provider is currently unavailable is a better customer experience than having your payment fail. 
-Failed payments usually take longer to process, leaving the customer waiting for clarity for longer. Read more about our [availability](/v1/api-reference/toolkit/availability) endpoint.
+Failed payments usually take longer to process, leaving the customer waiting for the final result. Read more about our [availability](/v1/api-reference/toolkit/availability) endpoint.
 
-For customer support purposes, information about MNOs availability is also published on our [status page](https://status.pawapay.cloud). 
+For providing best support for your customer, information about MNOs availability is also published on our [dashboard](http://localhost:3000/dashboard/status) and [status page](https://status.pawapay.cloud).
 You can subscribe to updates over e-mail, slack and other channels to ensure your support team is always informed about any potential problems with the MNOs.
 
 When an MNO is experiencing difficulties in successfully processing disbursements, our platform will enqueue them to be processed once the MNO is operational. 
 Read more about [enqueued payouts](/payouts#enqueued-payouts).
 
-Sometimes MNOs systems have degraded performance. 
-When that happens, the MNOs APIs might have trouble returning the final status of payments. 
-Our platform still accepts payments for processing during those times. 
-These payments are reconciled through other means with the MNO using our reconciliation engine.
-This means that When using pawaPay, all payments are always reconciled to their final status. 
-This process takes a little longer than processing during normal operations.
+Occasionally, MNOs experience degraded system performance, which can prevent their APIs from returning the final status of payments. 
+During these periods, our platform continues to accept and process payments. 
+We reconcile these transactions through alternative methods using our reconciliation engine. 
+This ensures that, when using pawaPay, all payments are eventually reconciled to their final status. 
+Please note that this process may take slightly longer than during normal operations.
 
 ## Transaction limits
 
