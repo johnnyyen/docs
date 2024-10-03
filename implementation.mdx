@@ -40,11 +40,11 @@ Mobile money wallets have different limits for transactions. Most common and rel
 All MNOs that you transact with using pawaPay have transaction limits. 
 These are the lowest and highest amounts that can be collected, disbursed or refunded with the specific MNO. 
 They are based on the limits of the most common wallet types of this MNO. 
-As the effective limits are dependent on the specific users transaction history, transaction may still fail due to hitting limits. 
+As the effective limits are dependent on the specific users transaction history, transactions may still fail due to hitting limits. 
 
-For example, an MNO has a 1,000 GHS maximum deposit amount. 
-In reality the wallet has a limitation of 1,000 GHS total transaction value per day/week/month. 
-If the user has already transacted 500 GHS during this period, a transaction of 700 might still fail.
+> For example, an MNO has a 1,000 GHS maximum deposit amount. 
+> In reality the wallet has a limitation of 1,000 GHS total transaction value per day/week/month. 
+> If the user has already transacted 500 GHS during this period, a transaction of 700 GHS might still fail even though it's **accepted** by pawaPay.
 
 You can easily find the transaction limits from our [active configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
 
@@ -52,17 +52,19 @@ You can easily find the transaction limits from our [active configuration](/v1/a
 
 The pawaPay Merchant API is asynchronous. This is necessary to provide high performance and quality payment infrastructure that is able to process millions of payments every day.
 
-When you call any financial endpoint ([payout](/v1/api-reference/payouts/request-payout), [deposit](/v1/api-reference/deposits/request-deposit), [refund](/v1/api-reference/refunds/request-refund)) the response will confirm whether the transaction was __accepted for processing or rejected__. 
-Reasons for rejecting a transaction might be using the same ID for transaction more than once or the MNO being unavailable at the moment.
+When you call any financial endpoint ([payout](/v1/api-reference/payouts/request-payout), [deposit](/v1/api-reference/deposits/request-deposit), [refund](/v1/api-reference/refunds/request-refund)) the response will confirm whether the transaction was **accepted** or **rejected** for processing. 
+Reasons for rejecting a transaction might be using the same ID for transactions more than once or the MNO being unavailable at the moment.
 
-If the response confirms that the payment has been __accepted for processing__, it will take some time for it to process (remember that for deposits, the user needs to enter their PIN on their phone). 
+If the response confirms that the payment has been **accepted** for processing, it will take some time for it to process (remember that for deposits, the user needs to enter their PIN on their phone). 
 There are two ways to __find out about the final status__ of a payment.
 
+### Through callbacks
 First, you can configure callback URLs in the pawaPay Dashboard. 
 This will automatically __send a callback to your configured callback URL__ as soon as a payment has reached it's final status. 
 You will have to implement a callback handler that is able to receive calls from our platform and handle them accordingly.
 
-Second, you can use the corresponding `Get Status and Details` endpoint for the transaction type to periodically __check the status of a payment__.
+### Polling for status
+Second, you can use the corresponding `Check Status` endpoint for the transaction type to periodically __check the status of a payment__.
 
 <img class="screenshot" src="/images/deposit_flow.jpg" alt="Deposit with pawaPay Merchant API" />
 

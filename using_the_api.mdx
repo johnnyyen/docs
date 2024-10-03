@@ -4,10 +4,10 @@ title: Using the API
 
 ## Where is the API?
     
-    When [creating an account](https://dashboard.sandbox.pawapay.cloud/#/merchant-signup) with pawaPay, you will first receive access to our sandbox environemnt. 
-    The sandbox environment is completely isloated from our production environment. 
+    When [creating an account](https://dashboard.sandbox.pawapay.cloud/#/merchant-signup) with pawaPay, you will first receive access to our sandbox environment. 
+    The sandbox environment is completely isolated from our production environment. 
     You can safely test your integration with pawaPay without real mobile money wallets and real money involved.
-    You will get access to your production account when you have completed the onboarding on your sandbox account.
+    Access to your production account will be granted after completing the onboarding on your sandbox account.
 
     The base URL for the pawaPay Merchant API is different between our sandbox and production environments. The specific operation can be called by appending the endpoint to the base URL. 
 
@@ -217,7 +217,7 @@ Accept-Digest: sha-256,sha-512
 }
 ```
 
-The pawaPay API would respond by accepting the payment for processing with the follwoing response (headers irrelevant for signatures are omitted).
+The pawaPay API would respond by accepting the payment for processing with the following response (headers irrelevant for signatures are omitted).
 ```http
 Content-Digest: sha-512=:NkvHr2fjqMoKW6nxA6V6jeQXhZyKVAcYdOv6Rmpa2cMn7yZmYDFrPzj/1LiAvOmJkCEdfsS5Bn9N/uZL8nCLZQ==:
 Signature-Date: 2024-05-02T15:36:46.084331Z
@@ -241,6 +241,7 @@ When receiving callbacks from pawaPay they will include the following headers.
 * Signature-Date
 * Content-Type
 * Content-Digest
+
 You can verify that the request has not been tampered with and is coming from pawaPay.
 
 Here is an example callback for a deposit.
