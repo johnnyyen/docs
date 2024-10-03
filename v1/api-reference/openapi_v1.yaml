@@ -2313,22 +2313,20 @@ components:
         msisdn:
           type: string
           description: |
-            The phone number (MSISDN) of the payer or recipient.
-            
             If specified, this phone number will be used to collect the deposit. If not specified, the customer paying can specify the phone number that they want to pay from.
-            
+
             The format is (https://en.wikipedia.org/wiki/MSISDN). MSISDN validation has following rules:
              * Only digits without whitespaces or any other separators or prefixes like '+'.
              * Should not start with zero.
              * Country code is mandatory.
              * Should not exceed or be less than the valid length of specified country.
              
-             Valid examples for Ghana:
-             `233558708954`
+             Valid examples for Zambia:
+             `260763456789`
              
-             Not valid examples for Ghana:
-             `+233558708954`, `233 558 708954`, `233-558-708954`, `0233558708954`, `233558708`, `233558708954872`, `999558708954`, `37255870895`
-          example: '233593456789'
+             Not valid examples for Zambia:
+             `+260763456789`, `260 763 456789`, `260-7634-56789`, `0260763456789`, `2607634567`, `260763456789543`, `999558708954`, `37255870895`
+          example: '260763456789'
         language:
           type: string
           description: |

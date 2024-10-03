@@ -18,9 +18,9 @@ Users can get those limits increased by going through extended KYC processes wit
 
 ## What does a payment look like
 
-Mobile money payments are different from classic cards payments. They are more similar to A2A or 3-D Secure enabled card payments. 
-Specifically, user has to explicitly authorise each payment. When a user attempts to pay from their mobile money wallet, they need to enter their mobile money PIN code to authorise the payment. 
-The PIN code is only known by the issuer (MNO) and the owner the mobile money wallet. 
+Mobile money payments are different from classic card payments. They are more similar to A2A or 3-D Secure enabled card payments. 
+Specifically, the user has to explicitly authorise each payment. When a user attempts to pay from their mobile money wallet, they need to enter their mobile money PIN code to authorise the payment. 
+The PIN code is only known by the issuer (MNO) and the owner of the mobile money wallet. 
 Authorisation happens between those two parties and the merchant is not involved. 
 The owner of the mobile money wallet always receives an SMS receipt whenever their balance changes.
 This makes mobile money payments much more secure than classic card payments reducing fraud and chargeback risk to a minimum.
@@ -29,17 +29,17 @@ This has two important implications.
 
 First, this expands the technical infrastructure involved in processing every single payment. 
 Since the user needs to enter their mobile money PIN code to authorise each payment, both the server infrastructure and the cell network infrastructure are involved in the payment chain. 
-The PIN code is usually requested from the user by sending a USSD message over the cell network and utilising the handsets SIM toolkit to handle user interaction. 
+The PIN code is usually requested from the user by sending a USSD message over the cell network and utilising the handset's SIM toolkit to handle user interaction. 
 This gives mobile money incredible accessibility as it works securely on everything from the simplest of push-button handsets all the way to flagship smartphones. 
-On the flip side, there's a lot involved from server infrastructure, internet connectivity, cell networks, USSD gateways etc. 
+On the flip side, there's a lot involved from server infrastructure, internet connectivity, cell networks, USSD gateways, etc. 
 
 Second, the user is now part of the processing chain of each transaction. 
 A user attempting to initiate a payment on your website or app needs to take out their handset and enter their PIN in a limited amount of time. 
-Or they might not find their phone, accidentally close the PIN prompt, forget their PIN code, get a phone call etc. 
+Or they might not find their phone, accidentally close the PIN prompt, forget their PIN code, get a phone call, etc. 
 
 To conclude, mobile money is highly accessible and secure. The challenges to ensure high success rates and a great customer experience are different from other payment methods.
 
 With the pawaPay Merchant API you can easily transact with your customers in any way you need:
-* **You can collect money from them** - Funds will move from the customers mobile money wallet into your account in pawaPay. You can do that with our [Deposits](/deposits) functionality.
-* **You can disburse money to them** - Funds will move from your account in pawaPay to the customers mobile money wallet. You can do that with our [Payouts](/payouts) functionality.
-* **You can refund them** - Already collected funds will move back from your account in pawaPay to the customers mobile money wallet. You can do that with our [Refunds](/refunds) functionality.
+* **You can collect money from them** - Funds will move from the customer's mobile money wallet into your account in pawaPay. You can do that with our [Deposits](/deposits) functionality.
+* **You can disburse money to them** - Funds will move from your account in pawaPay to the customer's mobile money wallet. You can do that with our [Payouts](/payouts) functionality.
+* **You can refund them** - Already collected funds will move back from your account in pawaPay to the customer's mobile money wallet. You can do that with our [Refunds](/refunds) functionality.

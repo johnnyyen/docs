@@ -5,7 +5,7 @@ title: Payment Page
 ## Overview
 
 The pawaPay Payment Page allows you to rapidly integrate mobile money into your website or mobile app providing:
-* User experience for your customers that is optimised for mobile money.
+* A user experience for your customers that is optimised for mobile money.
 * Responsive design that works on desktop and mobile.
 * Low code integration supporting all countries and MNOs.
 * Support for both e-commerce and e-wallet use cases.
@@ -28,13 +28,13 @@ The pawaPay Payment Page allows you to rapidly integrate mobile money into your 
     </Step>
 </Steps>
 
-It is also integrated to the rest of the pawaPay merchant API, providing benefits like:
-* Phone numbers are valildated to be in the correct format.
+It is also integrated with the rest of the pawaPay merchant API, providing benefits such as:
+* Phone numbers are validated to be in the correct format.
 * The MNO to use for the payment is predicted based on the entered phone number.
-* Minimum and maxium transaction limits are always up to date.
+* Minimum and maximum transaction limits are always up to date.
 * When new countries or MNOs are enabled, they are available for your customers immediately.
 * Information about MNOs having downtime is integrated into the user experience.
-* With many more improvements to come...
+* And many more improvements to come...
 
 <Frame>
     <img class="screenshot" src="/images/payment_page_features.png" alt="Payment page - Features" />
@@ -49,7 +49,7 @@ Using the payment flow in your deposit or checkout experience is simple:
         When it's time for the customer to pay, [start a new session](/v1/api-reference/payment-page/deposit-via-payment-page). **The session will time out after 15 minutes.**
     </Step>
     <Step title="Forward the customer">
-        Forward the customer to the `redirectUrl` that you received in the response. 
+        Forward the customer to the `redirectUrl` provided in the response. 
     </Step>
     <Step title="Wait for them to return">
         The customer will complete the payment on the Payment Page and will be forwarded to `returnUrl`.
@@ -58,7 +58,7 @@ Using the payment flow in your deposit or checkout experience is simple:
         Your page on `returnUrl` should [check the status](/v1/api-reference/deposits/check-deposit-status) of the payment. The `depositId` will be passed as a URL parameter.
     </Step>
     <Step title="Handle accordingly">
-        Based on the `status` of the payment, handle a successful, failed or long running payment.
+        Based on the `status` of the payment, handle it as a successful, failed or long running payment.
         <Frame>
             <img class="screenshot" src="/images/payment_page_flow.png" alt="Payment page - Implementation flow" />
         </Frame>

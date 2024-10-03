@@ -4,12 +4,12 @@ title: Implementation considerations
 
 The pawaPay Merchant API simplifies integrating mobile money into your payment flows. 
 It provides a single standardised API to connect to Mobile Network Operators (MNOs) providing mobile money services across Africa.
-Following chapters introduce some important aspects of mobile money and working with financial APIs to help you build a high quality integration that your customers love and is easy to operate.
+The following chapters introduce some important aspects of mobile money and working with financial APIs to help you build a high-quality integration that your customers will love and that is easy to operate.
 
 ## MNO stability
 
 As described in the [Introduction](/about_mobile_money#what-does-a-payment-look-like), mobile money transaction chains are complex. 
-This means that payment services stability needs to be taken into account when implementing a high-quality payment flow. 
+This means that the stability of payment services needs to be taken into account when implementing a high-quality payment flow. 
 pawaPay provides multiple solutions to make this easy to manage.
 
 Our 24/7 payment operations team monitors all MNOs on our platform for instability and downtime. We stop accepting payments to those MNOs if the success rate is too low. 
@@ -18,8 +18,8 @@ You can verify before initiating the payment if the MNO is currently experiencin
 Knowing that your mobile money provider is currently unavailable is a better customer experience than having your payment fail. 
 Failed payments usually take longer to process, leaving the customer waiting for the final result. Read more about our [availability](/v1/api-reference/toolkit/availability) endpoint.
 
-For providing best support for your customer, information about MNOs availability is also published on our [dashboard](http://localhost:3000/dashboard/status) and [status page](https://status.pawapay.cloud).
-You can subscribe to updates over e-mail, slack and other channels to ensure your support team is always informed about any potential problems with the MNOs.
+To provide the best support for your customers, information about MNO availability is also published on our [dashboard](http://localhost:3000/dashboard/status) and [status page](https://status.pawapay.cloud).
+You can subscribe to updates over e-mail, Slack and other channels to ensure your support team is always informed about any potential problems with the MNOs.
 
 When an MNO is experiencing difficulties in successfully processing disbursements, our platform will enqueue them to be processed once the MNO is operational. 
 Read more about [enqueued payouts](/payouts#enqueued-payouts).
@@ -37,14 +37,14 @@ Mobile money wallets have different limits for transactions. Most common and rel
 * Maximum number of deposits/payouts in a day/week/month.
 * Maximum balance of a mobile money wallet.
 
-All MNOs that you transact with using pawaPay have transaction limits. 
+All MNOs that you transact with through pawaPay have transaction limits. 
 These are the lowest and highest amounts that can be collected, disbursed or refunded with the specific MNO. 
 They are based on the limits of the most common wallet types of this MNO. 
-As the effective limits are dependent on the specific users transaction history, transactions may still fail due to hitting limits. 
+As the effective limits depend on the specific user's transaction history, transactions may still fail due to hitting limits. 
 
 > For example, an MNO has a 1,000 GHS maximum deposit amount. 
 > In reality the wallet has a limitation of 1,000 GHS total transaction value per day/week/month. 
-> If the user has already transacted 500 GHS during this period, a transaction of 700 GHS might still fail even though it's **accepted** by pawaPay.
+> If the user has already transacted 500 GHS during this period, a transaction of 700 GHS might still fail even though it is **accepted** by pawaPay.
 
 You can easily find the transaction limits from our [active configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
 
@@ -52,7 +52,7 @@ You can easily find the transaction limits from our [active configuration](/v1/a
 
 The pawaPay Merchant API is asynchronous. This is necessary to provide high performance and quality payment infrastructure that is able to process millions of payments every day.
 
-When you call any financial endpoint ([payout](/v1/api-reference/payouts/request-payout), [deposit](/v1/api-reference/deposits/request-deposit), [refund](/v1/api-reference/refunds/request-refund)) the response will confirm whether the transaction was **accepted** or **rejected** for processing. 
+When you call any financial endpoint ([payout](/v1/api-reference/payouts/request-payout), [deposit](/v1/api-reference/deposits/request-deposit), [refund](/v1/api-reference/refunds/request-refund)), the response will confirm whether the transaction has been **accepted** or **rejected** for processing. 
 Reasons for rejecting a transaction might be using the same ID for transactions more than once or the MNO being unavailable at the moment.
 
 If the response confirms that the payment has been **accepted** for processing, it will take some time for it to process (remember that for deposits, the user needs to enter their PIN on their phone). 
@@ -60,7 +60,7 @@ There are two ways to __find out about the final status__ of a payment.
 
 ### Through callbacks
 First, you can configure callback URLs in the pawaPay Dashboard. 
-This will automatically __send a callback to your configured callback URL__ as soon as a payment has reached it's final status. 
+This will automatically __send a callback to your configured callback URL__ as soon as a payment has reached its final status. 
 You will have to implement a callback handler that is able to receive calls from our platform and handle them accordingly.
 
 ### Polling for status
@@ -73,12 +73,12 @@ Second, you can use the corresponding `Check Status` endpoint for the transactio
 When implementing your callback handler, please consider the following points.
 
 * The endpoint should be __accessible to our platform__. 
-    * If you are using IP whitelisting, our sending IP-s are documented [here](/using_the_api#callback-urls).
-    * Ensure that you have excluded the callback endpoint from your applications regular authentication system.
+    * If you are using IP whitelisting, our sending IPs are documented [here](/using_the_api#callback-urls).
+    * Ensure that you have excluded the callback endpoint from your application's regular authentication system.
 * Your endpoint for receiving callbacks must be __idempotent__.
 * Your endpoint needs to allow us to `POST` the callback.
 * We expect you to return `HTTP 200 OK` response to consider the callback __delivered__.
-* Make sure you use an SSL certificates from a __trusted CA__.
+* Make sure you use an SSL certificate from a __trusted CA__.
 * We will attempt to deliver callbacks for __15 minutes__.
 * If the callback delivery fails, you can always trigger a resend of the callback. This can be done by:
     * Calling the respective `Resend callback` endpoint 
@@ -86,9 +86,9 @@ When implementing your callback handler, please consider the following points.
 
 ## Safe handling
 
-As pawaPays Merchant API is a financial API, status and error handling should be implemented __defensively__.
+As pawaPay's Merchant API is a financial API, status and error handling should be implemented __defensively__.
 
-All our financial transaction endpoints __require you to specify a unique ID for the transaction__. This allows you to always verify whether the payment was received by pawaPay and verify it's status.
+All our financial transaction endpoints __require you to specify a unique ID for the transaction__. This allows you to always verify whether the payment was received by pawaPay and verify its status.
 
 All statuses of payment initiations, status checks (Get Status and Details) and callbacks should be explicitly handled.
 
@@ -101,18 +101,18 @@ Following handling should NOT be used:
     }
 ```
 
-Instead, all statuses should be explcitly listed and __unknown situations should be escalated__.
+Instead, all statuses should be explicitly listed and __unknown situations should be escalated__.
 ```java
     if( status == "COMPLETED" ) {
         creditCustomer();
     } else if ( status == "FAILED" ) {
         failPayment();
     } else {
-        //escalate and leave transaction as pending.
+        //escalate and leave the transaction as pending.
         informOperations();
     }
 ```
-Special attention needs to be given to network related errors as well.
+Special attention needs to be given to network-related errors as well.
 
 The following handling should NOT be used:
 ```java
@@ -127,7 +127,7 @@ Instead, you have two options to ensure no discrepancies are created.
 
 First, you can leave the transaction pending in your system and inform your operations. 
 All payments accepted for processing are visible in the pawaPay Dashboard. 
-Whether the payment was accepted by pawaPay and what is it's status can be verified from there.
+Whether the payment was accepted by pawaPay and what its status is can be verified there.
 
 Second, you can use the corresponding `Get status and details` endpoint to validate if the request was received by pawaPay.
 Since you always know the unique ID of the transaction, you can always verify the status of the payment on the pawaPay platform, even if no response was received when initiating the payment.
@@ -136,9 +136,9 @@ Since you always know the unique ID of the transaction, you can always verify th
 
 Implementing the considerations listed above avoids almost all discrepancies of payment statuses between your system and pawaPay.
 
-When using callbacks to receive the final statuses of payments, things like network connectivity issues, system downtime and configuration errors might cause the callback to not be recieved by your system.
+When using callbacks to receive the final statuses of payments, issues like network connectivity, system downtime, and configuration errors might cause the callback not to be received by your system.
 To avoid keeping your customers waiting, we strongly recommend implementing a status recheck cycle.
-For example, a periodic job that collects all payments that have been pending for a while. It can then query the respective `Get status and details` endpoint to verify the status of the payment. 
+For example, a periodic job that collects all payments that have been pending for an extended period. It can then query the respective `Get status and details` endpoint to verify the status of the payment. 
 If the status recheck cycle finds a payment in a final state, you can use the respective `Resend callback` endpoint to trigger a callback to be resent. This avoids duplicating processing logic.
 
 ## Backwards compatibility

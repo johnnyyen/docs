@@ -5,20 +5,20 @@ title: Moving to production
 ## Overview
 
 When you are ready to move from the sandbox environment to production, make sure you are using the correct [base URL](/using_the_api#where-is-the-api) and the correct [authentication token](/using_the_api#authentication). 
-These are the only parameters that should be different between sandbox and production.
+These are the only parameters that differ between sandbox and production.
 
-<Tip>We recommend keeping those parameters in your environemnt specific configuration.</Tip>
+<Tip>We recommend keeping those parameters in your environment-specific configuration.</Tip>
 
-If you use IP whitelisting, make sure [our IP-s are whitelisted](/using_the_api#callback-urls) to ensure we can deliver you callbacks.
+If you use IP whitelisting, ensure that [our IPs are whitelisted](/using_the_api#callback-urls) so we can deliver callbacks to you.
 
 ## Go-live testing
 
 We recommend implementing a feature flag for your integration with pawaPay to enable go-live testing in production, before market launch. 
-This allows you to test the end-to-end flow in production to uncover any environment specific problems without affecting customers.
+This allows you to test the end-to-end flow in production to uncover any environment-specific problems before they impact customers.
 
-To test live payments you will need for each MNO that you use:
+To test live payments, you will need the following for each MNO that you use:
 
 * A phone and phone number with the specific MNO.
 * An active mobile money wallet on that phone number.
 * An available balance on the mobile money wallet to conduct the tests with.
-* Be ready to enter the PIN code on the phone around 20-60 seconds from initiating the payment through our API.
+* Be ready to enter the PIN code on the phone approximately 1-60 seconds from initiating the payment through our API.

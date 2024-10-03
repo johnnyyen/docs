@@ -2,13 +2,13 @@
 title: Refunds
 ---
 
-You can refund an already completed collection (deposit) from your pawaPay account back to the customers mobile money wallet. 
+You can refund an already completed collection (deposit) from your pawaPay account back to the customer's mobile money wallet. 
 
-This operation does not involve the recipient having to authorise the transaction. The operation is usually processed within seconds.
+This operation does not require the recipient to authorise the transaction. The operation is usually processed within seconds.
 
-After we have received a refund request, we send it to the MNO specified as the [correspondent](/using_the_api#correspondents). 
-When the MNO finalizes your refund request, it will inform pawaPay and consequently pawaPay notifies you of the result by calling your defined [callback URL](/using_the_api#callback-urls) with a **[Refund Status Callback](/v1/api-reference/refunds/refund-callback)** (if configured). 
-If you have not configured callbacks, you can always check the status of your refund request through our **[Get Refund Status and Details](/v1/api-reference/refunds/check-refund-status)** endpoint. 
+After receiving a refund request, we send it to the MNO specified as the [correspondent](/using_the_api#correspondents). 
+When the MNO finalizes your refund request, it will inform pawaPay, and consequently, pawaPay will notify you of the result by calling your defined [callback URL](/using_the_api#callback-urls) with a **[Refund Status Callback](/v1/api-reference/refunds/refund-callback)** (if configured). 
+If you have not configured callbacks, you can always check the status of your refund request through our **[Check Refund Status](/v1/api-reference/refunds/check-refund-status)** endpoint. 
 
 <Tip>Please follow the guidelines in the [Implementation](/implementation) section of our API docs to ensure a reliable implementation.</Tip>
 

@@ -14,7 +14,7 @@ The pawaPay API enables you to pay and get paid with mobile money in Sub-Saharan
         1. Choose "Mock servers" from the sidebar and press the little "+" button.
         2. Choose "Select an existing collection".
         3. Select the "pawaPay Merchant API" as the collection to mock.
-        4. Name the server how you please. For example, "pawaPay sandbox".
+        4. Name the server as you please. For example, "pawaPay sandbox".
         5. Press "Create Mock Server".
         6. Copy the mock server URL.
 
@@ -27,9 +27,9 @@ The pawaPay API enables you to pay and get paid with mobile money in Sub-Saharan
         It only takes a few minutes and you can start testing our API immediately.
     </Step>
     <Step title="Set up callbacks">
-        Sign into the sandbox dashboard and go to [System configuration>Callback URLs](https://dashboard.sandbox.pawapay.cloud/#/system/callback-url).
+        Sign in to the sandbox dashboard and go to [System configuration>Callback URLs](https://dashboard.sandbox.pawapay.cloud/#/system/callback-url).
         
-        Press "Edit" and paste the callback URL you copied from Postman to the input boxes.
+        Press "Edit" and paste the callback URL you copied from Postman into the input boxes.
 
         <Frame>
             <img src="/images/dashboard/other/specify_callback_urls.png" />
@@ -49,7 +49,7 @@ The pawaPay API enables you to pay and get paid with mobile money in Sub-Saharan
     </Step>
     <Step title="Set up an environment in Postman">
         1. Choose "Environments" from the sidebar in Postman and press the little "+" button.
-        2. Name the environment how you please. For example, "pawaPay sandbox".
+        2. Name the environment as you please. For example, "pawaPay sandbox".
         3. Add the following variables into your environment:
 
         | Variable | Value |
@@ -57,11 +57,11 @@ The pawaPay API enables you to pay and get paid with mobile money in Sub-Saharan
         | apiToken | Paste the token you just generated as the value |
         | baseUrl  | https://api.sandbox.pawapay.cloud |
 
-        4. Don't forget to save.
+        4. Remember to save your changes.
         5. Pick the newly created environment from the environment dropdown in the upper right corner.
     </Step>
     <Step title="All done.">
-        You can now start sending requests to the pawaPay API in sandbox. Try "Request deposit" for example.
+        You can now start sending requests to the pawaPay API in the sandbox. Try "Request deposit" for example.
 
         And explore our API reference to learn more about:
         <CardGroup cols={2}>
@@ -72,7 +72,7 @@ The pawaPay API enables you to pay and get paid with mobile money in Sub-Saharan
                 Find out how to pay someone.
             </Card>
             <Card title ="Refunds" href="/v1/api-reference/refunds/">
-                Find out how to return someone what they paid.
+                Find out how to refund someone's payment.
             </Card>
             <Card title ="Active configuration" href="/v1/api-reference/toolkit/active-configuration">
                 Find out your configuration and parameters you need to pay and get paid.
