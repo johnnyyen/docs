@@ -17,7 +17,7 @@ To see every single transaction on your wallet, please start by choosing:
 Pressing "Show" will display a table with the transactions on this wallet for the selected period. You can also limit the results to specific Mobile Network Operators (MNOs) or transaction types.
 
 <Info>
-    You can choose up to a **one month period at a time**.
+    You can choose up to a **one-month period at a time**.
 
     When viewing statements in the dashboard, a maximum of 10,000 transactions are displayed.
 </Info>
@@ -26,25 +26,25 @@ By default, results are shown starting from the most recent transaction. You can
 
 ## Export statements
 
-After having selected the wallet and time period you are interested in, you can press the "Export statement" button to generate a CSV file with the results.
+After selecting the wallet and time period, press the "Export statement" button to generate a CSV file with the results.
 
 You will be asked to confirm this action and then taken to the [History](/dashboard/finances/history) page to download the resulting CSV file.
 
 <Info>
     You can choose up to a **one month period** at a time.
 
-    There is not limit on the amount of transactions.
+    There is no limit to the number of transactions.
     
-    The export might take some time to generate. The [History](/dashboard/finances/history) page will refresh itself automatically to show the latest status.
+    The export may take some time to generate. The [History](/dashboard/finances/history) page will refresh itself automatically to show the latest status.
 </Info>
 
 ## Data in statements
 
-After either exporting or viewing the statement data in our portal, the following data will be included:
+After exporting or viewing the statement data in our portal, the following data will be included:
 
 | Column           | Description                                                                                          |
 |------------------|------------------------------------------------------------------------------------------------------|
-| Creation Date    | The date and time at which this transaction was recorded on our platform. Time is in the UTC time zone. |
+| Creation Date    | The date and time when this transaction was recorded on our platform. The time is in the UTC time zone. |
 | MSISDN           | The phone number of the mobile money wallet that was involved in the transaction.                     |
 | Transaction ID   | The ID of this transaction as specified by you through our API. You can read more about transaction IDs from [our API docs](/v1/api-reference/deposits/request-deposit). |
 | Amount           | The amount of the transaction.                                                                        |
@@ -53,7 +53,7 @@ After either exporting or viewing the statement data in our portal, the followin
 | MNO              | The Mobile Network Operator (MNO) that fulfilled this transaction.                                    |
 | Type             | The type of this transaction. See the list of all [transaction types](/dashboard/finances/statements#transaction-types) below. |
 | Balance          | Your balance after this transaction.                                                                  |
-| Reason           | The reason for this transaction. For example "Initial top-up" for your first top-up of this wallet.   |
+| Reason           | The reason for this transaction, for example, "Initial top-up" for your first top-up of this wallet.   |
 | Metadata         | Metadata in JSON format you attached to the payments for providing additional context about the payment. |
 
 <Info>
@@ -81,5 +81,5 @@ You may encounter the following transaction types in your statements:
 | Withdrawal                    | Funds withdrawn from your wallet to be settled to your bank. Read more about [requesting a settlement](/dashboard/requesting_settlement). |
 
 <Info>
-    For all Adjustments and Compensations, we provide additional information in the Details column.
+    Additional infomation for all Adjustments and Compensations is provided in the Details column.
 </Info>

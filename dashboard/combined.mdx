@@ -1,0 +1,1359 @@
+---
+title: History
+---
+
+For easy reconciliation and auditability, you can always export detailed financial statements of your wallets. Every single transaction affecting your balance is recorded on the statement.
+
+On the Statement History page, you can find all your exported wallet statements.
+
+<Frame>
+    ![Statement History](/images/dashboard/finances/statement_history.png)
+</Frame>
+
+<Info>
+    Only statements generated within the past 90 days are available for download.
+</Info>
+
+### Glossary of data in statements
+
+| Column               | Description                                                                                      |
+|----------------------|--------------------------------------------------------------------------------------------------|
+| Time                 | The date and time at which this statement export was generated. Time is in the UTC time zone.    |
+| Requester            | The user who requested this statement export.                                                    |
+| Wallet               | The wallet for which this statement export was generated.                                        |
+| Statement time range | The time period that is included in this statement export.                                       |
+| Status               | The current status of this statement export. One of:  <br />**Completed**: The statement export is available to download. <br />**Generating**: The statement export is currently being generated and will be available soon. <br />**Failed**: The statement export failed to generate. Please try again. |---
+title: Statements
+---
+
+You always have access to a full financial statement for each of your wallets to be able to audit and reconcile your balance on our platform.
+
+## Search statements
+
+To see every single transaction on your wallet, please start by choosing:
+- The time period
+- A wallet
+
+<Frame>
+    ![Wallet Search](/images/dashboard/finances/wallet_search.png)
+</Frame>
+
+Pressing "Show" will display a table with the transactions on this wallet for the selected period. You can also limit the results to specific Mobile Network Operators (MNOs) or transaction types.
+
+<Info>
+    You can choose up to a **one-month period at a time**.
+
+    When viewing statements in the dashboard, a maximum of 10,000 transactions are displayed.
+</Info>
+
+By default, results are shown starting from the most recent transaction. You can change the order by pressing on the respective column in the header of the table.
+
+## Export statements
+
+After having selected the wallet and time period you are interested in, you can press the "Export statement" button to generate a CSV file with the results.
+
+You will be asked to confirm this action and then taken to the [History](/dashboard/finances/history) page to download the resulting CSV file.
+
+<Info>
+    You can choose up to a **one month period** at a time.
+
+    There is no limit on the number of transactions.
+    
+    The export may take some time to generate. The [History](/dashboard/finances/history) page will refresh itself automatically to show the latest status.
+</Info>
+
+## Data in statements
+
+After exporting or viewing the statement data in our portal, the following data will be included:
+
+| Column           | Description                                                                                          |
+|------------------|------------------------------------------------------------------------------------------------------|
+| Creation Date    | The date and time when this transaction was recorded on our platform. The time is in the UTC time zone. |
+| MSISDN           | The phone number of the mobile money wallet that was involved in the transaction.                     |
+| Transaction ID   | The ID of this transaction as specified by you through our API. You can read more about transaction IDs from [our API docs](/v1/api-reference/deposits/request-deposit). |
+| Amount           | The amount of the transaction.                                                                        |
+| Currency         | The currency in which the transaction took place.                                                     |
+| Country          | The country in which this transaction took place.                                                     |
+| MNO              | The Mobile Network Operator (MNO) that fulfilled this transaction.                                    |
+| Type             | The type of this transaction. See the list of all [transaction types](/dashboard/finances/statements#transaction-types) below. |
+| Balance          | Your balance after this transaction.                                                                  |
+| Reason           | The reason for this transaction, for example, "Initial top-up" for your first top-up of this wallet.   |
+| Metadata         | Metadata in JSON format you attached to the payments for providing additional context about the payment. |
+
+<Info>
+    Not all columns are populated for all transactions. For example, transactions that represent a settlement of your balance do not have an MSISDN and MNO specified.
+</Info>
+
+## Transaction types
+
+You may encounter the following transaction types in your statements:
+
+| Transaction type               | Description                                                                                          |
+|--------------------------------|------------------------------------------------------------------------------------------------------|
+| Deposit                        | Money collected from a customer has been deposited on your wallet.                                   |
+| Payout                         | Money has been paid out to a customer from your wallet.                                              |
+| Failed payout refund          | Money initially reserved from your wallet for a payout has been returned due to the payout failing.  |
+| Refund                         | Money initially collected to your wallet has been refunded to the customer.                          |
+| Failed refund reversal         | Money initially reserved from your wallet for a refund has been returned due to the refund failing. |
+| Deposit pass-through fee      | A fee charged by the Mobile Network Operator (MNO) for a deposit.                                    |
+| Payout pass-through fee       | A fee charged by the Mobile Network Operator (MNO) for a payout.                                     |
+| Refund pass-through fee       | A fee charged by the Mobile Network Operator (MNO) for a refund.                                     |
+| pawaPay deposit fee           | A fee charged by pawaPay for a deposit.                                                              |
+| pawaPay payout fee            | A fee charged by pawaPay for a payout.                                                               |
+| pawaPay refund fee            | A fee charged by pawaPay for a refund.                                                               |
+| Top up                         | Funds sent by you have been added to your wallet. Read more about [Topping up your wallets](/dashboard/topping_up). |
+| Withdrawal                    | Funds withdrawn from your wallet to be settled to your bank. Read more about [requesting a settlement](/dashboard/requesting_settlement). |
+
+<Info>
+    For all Adjustments and Compensations, we provide additional information in the Details column.
+</Info>---
+title: Wallets
+---
+
+On the pawaPay platform, all of your mobile money is stored in wallets. In most cases, wallets are issued per country and hold all your available mobile money in that country.
+
+On the Wallets page, you can see running balances of all your wallets and also have an option to choose a breakdown of those wallets to see what kind of transactions have occurred.
+
+## Balance overview
+
+In the balance overview section of the page, you can see each of your wallets and their:
+- Country
+- Current balance
+- Currency
+- Mobile Network Operator (MNO)
+
+<Frame>
+    ![Wallet Overview](/images/dashboard/finances/wallet_overview.png)
+</Frame>
+
+You can also click on one of the wallets to see the breakdown of that balance.
+
+<Info>  
+    In normal circumstances, wallets are issued per country. 
+    If no MNO is displayed for a wallet, then all payments in that country are done through this wallet.
+</Info>
+
+## Wallet breakdown
+
+Having clicked on one of your wallets, you need to choose a time range for which you would like to see the wallet breakdown.
+
+<Frame>
+    ![Wallet Breakdown](/images/dashboard/finances/wallet_breakdown.png)
+</Frame>
+
+<Tip>
+    You can use the quick filters below the date picker to quickly see yesterday's, last week's, or last month's wallet breakdown.
+</Tip>
+
+After pressing **Search**, you will see the different types of transactions that have affected your wallet balance during that period.
+
+Together with the opening and closing balance for the selected period, you will also see the total value of:
+- Deposits
+- Payouts
+- Fees
+- Withdrawals
+- Top ups
+- Adjustments
+
+You can always export your results into a CSV file.
+
+<Frame>
+    ![Export to CSV](/images/dashboard/finances/export_to_csv.png)
+</Frame>
+
+<Info>
+    The wallet breakdown is shown from **midnight to midnight** in the UTC time zone.
+    
+    You can choose up to **one month** period at a time.
+</Info>---
+title: Global search
+---
+Any payment on our platform can be found quickly and easily using our global search which is always at the top left corner of the dashboard.
+
+This functionality is available to users with the Transactions role. 
+Read more about [User roles](/dashboard/user_management/user_roles).
+
+## How to search
+Enter one of the following into the search bar:
+
+* Phone number (MSISDN)
+* MNO Transaction ID
+* Transaction ID (deposit ID, payout ID, refund ID)
+* Full Metadata value
+  * Metadata is searched based on full value of the metadata field. For example, searching for 12345, to find INV-12345, will not find results.
+
+<Frame>
+    <img src="/images/dashboard/global_search.png" />
+</Frame>
+
+<Info>
+    **Please note!**
+
+    Global search finds transactions made in the last three months.
+</Info>---
+title: pawaPay dashboard
+---
+
+From the pawaPay dashboard you can manage all your payments and operations in one single place. Learn more:
+
+<CardGroup cols={2}>
+    <Card title="Your wallet balances" icon="wallet" horizontal="true" href="/dashboard/finances/wallets">
+        See how much funds you have across all the different markets you operate in.
+    </Card>
+    <Card title="Check your statements" icon="magnifying-glass-dollar" horizontal="true" href="/dashboard/finances/statements">
+        Make sure the funds you have are as they are supposed to be.
+    </Card>
+    <Card title="Find any transaction" icon="table" horizontal="true" href="/dashboard/transactions/deposits">
+        To provide the best support to your customers, all payments in any market and with any MNO are always there in one place. With their live status.
+    </Card>
+    <Card title="Global search" icon="magnifying-glass" horizontal="true" href="/dashboard/global_search">
+        Global search finds any payment quickly, regardless of where it was made.
+    </Card>
+    <Card title="Manage access" icon="users" horizontal="true" href="/dashboard/user_management/inviting_users">
+        Manage users with sophisticated access controls and high level of security and auditability.
+    </Card>
+    <Card title="Configuration" icon="gear" horizontal="true" href="/dashboard/other/system_conf/api_tokens">
+        Get everything set up for your integration quickly and easily.
+    </Card>
+</CardGroup>---
+title: Audit logs
+---
+
+Every action taken in our dashboard is kept track of and visible on our Audit Log. 
+You can find here any changes to user permissions, new users invited, who signed into the portal and when, etc.
+
+This functionality is available to users with the Administrator role. Read more about [User roles](/dashboard/user_management/user_roles).
+
+<Warning>
+    We strongly recommend using only personalised accounts on our platform - all accounts should be accessible to a single person. 
+    This allows for compliant auditability of all actions taken on our dashboard.
+</Warning>
+
+## Searching and filtering
+
+Please choose the time period you are interested in and press "Search".
+
+<Frame>
+    ![Search Audit Log](/images/dashboard/other/search_audit_log.png)
+</Frame>
+
+The following information will be available for each action:
+
+| Column       | Description                                                                                     |
+|--------------|-------------------------------------------------------------------------------------------------|
+| Time         | The date and time when this action took place.                                                  |
+| Action       | The type of action that took place. Find below the glossary of all actions tracked.             |
+| Performed by | The user who took this action.                                                                  |
+| Description  | Further details about the action. *For example, for action ROLE CHANGED, it would include which role was assigned to the user.* |
+| Affected user| The user who was affected by this action. *As an example, for whom the Role was changed.*       |
+
+You can always further filter down the results from the search bar or by pressing on the column header.  
+
+<Frame>
+    ![Filter Audit Log](/images/dashboard/other/filter_audit_log.png)
+</Frame>
+
+As an example, you could search for the name of the user, which would filter the results to show all actions taken by this particular person during the selected time period.
+
+## Glossary of actions
+
+| Action                | Description                                                                                           |
+|-----------------------|-------------------------------------------------------------------------------------------------------|
+| Log in                | User has signed into the dashboard.                                                                   |
+| User invited          | A new user has been invited into the dashboard.                                                       |
+| User invite re-sent   | A user has been resent the invitation email.                                                          |
+| User registered       | A user has activated their account in the dashboard.                                                  |
+| User status change    | User has been disabled or re-enabled to access the dashboard.                                         |
+| Password changed      | A user has changed their password.                                                                    |
+| Role changed          | A user's role has changed. Read more about [User roles](/dashboard/user_management/user_roles).                         |
+| Country access changed| The countries that the user is able to see in the dashboard have changed. Read more about country-level access restrictions from [User roles](/dashboard/user_management/user_roles). |
+| API token generated   | A new API token has been generated for your account.                                                  |
+| Batch disbursement    | A new batch disbursement has been initiated.                                                          |
+| Domain added          | A new email domain has been added to the email domain whitelist. Read more about email domain whitelist from [Inviting users](/dashboard/user_management/user_roles). |---
+title: Batch disbursements
+---
+
+You can use our Batch disbursements page to initiate multiple disbursements at the same time directly from our dashboard.
+
+This functionality is available to users with the Batch Disbursements role. Read more about [User roles](/dashboard/user_management/user_roles).
+
+## Creating your batch disbursements file
+
+You can download a template directly from the dashboard to create a new batch disbursement file.
+
+<Frame>
+![Batch Disbursement Template](/images/dashboard/other/batch_disbursement_template.png)
+</Frame>
+
+The template contains the following columns to be filled out by you.
+
+| Column      | Description                                                       |
+|-------------|-------------------------------------------------------------------|
+| Country     | The country in which the recipient of the disbursement resides in.|
+| Telco       | The Mobile Network Operator (MNO) that the recipient's mobile money wallet is registered with. |
+| Currency    | The currency for this disbursement.                               |
+| MSISDN      | The phone number of the recipient of this disbursement.           |
+| Amount      | The amount you wish to disburse.                                  |
+| Description | The description of this disbursement.                             |
+
+<Info>
+    The MSISDN must:
+        - not start with a + sign
+        - start with the country code
+
+    The description must:  
+        - Be at least 4 characters  
+        - Not be longer than 22 characters  
+        - Contain only characters and numbers  
+        - Not contain any special characters
+</Info>
+
+<Tip>
+    You can find all the supported Country, Telco, and Currency combinations from [our API docs](using_the_api#correspondents).
+</Tip>
+
+### Example batch disbursement file
+
+<Frame>
+    ![Example Batch Disbursement File](/images/dashboard/other/example_batch_disbursement_file.png)
+</Frame>
+
+<Info>
+    A maximum of 1000 disbursements can be added to a single batch disbursement file.
+</Info>
+
+## Uploading your batch disbursement file
+
+After filling in your file, you can proceed to upload it into our system for validation. Your file will be validated for formatting errors and to ensure your account has configuration in place to disburse to the specified MNOs.
+
+The results of validation will be shown directly in the dashboard.
+
+<Frame>
+    ![Batch Disbursement Validation](/images/dashboard/other/batch_disbursement_validation.png)
+</Frame>
+
+| Result | Description                                                       |
+|--------|-------------------------------------------------------------------|
+| Ready  | The transaction is ready to be disbursed.                         |
+| Failed | Transaction is not valid. You can hover on the transaction to see the failure reason. |
+
+## Fixing validation failures
+
+When encountering failures in your batch disbursement file, you can press the "Download Results" button to retrieve your batch disbursement file together with the failure reasons.
+
+You can fix the errors in this file and attempt to upload again.
+
+<Tip>
+    You can upload the file downloaded by pressing the "Download Results" button to attempt again.  
+    
+    You do not need to remove the failure reasons from this file before re-uploading.
+</Tip>
+
+## Initiating the batch disbursements
+
+If every transaction is "Ready", you can press the "Schedule payment" button to initiate the disbursements.
+
+<Frame>
+    ![Schedule Payment](/images/dashboard/other/schedule_payment.png)
+</Frame>---
+title: API tokens
+---
+
+The pawaPay Merchant API can only be used with an authentication token. You can read more about how this token can be used to access our API from our [API docs](/using_the_api#authentication).
+
+This functionality is available to users with the Technical Administration role. Read more about [User roles](/dashboard/user_management/user_roles).
+
+## Generating an API token
+
+Press the "Generate Token" button to generate an API token. You can have at most 2 active API tokens at a time. 
+
+<Frame>
+    ![Generate Token](/images/dashboard/other/generate_token.png)
+</Frame>
+
+<Tip>
+    You can use the "Copy to clipboard" button to easily copy the API token.
+</Tip>
+
+<Warning>
+    **Store your token safely as pawaPay does not store your token after generating it for security reasons.**
+
+    **You need to configure your [Callback URLs](/using_the_api#callback-urls) to be able to generate API tokens.**
+</Warning>
+
+## Active API tokens
+
+Your active API tokens are listed together with the information about who generated them, when they were generated, and the Token ID. 
+Note that the Token ID is not usable as the token itself but is only used for identifying a specific token when contacting our support team.
+
+<Frame>
+    ![Active API Tokens](/images/dashboard/other/active_tokens.png)
+</Frame>
+
+## Revoking tokens
+
+If you need to revoke an API token, you can press the "Revoke" button which is found under the "Actions" column.
+
+<Frame>
+    ![Revoke Token](/images/dashboard/other/revoke_token.png)
+</Frame>
+
+<Warning>
+    **Revoking an API token will immediately stop all payments that use the given token to authenticate API calls!**
+</Warning>
+
+## Signed requests
+
+You can enable pawaPay to only accept signed requests for financial calls. You will need to provide us with the public key of the key pair you are signing your requests with.
+
+### Accepted algorithms
+
+We accept 4 kinds of encryption algorithms:
+
+- [RSASSA-PSS Using SHA-512](https://datatracker.ietf.org/doc/html/rfc9421#name-rsassa-pss-using-sha-512)
+- [RSASSA-PKCS1-v1_5 Using SHA-256](https://datatracker.ietf.org/doc/html/rfc9421#name-rsassa-pkcs1-v1_5-using-sha)
+- [ECDSA Using Curve P-256 DSS and SHA-256](https://datatracker.ietf.org/doc/html/rfc9421#name-ecdsa-using-curve-p-256-dss)
+- [ECDSA Using Curve P-384 DSS and SHA-384](https://datatracker.ietf.org/doc/html/rfc9421#name-ecdsa-using-curve-p-384-dss)
+
+### Adding a public key
+
+<Steps>
+    <Step title="Add your public key">
+        You can add your public key by navigating to the Security tab and pressing on “Add public key”.
+
+        <Frame>
+            ![Add Public Key](/images/dashboard/other/add_public_key.png)
+        </Frame>
+    </Step>
+    <Step title="Enter public key details">
+        You will then be presented a window where you can:
+
+        1. Name your public key
+        2. Enter the public key itself
+        3. Choose if you wish to immediately start accepting only signed requests
+
+        <Frame>
+            ![Add Key Details](/images/dashboard/other/enter_public_key.png)
+        </Frame>
+    </Step>
+    <Steps title="And done!">
+        
+    </Steps>
+</Steps>
+
+After successfully adding a key you will be able to view and remove it.
+
+<Frame>
+    ![View and Remove Key](/images/dashboard/other/view_key.png)
+</Frame>
+
+You can also switch this feature on and off by using the toggle. Switching the feature off **will not** remove any existing keys.
+
+<Frame>
+    ![Switch Feature On/Off](/images/dashboard/other/signed_only.png)
+</Frame>
+
+## Signed callbacks
+
+Enable this feature to make pawaPay sign all callbacks. 
+You can then verify those signatures when receiving the callback to ensure they have not been tampered with and are coming from pawaPay.
+
+<Frame>
+    ![Signed Callbacks](/images/dashboard/other/signed_callbacks.png)
+</Frame>
+
+Read more about signed callbacks in our [API docs](/using_the_api#signatures-in-callbacks).---
+title: Callback URLs
+---
+
+Our platform uses callbacks to notify you of the final statuses of payments. You can read more about how callbacks are used on our platform from [our API docs](/using_the_api#callback-urls).
+
+This functionality is available to users with the Technical Administration role. Read more about [User roles](/dashboard/user_management/user_roles).
+
+## Specifying the callback URLs
+
+Please enter the URL at which you wish to receive notifications about the [final statuses](/dashboard/transactions/transaction_statuses) of payments. You can use the same URL for all types.
+
+<Frame>
+    ![Specify Callback URLs](/images/dashboard/other/specify_callback_urls.png)
+</Frame>
+
+<Warning>
+    Make sure you enter the correct URL.
+    If you are using a firewall, ensure that you have whitelisted our IPs. 
+    The IPs can be found in our [API docs](/using_the_api#callback-urls).
+</Warning>
+
+If you do not plan to use our API (i.e., you are only planning to use our [Batch disbursements](/dashboard/other/batch_disbursements) or will be polling for status, please indicate that by checking the below checkbox.
+
+<Frame>
+    ![Batch Disbursements Checkbox](/images/dashboard/other/batch_disbursements_checkbox.png)
+</Frame>---
+title: Requesting a settlement
+---
+
+<Steps>
+    <Step title="Open the support widget">
+        You can request a settlement by pressing the "Support" button in the lower left corner of the page in our dashboard.
+
+        <Frame>
+            <img src="/images/dashboard/support_widget_button.png" width="100" noZoom />
+        </Frame>
+    </Step>
+    <Step title="Request a settlement">
+        Press on the "Settlement request" option.
+        <Frame>
+            <img src="/images/dashboard/support_widget_settlement.png" />
+        </Frame>
+    </Step>
+    <Step title="Specify how you want to be settled">
+
+
+        In your request, please specify:
+
+        * The wallets you wish to be settled; and
+        * The amount from each wallet that you wish to be settled.
+        * If you are being settled in a foreign currency, our treasury team will contact you via the ticket raised with the exchange rates.
+    </Step>
+    <Step title="Wait for the funds">
+        Once agreed, you will be settled to the bank account you specified during your initial account setup.
+    </Step>
+</Steps>---
+title: How to sign in
+---
+
+The pawaPay dashboard supports two methods of user authentication: traditional password-based authentication and Google-based authentication.
+
+Should you opt for Google-based authentication, your organization must already utilize [Google Workspace](https://workspace.google.com/), or a comparable service where Google manages email addresses. This feature facilitates a seamless login process, allowing users to access our portal using their existing Google accounts.
+
+<Tip>
+    We recommend forcing 2-step verification on your Google Workspace account for increased security.
+</Tip>
+
+## Activating your account
+
+When invited to our dashboard, you will receive an invitation email with an activation link.
+
+![Account Activation Email](/images/dashboard/signing_in/activation_email.png)
+
+Pressing on "Activate" will take you to the account activation page where you are asked to read and accept our Terms and Conditions and Privacy Policy, and choose your authentication method - Google or username and password.
+
+<Tip>
+  The password meter at the bottom of the "Password" input helps you choose a strong password to secure your account.
+</Tip>
+
+![Password Strength Meter](/images/dashboard/signing_in/password_meter.png)
+
+Pressing "Activate" will take you to our Dashboard [sign-in page](https://dashboard.pawapay.cloud/).
+
+## Signing into the dashboard
+
+#### Authentication with username and password
+
+Go to our [sign-in page](https://dashboard.pawapay.cloud/), enter your email address, and press "Continue".
+
+![Enter Email Address](/images/dashboard/signing_in/enter_email.png)
+
+Enter your password and press "Sign in".
+
+<Info>
+    Our dashboard follows [OWASP AVSV Level 3](https://owasp.org/www-pdf-archive/OWASPApplicationSecurityVerificationStandard3.0.pdf) password policy.
+</Info>
+
+![Enter Password](/images/dashboard/signing_in/enter_password.png)
+
+You will be prompted for a verification code which was sent to your email. Enter it and press "Continue" to be redirected to the pawaPay Dashboard landing page.
+
+![Verification Code](/images/dashboard/signing_in/verification_code.png)
+
+#### Authentication with Google
+
+Go to our [sign-in page](https://dashboard.pawapay.cloud/), enter your email address, and press "Continue".
+
+![Enter Email Address](/images/dashboard/signing_in/enter_email.png)
+
+If you have chosen Google as your authentication method, the Dashboard will present you an option to authenticate via signing in with your Google account.
+
+![Google Sign-In](/images/dashboard/signing_in/google_signin.png)
+
+> **Note**  
+> When using multiple Google accounts (i.e., business and personal), make sure you choose the account that was used to invite you to our dashboard.
+
+### Resetting your password
+
+Enter your email on our [sign-in page](https://dashboard.pawapay.cloud/) and press "Continue".
+
+![Enter Email Address](/images/dashboard/signing_in/enter_email.png)
+
+Press on the "Reset password" link.
+
+![Reset Password Link](/images/dashboard/signing_in/reset_password.png)
+
+Enter your email and press "Reset my password".
+
+![Reset Password](/images/dashboard/signing_in/confirm_reset_password.png)
+
+You will receive an email with a link to reset your password. Press on the "Reset password" button.
+
+![Email Reset Link](/images/dashboard/signing_in/password_reset_email.png)
+
+You will be forwarded to the password reset page where you can enter your new password. When done, press on "Change my password".
+
+![Change Password](/images/dashboard/signing_in/change_password.png)
+
+You will then be forwarded to our [sign-in page](https://dashboard.pawapay.cloud/) to sign in with your new password.---
+title: Platform and MNO status
+---
+
+Any relevant information about incidents and maintenance that affect your merchant account will be displayed on the top right corner of the pawaPay dashboard.
+<Frame>
+    <img src="/images/dashboard/incident_widget.png" />
+</Frame>
+
+Pressing on the icon will expand your view and provide more details on the ongoing incidents and upcoming maintenance.
+
+<Frame>
+    <img src="/images/dashboard/incidents_expanded.png" />
+</Frame>
+
+Pressing on "Read more" will direct you to the incident page with more information about it.
+
+The "Status Page" button will direct you to the our [status page](https://status.pawapay.cloud/).
+
+<Tip>
+    On the [status page](https://status.pawapay.cloud/) you can subscribe to receive updates about incidents through different channels like e-mail, Slack and more.
+</Tip>
+
+## Availability statuses of MNOs
+
+| Status | Description |
+|--------|-------------|
+| Operational | Service is operating as expected. |
+| Degraded performance | Degraded performance for some transactions. |
+| Partial outage | Degraded performance with intermittent unavailability. |
+| Major outage | Service is unavailable and no transactions are accepted for processing. |
+| Under maintenance | There is an active maintenance window. Degraded performance or intermittent unavailability might occur. |
+
+<Tip>
+    Our support and payment operation teams work 24/7 and are aware of, and acting on, any statuses shown on our status page. 
+    We provide regular updates on the progress of resolving all issues that arise. 
+</Tip>
+
+## More about MNO availability
+
+To provide the best experience for your customers, we suggest implementing our Correspondend Availability Status endpoints. 
+This allows you to inform your customers proactively about MNO downtime. 
+
+Read more from our [API docs](/v1/api-reference/toolkit/availability).---
+title: Contacting our support
+---
+
+<Tip>
+Our dedicated support team operates around the clock, 24/7, to assist you with any queries you may have regarding your transactions or the functionalities of our platform.  
+</Tip>
+
+## Contacting our support team
+
+You can contact our support team by Signing into the portal and pressing the "Support" button on the bottom left corner of the page.
+
+<Frame>
+    <img src="/images/dashboard/support_widget_button.png" width="100" />
+</Frame>
+
+Choose the type of question you have.
+<Frame>
+    <img src="/images/dashboard/support_widget.png" />
+</Frame>
+
+## What to include in the request?
+To get your request resolved effectively, please provide as many details as possible.
+
+| Detail | Description |
+|--------|-------------|
+| MNO transaction ID | This is the ID that the customer would see for this transaction. <br /> *Particularly important for reconciling payments that do not appear in our dashboard or are not in a final state. Read more about [Transaction statuses](/dashboard/transactions/transaction_statuses) .*
+| Phone number (MSISDN) | The phone number of the customer. <br /> *For mobile money, this is the equivalent of a bank account or card number.* |
+| Date and time | The date and time the problem occurred. <br /> *Particularly important for reconciling payments that do not appear in our dashboard.* |
+| Transaction ID | The ID of the deposit, payout or refund as seen in our dashboard. |
+
+Having as much information as possible allows us to identify, investigate and resolve the issue quickly and effectively.---
+title: Topping up your wallets
+---
+
+In order to make payments via our disbursement API, your wallet must have sufficient funds available. Where a disbursement request is made and the wallet has insufficient balance to complete the transaction, the transaction will fail. 
+
+Accordingly when you intend to use disbursements you may be required to pre-fund (top up) your pawaPay wallet.
+
+In order to streamline the process you are encouraged to follow the instructions below whenever a top up is being made to your pawaPay wallet. 
+
+## Send your funds to the correct bank account
+
+When sending funds to top up your wallet in a particular country, you are requested to send those funds to the bank account for the respective market included in the list at the bottom of this page.
+
+## Notify our team of your top up
+
+<Steps>
+    <Step title="Transfer the funds">
+        Transfer the funds to one of our bank accounts depending on how and where you are topping up.
+
+        Find all the bank accounts [below](/dashboard/topping_up#bank-accounts-for-pre-funding).
+    </Step>
+    <Step title="Let us know">
+        After you have sent us funds, you can inform us of a top-up by pressing on the "Support" button in the lower left corner of the page in our dashboard.
+        <Frame>
+            <img src="/images/dashboard/support_widget_button.png" width="100" noZoom="true" />
+        </Frame>
+    </Step>
+    <Step title="Choose the right option">
+        Press on the "Wallet top up request" option to let our treasury team know.
+        <Frame>
+            <img src="/images/dashboard/support_widget_topup.png"/>
+        </Frame>
+    </Step>
+    <Step title="Fill the details">
+        Populate the details requested on the support form so we know where the funds are arriving and where they should be allocated.
+    </Step>
+    <Step title="Attach PoP">
+        Please attach a Proof of Payment (SWIFT confirmation) to the support form.
+    </Step>
+    <Step title="Press send">
+
+    </Step>
+</Steps>
+
+Our team will be in touch with you as soon as possible to confirm receipt of the funds and that your top up has been actioned. 
+
+Our team will also confirm the exchange rate used if the pre funding was made in a currency other than the local currency of the market in which your pawaPay wallet is held. 
+
+## Bank accounts for Pre-funding
+### When topping up in a single market in foreign currency
+<AccordionGroup>
+    <Accordion title="Tanzania USD">
+        | | |
+        |--------------|---------------------------|
+        | Account name | Madina Tech Group Limited |
+        | SWIFT/BIC | CORUTZTZ |
+        | Account Number | 0250782957600 |
+        | Bank | CRDB |
+        | Bank Address | Dar es Salaam Tanzania|
+    </Accordion>
+    <Accordion title="Rwanda USD">
+        | | |
+        |--------------|---------------------------|
+        | Account Name | Quidexplus Rwanda Limited |
+        | SWIFT/BIC | BKIGRWRWXXX |
+        | Account Number | 10007-6339583 |
+        | Bank | Bank of Kigali |
+        | Bank Address | 6112 KN4 Avenue, in Nyarugenge District |
+    </Accordion>
+    <Accordion title ="Rwanda EUR">
+        | | |
+        |--------------|---------------------------|
+        | Account Name | Quidexplus Rwanda Limited |
+        | SWIFT/BIC | BPRWRWRW |
+        | Account Number | 4491244332 |
+        | Bank | BPR Bank |
+        | Bank Address | Kigali, Rwanda |
+    </Accordion>
+    <Accordion title="Zambia USD">
+        | | |
+        |--------------|---------------------------|
+        | Account Name | Smart Pay Solutions Limited |
+        | SWIFT/BIC | ZNCOZMLU |
+        | Account Number | 5793111500269 |
+        | Bank | Zanaco |
+        | Bank Address | Lusaka, Zambia |
+    </Accordion>
+    <Accordion title="Uganda USD">
+        | | |
+        |--------------|---------------------------|
+        | Account Name | Quidexplus Uganda Limited |
+        | SWIFT/BIC | SBICUGKXXXX |
+        | Account Number | 9030020520913 | 
+        | Bank | Stanbic Bank |
+        | Bank Address | Kampala, Uganda |
+    </Accordion>
+    <Accordion title="Sierra Leone USD">
+        | | |
+        |--------------|---------------------------|
+        | Account Name | Kerry Payments SL Limited |
+        | SWIFT/BIC | UNAFSLFR XXX |
+        | Account Number | 540810130003401 |
+        | Bank | UBA Bank |
+        | Bank Address | Freetown, Sierra Leone |
+    </Accordion>
+    <Accordion title="DRC USD">
+        | | |
+        |--------------|---------------------------|
+        | Account Name | Kerry Payments  RDC |
+        | SWIFT/BIC | ECOCCDKIXXX |
+        | Account Number | 00026-00004-35200027825-38 |
+        | Bank | Ecobank |
+        | Bank Address | Lubumbashi, DRC |
+    </Accordion>
+
+</AccordionGroup>
+
+### When topping up in a single market in local currency
+
+<AccordionGroup>
+    <Accordion title="Tanzania TZS">
+        | | |
+        |--------------|---------------------------|
+        | Account name       | Madina Tech Group Limited    |
+        | SWIFT/BIC          | CORUTZTZ                     |
+        | Account Number     | 0150782957600                |
+        | Bank               | CRDB                         |
+        | Bank Address       | Dar es Salaam, Tanzania      |
+    </Accordion>
+    <Accordion title="Uganda UGX">
+        | | |
+        |--------------|---------------------------|
+        | Account name       | Quidexplus Uganda Limited    |
+        | SWIFT/BIC          | SBICUGKXXXX                  |
+        | Account Number     | 9030020520751                |
+        | Bank               | Stanbic                      |
+        | Bank Address       | Kampala, Uganda              |
+    </Accordion>
+    <Accordion title="Rwanda RWF">
+        | | |
+        |--------------|---------------------------|
+        | Account name       | Quidexplus Rwanda Limited         |
+        | SWIFT/BIC          | BKIGRWRWXXX                       |
+        | Account Number     | 10007-6338293                     |
+        | Bank               | Bank of Kigali                    |
+        | Bank Address       | 6112 KN4 Avenue, in Nyarugenge District |
+    </Accordion>
+    <Accordion title="Cameroon XAF">
+        | | |
+        |--------------|---------------------------|
+        | Account Name       | Kerry Payments SARL                    |
+        | SWIFT/BIC          | UNAFCMCX                                |
+        | Account Number     | 15011000389                             |
+        | Bank               | United Bank of Africa                   |
+        | Bank Address       | Yaounde, Cameroon                       |
+    </Accordion>
+    <Accordion title="Zambia ZMW">
+        | | |
+        |--------------|---------------------------|
+        | Account name       | Kerry Payments SARL              |
+        | SWIFT/BIC          | UNAFCMCX                          |
+        | Account Number     | 15011000389                       |
+        | Bank               | United Bank of Africa             |
+        | Bank Address       | Yaounde, Cameroon                 |
+    </Accordion>
+    <Accordion title="Ghana GHS">
+        | | |
+        |--------------|---------------------------|
+        | Account name       | Quidexplus Limited               |
+        | SWIFT/BIC          | FIRNGHACCUS                      |
+        | Account Number     | 62000669442                      |
+        | Bank               | First National Bank              |
+        | Bank Address       | Accra, Ghana                     |
+    </Accordion>
+    <Accordion title="Benin XOF">
+        | | |
+        |--------------|---------------------------|
+        | Account Name       | Kerry Payments Operations             |
+        | SWIFT/BIC          | COBBBJBJ                              |
+        | Account Number     | 503090008481                          |
+        | IBAN               | BJ06701503-503090008481-23            |
+        | Bank               | UBA                                   |
+        | Bank Address       | UBA AGENCE LES COCOTIERS - Benin      |
+    </Accordion>
+    <Accordion title="Ivory Coast XOF">
+        | | |
+        |--------------|---------------------------|
+        | Account Name       | Kerry Payments Cote D Ivoire                  |
+        | SWIFT/BIC          | UNAFCIAB                                      |
+        | Account Number     | 101580009440                                  |
+        | IBAN               | CI93CI1500100110158000944022                  |
+        | Bank               | UBA                                           |
+        | Bank Address       | AGENCE DU PLATEAU 17 BP 808 ABIDJAN 17 TEL: 20 31 22 22 BLV BOTREAU ROUSSEL |
+    </Accordion>
+    <Accordion title="Senegal XOF">
+        | | |
+        |--------------|---------------------------|
+        | Account Name       | Kerry Payments Senegal SUARL            |
+        | SWIFT/BIC          | SGSNSNDAXXX                             |
+        | Account Number     | 005010978870                            |
+        | IBAN               | SN08 SN011 01005 005010978870 55        |
+        | Bank               | Societe Generale                        |
+        | Bank Address       | SOCIETE GENERALE AGENCE ROUME           |
+    </Accordion>
+    <Accordion title="Malawi MWK">
+        | | |
+        |--------------|---------------------------|	
+        | Account Name       | Atlas Digital Services Limited    |
+        | SWIFT/BIC          | SBICMWMX                           |
+        | Account Number     | 9100006184755                      |
+        | Bank               | Standard Bank                      |
+        | Bank Address       | Blantyre                           |
+    </Accordion>
+    <Accordion title="Mali XOF">	
+        | | |
+        |--------------|---------------------------|	
+        | Account Name       | Kerry Payments Mali SARL                 |
+        | SWIFT/BIC          | BICIMLBAXXX                              |
+        | Account Number     | 003800267544001                          |
+        | IBAN               | ML13ML0890100380026754400131             |
+        | Bank               | BICIM                                    |
+        | Bank Address       | BICIM AGENCE SIEGE FLEUVE                |
+    </Accordion>
+    <Accordion title="Sierra Leone SLE">
+        | | |
+        |--------------|---------------------------|
+        | Account Name       | Kerry Payments SL Limited         |
+        | SWIFT/BIC          | UNAFSLFR XXX                      |
+        | Account Number     | 540810030001363                   |
+        | Bank               | UBA Bank                          |
+        | Bank Address       | Freetown, Sierra Leone            |
+    </Accordion>
+    <Accordion title="DRC CDF">
+        | | |
+        |--------------|---------------------------|
+        | Account Name       | Kerry Payments RDC                   |
+        | SWIFT/BIC          | ECOCCDKIXXX                          |
+        | Account Number     | 00026-00004-35200027826-38           |
+        | Bank               | Ecobank                              |
+        | Bank Address       | Lubumbashi, DRC                      |
+    </Accordion>
+    <Accordion title="Congo Brazzaville XAF">
+        | | |
+        |--------------|---------------------------|
+        | Account Name       | KERRY PAYMENTS BRAZZAVILLE SARL                                   |
+        | SWIFT/BIC          | ECOCCGCG                                                          |
+        | Account Number     | 37285009328                                                       |
+        | IBAN               | CG39 30014-00003-37285009328-51                                   |
+        | Bank               | Ecobank                                                           |
+        | Bank Address       | Croisement des avenues Gouverneur Felix Eboue et Amilcar CABRAL, quartier la Plaine Centre-Ville |
+    </Accordion>
+    <Accordion title="Gabon - XAF">
+        | | |
+        |--------------|---------------------------|
+        | Account Name       | KERRY PAYMENTS GABON                     |
+        | SWIFT/BIC          | ECOCCGCG                                 |
+        | Account Number     | 80101101773                              |
+        | IBAN               | GA2l- 40025-05801-80101101773-86         |
+        | Bank               | Ecobank                                  |
+        | Bank Address       | UBA Agence Les Cocotiers                 |
+    </Accordion>
+</AccordionGroup>
+
+<Info>
+**Please note!**
+
+If a suitable local bank account is not available for top ups, please contact our team who will guide you on the most suitable account to use for your payment.
+</Info>---
+title: Callback resend
+---
+
+When a payment is completed, we communicate the final status to your systems by sending a callback. 
+However, there might be instances when the delivery of these callbacks is unsuccessful due to network instabilities, downtime in the receiving system, or similar issues. 
+In such scenarios, you have the option to resend the callback through our dashboard.
+
+The option to resend a callback is only available when our initial attempt to deliver it has been unsuccessful. In the event of a problematic transaction, you can navigate to the respective payment details page. Here, you'll find the option to resend the callback.
+
+<Frame>
+    ![Payment Details](/images/dashboard/transactions/payment_details.png)
+</Frame>
+
+To resend the callback, click on the 'Resend callback' button.
+
+<Frame>
+    ![Resend Callback Button](/images/dashboard/transactions/resend_callback_button.png)
+</Frame>
+
+The process should conclude within a few seconds, and a confirmation message will appear upon its successful completion.
+
+<Frame>
+    ![Confirmation Message](/images/dashboard/transactions/confirmation_message.png)
+</Frame>
+
+<Tip>
+    There is also an option to initiate this process via an API call. 
+    Read more about this from our API documentation for [deposits](/v1/api-reference/deposits/resend-deposit-callback), [payouts](/v1/api-reference/payouts/resend-payout-callback) and [refunds](/v1/api-reference/refunds/resend-refund-callback).
+</Tip>---
+title: Cancel enqueued payout
+---
+
+During certain incidents with Mobile Network Operators (MNOs), pawaPay may temporarily suspend the processing of payouts. 
+However, we understand the importance of maintaining the flow of your transactions. 
+Therefore, we continue to accept your payout requests during these periods.
+
+These requests are assigned a status of **Enqueued**. 
+This status indicates that your payout request has been received and is in line for processing as soon as the network stabilizes. 
+However, you have the option to cancel these transactions by navigating to the respective payment details page and initiating a cancellation from there.
+
+<Frame>
+    ![Cancel Transaction Page](/images/dashboard/transactions/cancel_transaction_page.png)
+</Frame>
+
+To cancel an Enqueued transaction, click on the "Cancel transaction" button.
+
+<Frame>
+    ![Cancel Button](/images/dashboard/transactions/cancel_button.png)
+</Frame>
+
+The process should conclude within a few seconds, and a confirmation message will appear upon its successful completion.
+
+<Frame>
+    ![Confirmation Message](/images/dashboard/transactions/confirmation_message_cancel.png)
+</Frame>
+
+<Tip>
+    There is also an option to initiate this process via an API call. 
+    Read more regarding this functionality from our [API documentation](/v1/api-reference/payouts/cancel-enqueued-payout).
+</Tip>---
+title: Deposit details
+---
+
+You can see the details of a deposit by using either our [Global search](/dashboard/global_search) or [Deposits](/dashboard/transactions/deposits) search functionality and clicking on the specific payment.
+
+You can find the glossary of the data found on the deposit details from the [Deposits](/dashboard/transactions/deposits) documentation.
+
+All possible statuses of transactions are documented in [Transaction statuses](/dashboard/transactions/transaction_statuses).
+
+## Successful deposit
+
+<Frame>
+    ![Successful Deposit](/images/dashboard/transactions/successful_deposit.png)
+</Frame>
+
+<Tip>
+    On successful deposits, the MNO transaction ID is available. 
+    This ID is also available to the customer on their SMS receipt or their transaction history. 
+    When contacted by a customer, their transaction can be found using this ID.
+</Tip>
+
+## Failed deposit
+
+<Frame>
+    ![Failed Deposit](/images/dashboard/transactions/failed_deposit.png)
+</Frame>
+
+<Info>
+    We constantly monitor and improve the failure reasons to be as precise and accurate as possible.  
+    Some Mobile Network Operators (MNO) do not provide specific failure reasons for failed transactions.
+</Info>---
+title: Deposits
+---
+
+You can find all collections made on our platform on the Deposits page.
+
+![Deposits Page](/images/dashboard/transactions/deposits_page.png)
+
+This functionality is available to users with the Transactions role. Read more about [User roles](/dashboard/user_management/user_roles).
+
+## Search for deposits
+
+Please choose the time period you are interested in by clicking on the time period selector. You can also use the quick links below the selector to quickly see transactions made in the last hour, today, yesterday, or the current week.
+
+If you are interested in transactions of a specific Mobile Network Operator (MNO), you can filter by picking them from the MNO dropdown.
+
+Pressing "Search" will show you the results.
+
+<Info>
+    A maximum of 10,000 records will be shown. If your search results in more than that, the oldest 10,000 will be visible in your results.
+</Info>
+
+## Glossary of results
+
+| Column                 | Description                                                                                         |
+|------------------------|-----------------------------------------------------------------------------------------------------|
+| Creation Date          | The date and time at which this deposit was initiated. Time is in the UTC time zone.                |
+| MSISDN                 | The phone number of the party being collected from.                                                 |
+| Financial Transaction ID | The ID for this transaction specified by the MNO. <br /> **Please note!** This ID is visible to your customers in their SMS receipts or Mobile Money applications transaction history. |
+| Requested amount       | The amount on the original collection request.                                                      |
+| Deposited amount       | The amount deposited in your wallet in pawaPay.                                                     |
+| Currency               | The currency in which this transaction took place.                                                  |
+| Status                 | The current status of this transaction. Read more about statuses from [Transaction statuses](/dashboard/transactions/transaction_statuses). |
+| Country                | The country in which this transaction took place.                                                   |
+| MNO                    | The Mobile Network Operator who carried out the transaction.                                        |
+| Reason                 | The reason for this payment specified by you as the `statementDescription` in our API. Read more about our deposits in our API from our [API docs](/v1/api-reference/deposits/request-deposit). |
+| Metadata               | A list of metadata that you can attach to the payment for providing additional context about the payment. |---
+title: Payout details
+---
+
+You can see the details of a payout by using either our [Global search](/dashboard/global_search) or [Payouts](/dashboard/transactions/payouts) search functionality and clicking on the specific payment.
+
+You can find the glossary of the data found on the deposit details from the [Payouts](/dashboard/transactions/payouts) documentation.
+
+All possible statuses of transactions are documented in [Transaction statuses](/dashboard/transactions/transaction_statuses).
+
+## Successful payout
+
+<Frame>
+![Successful Payout](/images/dashboard/transactions/successful_payout.png)
+</Frame>
+
+<Tip>
+    On successful payouts, the MNO transaction ID is available. 
+    This ID is also available to the customer on their SMS receipt or their transaction history. 
+    When contacted by a customer, their transaction can be found using this ID.
+</Tip>
+
+## Failed payout
+
+<Frame>
+    ![Failed Payout](/images/dashboard/transactions/failed_payout.png)
+</Frame>
+
+<Info>
+    We constantly monitor and improve the failure reasons to be as precise and accurate as possible.  
+    Some Mobile Network Operators do not provide specific failure reasons for failed transactions.
+</Info>---
+title: Payouts
+---
+
+You can find all of your disbursements made on our platform on the Payouts page. Both payouts and refunds are available to search.
+
+<Frame>
+    ![Payouts Page](/images/dashboard/transactions/payouts_page.png)
+</Frame>
+
+This functionality is available to users with the Transactions role. Read more about [User roles](/dashboard/user_management/user_roles).
+
+## Search for payouts
+
+Please choose the time period you are interested in by clicking on the time period selector. You can also use the quick links below the selector to quickly see transactions made in the last hour, today, yesterday, or the current week.
+
+If you are interested in transactions of a specific Mobile Network Operator (MNO), you can filter by picking them from the MNO dropdown.
+
+Pressing search will show you the results.
+
+<Info>
+    A maximum of 10,000 records will be shown. If your search results in more than that, the oldest 10,000 will be visible in your results.
+</Info>
+
+## Glossary of results
+
+| Column                | Description                                                                                         |
+|-----------------------|-----------------------------------------------------------------------------------------------------|
+| Creation Date         | The date and time at which this payout was initiated. Time is in UTC timezone.                      |
+| Financial Transaction ID | The ID for this transaction specified by the MNO. <br />**Please note!** This ID is visible to your customers in their SMS receipts or Mobile Money apps transaction history. |
+| Amount                | The amount disbursed.                                                                               |
+| Currency              | The currency in which this transaction took place.                                                  |
+| Flow subtype          | Specifies whether this disbursement was a payout or a refund.                                       |
+| Status                | The current status of this transaction. Read more about statuses from [Transaction statuses](/dashboard/transactions/transaction_statuses). |
+| Country               | The country in which this transaction took place.                                                   |
+| MNO                   | The Mobile Network Operator who carried out the transaction.                                        |
+| Reason                | The reason for this transaction specified by you as the `statementDescription` in our API. Read more about our payouts in our API from our [API docs](/v1/api-reference/payouts/request-payout). |
+| Metadata              | A list of metadata that you can attach to the payment for providing additional context about the payment. |---
+title: Transaction statuses
+---
+
+All transactions on our platform can be in one of five possible statuses.
+
+| Status               | Description                                                                                               |
+|----------------------|-----------------------------------------------------------------------------------------------------------|
+| `Completed` | Transaction has been **successfully** processed. This is a **final** status and will not change. |
+| `Failed` | Transaction **failed** to process and no funds have been moved. This is a **final** status and will not change. |
+| `In reconciliation` | There was a problem processing this transaction, and it has been moved to our reconciliation engine to determine its final status. The transaction will be moved to its final status as soon as it’s been reconciled. |
+| `Processing` | The transaction is currently being processed. |
+| `Enqueued` | The transaction has been **accepted** by us for processing but is currently **enqueued** and not being shared with the MNO. Transactions with this status can be manually cancelled on the transaction details page. |
+
+<Tip>
+    Transaction statuses `Completed` and `Failed` are final statuses and will not change.
+</Tip>---
+title: Inviting users
+---
+
+Our dashboard uses an invite-based user management system. All users invited will get an email with instructions on how to activate their account.
+
+This functionality is available to users with the User Management role. Read more about [User roles](/dashboard/user_management/user_roles).
+
+## Inviting a new user
+
+All users are invited to the dashboard based on their email address.
+
+<Steps>
+    <Step title="Enter their email address">
+        <Frame>
+            ![Enter Email Address](/images/dashboard/user_management/enter_email_address.png)
+        </Frame>
+
+        <Tip>You can limit this user to only see transactions and wallets from specific countries by specifying them in the "Limited to" dropdown.</Tip>
+    </Step>
+    <Step title="Choose their level of access">
+        Choose the appropriate roles for the user based on what tasks they need to perform in the dashboard.
+        Read more about country limits and our [User roles](/dashboard/user_management/user_roles).
+
+        <Frame>
+            ![User Roles and Country Limits](/images/dashboard/user_management/user_roles_and_country_limits.png)
+        </Frame>
+    </Step>
+    <Step title='Press "invite user" button'>
+        You can read more about the activation flow for the user from [Signing into the pawaPay dashboard](/dashboard/signing_in).
+    </Step>
+</Steps>
+
+<Info>
+    You can only invite other users using roles and country limitations that are active on your user.
+</Info>---
+title: Managing users
+---
+
+Users on the dashboard can be managed by pressing the tab "Manage users" on the User Management page.
+
+This functionality is available to users with the User Management role. Read more about [User roles](/dashboard/user_management/user_roles).
+
+You can navigate between active, pending, and disabled users by pressing on the respective tab.
+
+<Frame>
+    ![Manage Users Tab](/images/dashboard/user_management/manage_users_tab.png)
+</Frame>
+
+## Active users
+
+On the **Active users** tab, you can see the currently active users on the dashboard.
+
+<Tip>
+    Your roles might affect which users you are able to see and manage.
+</Tip>
+
+### User Information
+
+The following information is available for each user:
+
+| Column     | Description                                                                 |
+|------------|-----------------------------------------------------------------------------|
+| Name       | The first and last name of the user.                                        |
+| E-mail     | The email address of the user they were invited into the dashboard with.    |
+| Role       | The roles the user has.                                                     |
+| Geo Roles  | The countries this user is limited to.                                      |
+| Actions    | The actions that can be done for this user.                                 |
+
+<Tip>
+    If the user has many roles, you can see all of them by hovering on the "+ more" label.
+</Tip>
+
+### Changing users' country limitations
+
+You can change the countries a user has access to by opening the "Geo Roles" dropdown and checking the countries they need.
+
+<Frame>
+    <img src="/images/dashboard/user_management/changing_geo_roles.png" width="400" />
+</Frame>
+
+<Warning>
+    Changes to country limitations take effect immediately.
+</Warning>
+
+### Changing users' roles
+
+User roles can be changed by pressing the pencil icon in the user's "Actions" column.
+
+![Change User Roles](/images/dashboard/user_management/change_user_roles.png)
+
+You can then make the changes needed and press "Save changes."
+
+<Frame>
+    <img src="/images/dashboard/user_management/save_changes.png" width="500" />
+</Frame>
+
+### Disabling users
+
+You can disable a user by pressing the icon in the user's "Actions" column.
+
+![Disable User](/images/dashboard/user_management/disable_user.png)
+
+You will be asked to confirm this action by pressing "Yes."
+
+<Frame>
+    ![Confirm Disable](/images/dashboard/user_management/confirm_disable.png)
+</Frame>
+
+You can find the disabled user in the "Disabled" tab.
+
+## Pending users
+
+Users who have yet to activate their account from their invite email are found in the **Pending** tab.
+
+You can change their role and country limitations just like for active users.
+
+In case their invite has expired or is lost, you can resend the invitation email with a new activation link by pressing the "Resend invitation" button.
+
+You will be asked to confirm this action by pressing "Yes."
+
+<Frame>
+    ![Resend Invitation](/images/dashboard/user_management/resend_invitation.png)
+</Frame>
+
+You may also choose to delete the invitation by clicking on this icon under the Actions column:
+
+![Delete Invitation](/images/dashboard/user_management/delete_invitation.png)
+
+## Disabled users
+
+Users who have been disabled are found in the **Disabled** tab.
+
+You can still change country limitations and roles for disabled users.
+
+You can enable users by pressing on the icon in the user's "Actions" column.
+
+![Enable User](/images/dashboard/user_management/enable_user.png)
+
+You will be asked to confirm this action by pressing "Yes."
+
+<Frame>
+    ![Confirm Enable](/images/dashboard/user_management/confirm_enable.png)
+</Frame>
+
+You can find the enabled user in the "Active" tab.---
+title: Security
+---
+
+The 'Security' tab, located under the 'User Management' page, is visible only to users with an Administrator [role](/dashboard/user_management/user_roles).
+
+<Frame>
+![Security Tab](/images/dashboard/user_management/security_tab.png)
+</Frame>
+
+## Two-factor authentication
+
+You can enable two-factor authentication for users who do not use Google as a sign-in option. When enabled, users will receive a six-digit numerical code via email with each sign-in attempt.
+
+<Frame>
+    ![Two-Factor Authentication](/images/dashboard/user_management/two-factor_authentication.png)
+</Frame>
+
+## Google authentication
+
+If you are using Google Workspace for your emails, you can require all users to authenticate with Google. 
+This means that any active user who currently signs in with a password will no longer be able to use their credentials and will be directed to authenticate with Google. 
+Additionally, all new users will only have the option to confirm their registration through Google authentication.
+
+<Frame>
+    ![Google Authentication](/images/dashboard/user_management/google_authentication.png)
+</Frame>
+
+<Warning>
+    Any active user who currently signs in with a password will no longer be able to use their credentials and will be directed to authenticate with Google!
+</Warning>---
+title: User roles
+---
+
+To ensure functionality and data is visible to only the people you need, we provide user roles and country-based limitations for users.
+
+## Country based limitations
+
+Users' access in our dashboard can be limited to specific countries.
+
+For example, limiting a user's access to Ghana only as their tasks involve providing support for Ghana customers.
+
+## User roles
+
+Roles limit users to specific functionality in the dashboard. For example, the User Management role could be enabled only for the Team Leads of your different support teams. They are then able to invite new users independently. They are only able to invite users with all or some of the roles they have for their user.
+
+| Role                        | Description                                                                                                                                                                                       |
+|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Administrator**           | Full access to all functionality in the dashboard.                                                                                                                                                |
+| **Batch Disbursements**     | Can use the [Batch disbursements](/dashboard/other/batch_disbursements) functionality of our platform.                                                                                                |
+| **Finances**                | Has access to [Finances](/dashboard/finances/wallets) to see the financial data in [Wallets](/dashboard/finances/wallets), [Statements](/dashboard/finances/statements), etc.<br />Includes Transactions role automatically.          |
+| **Transactions**            | Has access to [Transactions](/dashboard/transactions/deposits) to see deposits, payouts, and refunds in the countries they are limited to.                                                                    |
+| **User management**         | Able to invite new and manage existing users with the same or fewer roles that they have.<br /><br/ >**Please note!**<br />This role can only be combined with other roles.                              |
+| **Technical Administration**| Able to see [System configuration](/dashboard/other/system_conf/callback_urls) to configure technical aspects of the platform.                                                                                  |
+
+<Tip>
+    Dependent roles get assigned automatically. For example, adding the Finances role automatically adds the Transactions role to the user.
+</Tip>
