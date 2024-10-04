@@ -9,8 +9,10 @@ The operation can take between a few seconds up to a few minutes to be processed
 
 After the deposit request is sent to pawaPay, we forward the request to the Mobile Money Operator (MMO) specified as the [correspondent](/using_the_api#correspondents).
 The MMO sends the request to the customer for authorization. 
+
 The customer then authorizes the payment by entering their PIN code on their mobile phone. 
 Upon the customer's authorization (or rejection), the MMO informs pawaPay of the result and consequently, pawaPay notifies you of the result by calling your defined [callback URL](/using_the_api#callback-urls) with a **[Deposit Status Callback](/v1/api-reference/deposits/deposit-callback)** (if configured). 
+
 If you have not configured callbacks, you can always check the status of your deposit request through our **[Check Deposit Status](/v1/api-reference/deposits/check-deposit-status)** endpoint.
 
 <Tip>Please follow the guidelines in the [Implementation](/implementation) section of our API docs to ensure a reliable implementation.</Tip>
