@@ -21,7 +21,7 @@ Knowing that your mobile money provider is currently unavailable is a better cus
 
 Failed payments usually take longer to process, leaving the customer waiting for the final result. Read more about our [availability](/v1/api-reference/toolkit/availability) endpoint.
 
-To provide the best support for your customers, information about MMO availability is also published on our [dashboard](http://localhost:3000/dashboard/status) and [status page](https://status.pawapay.cloud).
+To provide the best support for your customers, information about MMO availability is also published in the  [pawaPay Dashboard](http://localhost:3000/dashboard/status) and [Status page](https://status.pawapay.cloud).
 You can subscribe to updates over e-mail, Slack and other channels to ensure your support team is always informed about any potential problems with the MMOs.
 
 When an MMO is experiencing difficulties in successfully processing disbursements, our platform will enqueue them to be processed once the MMO is operational. 
@@ -140,8 +140,10 @@ Since you always know the unique ID of the transaction, you can always verify th
 Implementing the considerations listed above avoids almost all discrepancies of payment statuses between your system and pawaPay.
 
 When using callbacks to receive the final statuses of payments, issues like network connectivity, system downtime, and configuration errors might cause the callback not to be received by your system.
+
 To avoid keeping your customers waiting, we strongly recommend implementing a status recheck cycle.
 For example, a periodic job that collects all payments that have been pending for an extended period. It can then query the respective `Check status` endpoint to verify the status of the payment. 
+
 If the status recheck cycle finds a payment in a final state, you can use the respective `Resend callback` endpoint to trigger a callback to be resent. This avoids duplicating processing logic.
 
 ## Backwards compatibility
