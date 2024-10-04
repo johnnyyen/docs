@@ -2,16 +2,16 @@
 openapi: openapi_v1 post /deposits
 description: ""
 ---
-Deposits operation allows you to initiate a collection for asynchronous processing.
+Deposits operation allows you to initiate a deposit for asynchronous processing.
 <Card title="Learn more!" icon="readme" href="/deposits" horizontal="true">
     See what the deposit flow looks like with pawaPay and for your customers.
 </Card>
 
 * This API call is <em>idempotent</em>, which means it is safe to submit a request with the same `depositId` multiple times. 
 * Duplicate requests with the same `depositId` will be ignored with the `DUPLICATE_IGNORED` status in the response.
-* Since the request can rejected, you must check `status` code in the response for each submitted request. The `rejectionReason` in the response will contain information about the reason of the rejection.
+* Since the request can rejected, you must check the `status` code in the response for each submitted request. The `rejectionReason` in the response will contain information about the reason of the rejection.
 
-Each request can become either ACCEPTED, REJECTED or DUPLICATE_IGNORED:
+Each request can get one of the statuses on initiation:
 
 Status | <Tooltip tip="Will a callback be delivered after receiving this status on initiation?">Callback</Tooltip> | Description
 -------|----------|------------
@@ -20,7 +20,7 @@ Status | <Tooltip tip="Will a callback be delivered after receiving this status 
 `DUPLICATE_IGNORED` | No | The deposit request has been ignored as a duplicate of an already accepted deposit request. Duplication logic relies upon `depositId`.
 
 
-### How do i find out the final status of this deposit?
+### How to find out the final status of this deposit?
 As the pawaPay Merchant API is an [asynchronous API](/implementation#asynchronous-api), you can find out the final status of the `ACCEPTED` deposit by either:
 
 <CardGroup cols={2}>

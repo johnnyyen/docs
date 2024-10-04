@@ -44,7 +44,7 @@ paths:
         * Duplicate requests with the same <code>payoutId</code> will be ignored with the `DUPLICATE_IGNORED` status in the <code>PayoutCreationResponse</code>.
         * Since the request can be rejected, you must check the <code>status</code> code in the <code>PayoutCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>PayoutCreationResponse</code> will contain information about the reason of the rejection.
 
-        Each request can become either ACCEPTED, ENQUEUED, REJECTED or DUPLICATE_IGNORED:
+        Each request will get one of the following statuses:
 
         Status | Callback | Description
         -------|----------|------------
@@ -202,7 +202,7 @@ paths:
         * Since the request can be partially or fully rejected, you must check the <code>status</code> code in the <code>PayoutCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>PayoutCreationResponse</code> will contain information about the reason of the rejection.
         * Callback will be delivered separately for each payout in the bulk request as the payouts are resolved to their final status.
 
-        Each disbursement in a bulk request can become either ACCEPTED, ENQUEUED, REJECTED or DUPLICATE_IGNORED:
+        Each disbursement in a bulk request will get one of the following statuses:
 
         Status | Callback | Description
         -------|----------|------------
@@ -278,7 +278,7 @@ paths:
                       status: REJECTED
                       rejectionReason:
                         rejectionCode: AMOUNT_TOO_LARGE
-                        ejectionMessage: Amount should not be greater than 1000
+                        rejectionMessage: Amount should not be greater than 1000
         '400':
           description: Request is rejected due to incompatibility with pawaPay API specification
           content:
@@ -679,7 +679,7 @@ paths:
         * Duplicate requests with the same `depositId` will be ignored with the `DUPLICATE_IGNORED` status in the <code>DepositCreationResponse</code>.
         * Since the request can rejected, you must check <code>status</code> code in the <code>DepositCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>DepositCreationResponse</code> will contain information about the reason of the rejection.
 
-        Each request can become either ACCEPTED, REJECTED or DUPLICATE_IGNORED:
+        Each request will get one of the following statuses:
 
         Status | Callback | Description
         -------|----------|------------
@@ -1178,7 +1178,7 @@ paths:
         * Duplicate requests with the same <code>refundId</code> will be ignored with the `DUPLICATE_IGNORED` status in the <code>RefundCreationResponse</code>.
         * Since the request can be rejected, you must check the <code>status</code> code in the <code>RefundCreationResponse</code> for each submitted request. The <code>rejectionReason</code> in the <code>RefundCreationResponse</code> will contain information about the reason of the rejection.
 
-        Each request can become either ACCEPTED, REJECTED or DUPLICATE_IGNORED:
+        Each request will get one of the following statuses:
 
         Status | Callback | Description
         -------|----------|------------

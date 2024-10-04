@@ -54,7 +54,7 @@ paths:
           schema:
             type: string
             format: string
-            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+            description: Signature-Input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
           required: false
         - in: header
           name: Accept-Signature
@@ -111,7 +111,7 @@ paths:
                       rejectionCode: AMOUNT_TOO_LARGE
                       rejectionMessage: Amount should not be greater than 1000
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -186,7 +186,7 @@ paths:
           schema:
             type: string
             format: string
-            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+            description: Signature-Input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
           required: false
         - in: header
           name: Accept-Signature
@@ -224,9 +224,9 @@ paths:
                       status: REJECTED
                       rejectionReason:
                         rejectionCode: AMOUNT_TOO_LARGE
-                        ejectionMessage: Amount should not be greater than 1000
+                        rejectionMessage: Amount should not be greater than 1000
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -398,7 +398,7 @@ paths:
                 Payout Not Found:
                   value: []
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -475,7 +475,7 @@ paths:
                     payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
                     status: FAILED
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -626,7 +626,7 @@ paths:
           schema:
             type: string
             format: string
-            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+            description: Signature-Input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
           required: false
         - in: header
           name: Accept-Signature
@@ -668,7 +668,7 @@ paths:
                       rejectionCode: AMOUNT_TOO_LARGE
                       rejectionMessage: Amount should not be greater than 1000
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -848,7 +848,7 @@ paths:
                 Deposit Not Found:
                   value: []
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -925,7 +925,7 @@ paths:
                     payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
                     status: FAILED
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -993,7 +993,7 @@ paths:
                 $ref: '#/components/schemas/Session'
                  
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -1066,7 +1066,7 @@ paths:
           schema:
             type: string
             format: string
-            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
+            description: Signature-Input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/).
           required: false
         - in: header
           name: Accept-Signature
@@ -1108,7 +1108,7 @@ paths:
                       rejectionCode: AMOUNT_TOO_LARGE
                       rejectionMessage: Amount should not be greater than 1000
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -1250,7 +1250,7 @@ paths:
                 Refund Not Found:
                   value: []
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -1315,7 +1315,7 @@ paths:
                     payoutId: f4401bd2-1568-4140-bf2d-eb77d2b2b639
                     status: FAILED
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -1499,7 +1499,7 @@ paths:
           description: | 
             The country for which to get wallet balances for.
 
-            Format is ISO 3166-1 alpha-3, three character country code in upper case. Read more from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements.
+            Format is ISO 3166-1 alpha-3, three character country code in upper case. Read more from [Wikipedia](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements).
           required: true
           schema:
             minLength: 3
@@ -1521,13 +1521,13 @@ paths:
                         currency: ZMW
                         mno: ""
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
               examples:
-                Request is rejected due to invalid country code (ZMB2):
+                Request was rejected due to invalid country code (ZMB2):
                   value:
                     errorId: 4f0d5e13-7e88-4cc6-827c-8c0640dc2cd3
                     errorCode: 1
@@ -1677,7 +1677,7 @@ paths:
                 $ref: '#/components/schemas/CorrespondentPrediction'
                    
         '400':
-          description: Request is rejected due to incompatibility with pawaPay API specification
+          description: Request was rejected due to incompatibility with pawaPay API specification
           content:
             application/json:
               schema:
@@ -1760,7 +1760,9 @@ components:
       type: string
       description: |
             The phone number (MSISDN) of the payer or recipient.
-            The format is (https://en.wikipedia.org/wiki/MSISDN). MSISDN validation has following rules:
+            The format is described in [Wikipedia](https://en.wikipedia.org/wiki/MSISDN). 
+            
+            MSISDN validation has following rules:
              * Only digits without whitespaces or any other separators or prefixes like '+'.
              * Should not start with zero.
              * Country code is mandatory.
@@ -1794,9 +1796,9 @@ components:
       type: string
       pattern: ^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[1-9])?$
       description: |
-        The amount to be collected or disbursed. 
+        The amount to be collected (deposit) or disbursed (payout or refund). 
 
-        Amount has to follow below requirements or the request will be **rejected**:
+        Amount must follow below requirements or the request will be **rejected**:
         * Between zero and two decimal places can be supplied, depending on what the specific MNO supports. Learn about all [MNO supported decimal places](/using_the_api#correspondents).
         * The minimum and maximum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
         * Leading zeroes are not permitted except where the value is less than 1. For any value less than one, one and only one leading zero must be supplied.
@@ -1901,7 +1903,7 @@ components:
           type: object
           additionalProperties:
             type: string
-          description: The unqiue ID for this financial transaction assigned by the MNO.
+          description: The unique ID for this financial transaction assigned by the MNO.
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -1975,7 +1977,7 @@ components:
           type: object
           additionalProperties:
             type: string
-          description: The unqiue ID for this financial transaction assigned by the MNO.
+          description: The unique ID for this financial transaction assigned by the MNO.
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -2068,7 +2070,7 @@ components:
           description: | 
             Country of the wallet.
 
-            Format is ISO 3166-1 alpha-3, three character country code in upper case. Read more from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements.
+            Format is ISO 3166-1 alpha-3, three character country code in upper case. Read more from [Wikipedia](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements).
           example: ZMB
         balance:
           type: string
@@ -2139,7 +2141,7 @@ components:
     DepositCreationStatus:
       type: string
       description: |
-        Enumeration presenting the status of the `Deposit`: 
+        The initiation status of the `Deposit`: 
         * `ACCEPTED` - The deposit request has been **accepted** by pawaPay for processing. 
         * `REJECTED` - The deposit request has been **rejected**. See `rejectionReason` for details 
         * `DUPLICATE_IGNORED` - This deposit request is a duplicate and will be ignored.
@@ -2155,7 +2157,7 @@ components:
         failureCode:
           type: string
           description: |
-            Enumeration presenting details in case of failure: 
+            Possible deposit failure codes: 
             * `PAYER_NOT_FOUND` - The phone number specified as the Payer does not belong to the MNO specified as the correspondent. 
             * `PAYMENT_NOT_APPROVED` - Payer did not approve the payment. 
             * `PAYER_LIMIT_REACHED` - Payer has reached a transaction limit of their mobile money wallet. 
@@ -2182,11 +2184,11 @@ components:
         rejectionCode:
           type: string
           description: |
-            Enumeration presenting details in case of failure:
+            Possible deposit rejection codes:
             * `INVALID_PAYER_FORMAT` - The payer address (phone number) is invalid.
             * `INVALID_CORRESPONDENT` - The specified correspondent is not supported.
             * `INVALID_AMOUNT` - The specified amount is not supported. 
-            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minumum allowed by the MNO specified as the correspondent. 
+            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minimum allowed by the MNO specified as the correspondent. 
             * `AMOUNT_TOO_LARGE` - The specified amount is larger than the maximum allowed by the MNO specified as the correspondent. 
             * `INVALID_CURRENCY` - The specified currency is not supported for the MNO specified as the correspondent. 
             * `INVALID_COUNTRY` - The specified country is not supported for this MNO specified as the correspondent. 
@@ -2218,11 +2220,11 @@ components:
     DepositStatus:
       type: string
       description: |
-        Enumeration presenting the status of the deposit: 
+        Possible deposit statuses: 
         * `ACCEPTED` - The deposit request has been **accepted** by pawaPay for processing. 
         * `SUBMITTED` - The deposit request has been submitted to the MNO and is being processed. 
         * `COMPLETED` - The deposit request has been successfully processed. This is a **final state.**
-        * `FAILED` - The deposit request has been proceessed, but failed. This is a **final state.**
+        * `FAILED` - The deposit request has been processed, but failed. This is a **final state.**
       enum:
         - ACCEPTED
         - SUBMITTED
@@ -2233,7 +2235,7 @@ components:
       description: |
         The final status of the payment.
         * `COMPLETED` - The payment has been successfully processed.
-        * `FAILED` - The payment request has been proceessed, but failed.
+        * `FAILED` - The payment request has been processed, but failed.
       enum:
         - COMPLETED
         - FAILED
@@ -2294,11 +2296,11 @@ components:
           type: string
           pattern: ^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[1-9])?$
           description: |
-            If specified, the amount will be displayed to the collection as the collection amount. For example, when paying for specific goods or services.
+            If specified, the amount will be displayed to the customer as the payment amount. For example, when paying for specific goods or services.
             
             If not specified, the customer will have to specify the amount they wish to pay. For example, when depositing money into their eWallet.
     
-            Amount has to follow below requirements or the request will be **rejected**:
+            Amount must follow below requirements or the request will be **rejected**:
             * Between zero and two decimal places can be supplied, depending on what the specific MNO supports. Learn about all [MNO supported decimal places](/using_the_api#correspondents).
             * The minimum and maximum amounts depend on the limits of the specific MNO. You can find them from the [Active Configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
             * Leading zeroes are not permitted except where the value is less than 1. For any value less than one, one and only one leading zero must be supplied.
@@ -2315,7 +2317,9 @@ components:
           description: |
             If specified, this phone number will be used to collect the deposit. If not specified, the customer paying can specify the phone number that they want to pay from.
 
-            The format is (https://en.wikipedia.org/wiki/MSISDN). MSISDN validation has following rules:
+            The format is described in [Wikipedia](https://en.wikipedia.org/wiki/MSISDN). 
+            
+            MSISDN validation has following rules:
              * Only digits without whitespaces or any other separators or prefixes like '+'.
              * Should not start with zero.
              * Country code is mandatory.
@@ -2343,13 +2347,13 @@ components:
             
             You can use the [active configuration](#operation/active-conf) endpoint to verify which counrties and MNOs have been configured for your account. 
         
-            Format must be the ISO 3166-1 alpha-3, three character country code in upper case. Read more from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements.
+            Format must be the ISO 3166-1 alpha-3, three character country code in upper case. Read more from [Wikipedia](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements).
           example: ZMB
         reason:
           type: string
           minLength: 1
           maxLength: 50
-          description: An optional text which will be displayed to the customer on the payment page to specify what they are paying for.
+          description: Optional text which will be displayed to the customer on the payment page to specify what they are paying for.
           example: 'Ticket to festival'
         metadata: 
           $ref: '#/components/schemas/TransactionMetadataRequest'
@@ -2520,7 +2524,7 @@ components:
           type: object
           additionalProperties:
             type: string
-          description: The unqiue ID for this financial transaction assigned by the MNO.
+          description: The unique ID for this financial transaction assigned by the MNO.
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -2590,7 +2594,7 @@ components:
           type: object
           additionalProperties:
             type: string
-          description: The unqiue ID for this financial transaction assigned by the MNO.
+          description: The unique ID for this financial transaction assigned by the MNO.
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -2719,11 +2723,11 @@ components:
     PayoutCreationStatus:
       type: string
       description: |
-        Enumeration presenting the status of the Payout Creation: 
+        Possible payout initiation statuses: 
         * `ACCEPTED` - The payout request has been **accepted** by pawaPay for processing.
         * `ENQUEUED` - The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](/payouts#enqueued-payouts).
         * `REJECTED` - The payout request has been **rejected** by pawaPay. See rejectionReason for details. 
-        * `DUPLICATE_IGNORED` - The payout request has been **ignored** as a duplicate of already accepted payout request. Duplication logic relies upon payoutId.
+        * `DUPLICATE_IGNORED` - The payout request has been **ignored** as a duplicate of an already accepted payout request. Duplication logic relies upon payoutId.
       enum:
         - ACCEPTED
         - ENQUEUED
@@ -2737,9 +2741,9 @@ components:
         failureCode:
           type: string
           description: |
-            Enumeration presenting details in case of failure: 
+            Possible payout failure codes: 
             * `BALANCE_INSUFFICIENT` - The pawaPay wallet balance is insufficient to proceed with the payout. 
-            * `RECIPIENT_NOT_FOUND` - The financial address (phone number) specified as the receipient does not belong to the MNO specified as the correspodent. 
+            * `RECIPIENT_NOT_FOUND` - The financial address (phone number) specified as the recipient does not belong to the MNO specified as the correspondent. 
             * `RECIPIENT_NOT_ALLOWED_TO_RECEIVE` - The recipient has reached a limit on their wallet that stops them from being able to accept this payout. 
             * `MANUALLY_CANCELLED` - The payout request was enqueued and subsequently cancelled from the pawaPay Dashboard or through the [Cancel Enqueued Payout](/v1/api-reference/payouts/cancel-enqueued-payout) endpoint.
             * `OTHER_ERROR` - Any other error. Please refer to `failureMessage`.
@@ -2762,7 +2766,7 @@ components:
         rejectionCode:
           type: string
           description: |
-            Enumeration presenting details in case of failure: 
+            Possible payout rejection codes: 
             * `BALANCE_INSUFFICIENT` - The balance of your pawaPay wallet does not have the funds to initiate this payout.
             * `INVALID_CORRESPONDENT` - The specified correspondent is not supported.
             * `INVALID_RECIPIENT_FORMAT` - The phone number (MISISDN) specified for the recipient is in an unrecognizable format.
@@ -2772,7 +2776,7 @@ components:
             * `INVALID_CURRENCY` - The specified currency is not supported by the MNO specified as the correspondent. 
             * `INVALID_COUNTRY` - The specified country is not supported for the MNO specified as the correspondent. 
             * `PARAMETER_INVALID` - One or more parameters are invalid. 
-            * `INVALID_INPUT` - We were was unable to parse the payload of the request. 
+            * `INVALID_INPUT` - We were unable to parse the payload of the request. 
             * `PAYOUTS_NOT_ALLOWED` - Payouts are not allowed for this merchant or the MNO specified as the correspondent.
             * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MNO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MNO availability.
           example: INVALID_AMOUNT
@@ -2800,7 +2804,7 @@ components:
     PayoutStatus:
       type: string
       description: |
-        Enumeration presenting the status of the payout: 
+        Possible payout statuses: 
         * `ACCEPTED` - The payout request has been **accepted** by pawaPay for processing. 
         * `ENQUEUED` - The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](/payouts#enqueued-payouts). 
         * `SUBMITTED` - The payout request has been submitted to the MNO and is being processed.
@@ -2830,7 +2834,7 @@ components:
           maxLength: 36
           type: string
           format: uuid
-          description: A UUIDv4 based ID specified by you, that unqiuely identifies the refund. 
+          description: A UUIDv4 based ID specified by you, that uniquely identifies the refund. 
           example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
         status:
           $ref: '#/components/schemas/PayoutStatus'
@@ -2874,7 +2878,7 @@ components:
           type: object
           additionalProperties:
             type: string
-          description: The financial ids used by the MNO to unqiuely identify this payment
+          description: The financial ids used by the MNO to uniquely identify this payment
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -2900,7 +2904,7 @@ components:
           maxLength: 36
           type: string
           format: uuid
-          description: A UUIDv4 based ID specified by you, that unqiuely identifies the refund. 
+          description: A UUIDv4 based ID specified by you, that uniquely identifies the refund. 
           example: f4401bd2-1568-4140-bf2d-eb77d2b2b639
         status:
           $ref: '#/components/schemas/CallbackStatus'
@@ -2927,6 +2931,7 @@ components:
           description: |
             Short description for the transaction. 
             Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+
             Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
         created:
@@ -2943,7 +2948,7 @@ components:
           type: object
           additionalProperties:
             type: string
-          description: The financial ids used by the MNO to unqiuely identify this payment
+          description: The financial ids used by the MNO to uniquely identify this payment
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -3031,10 +3036,10 @@ components:
     RefundCreationStatus:
       type: string
       description: |
-        Enumeration presenting the status of the Refund Creation: 
+        Possible refund initiation statuses: 
         * `ACCEPTED` - The refund request has been **accepted** by pawaPay for processing. 
         * `REJECTED` - The refund request has been **rejected** by pawaPay. See `rejectionReason` for details. 
-        * `DUPLICATE_IGNORED` - The refund request has been **ignored** as a duplicate of already accepted refund request. Duplication logic relies upon refundId.
+        * `DUPLICATE_IGNORED` - The refund request has been **ignored** as a duplicate of an already accepted refund request. Duplication logic relies upon refundId.
       enum:
         - ACCEPTED
         - REJECTED
@@ -3047,9 +3052,9 @@ components:
         failureCode:
           type: string
           description: |
-            Enumeration presenting details in case of failure: 
+            Possible refund failure codes: 
             * `BALANCE_INSUFFICIENT` - The pawaPay wallet balance is insufficient to proceed with the refund. 
-            * `RECIPIENT_NOT_FOUND` - The phone number specified for the receipient does not belong to the MNO specified as the correspodent. 
+            * `RECIPIENT_NOT_FOUND` - The phone number specified for the recipient does not belong to the MNO specified as the correspondent. 
             * `RECIPIENT_NOT_ALLOWED_TO_RECEIVE` - The recipient has reached a limit on their wallet that stops them from receiving this refund. 
             * `OTHER_ERROR` - Any other error. Please refer to `failureMessage`.
           example: OTHER_ERROR
@@ -3070,7 +3075,7 @@ components:
         rejectionCode:
           type: string
           description: |
-            Enumeration presenting details in case of failure:  
+            Possible refund rejection codes:  
             * `DEPOSIT_NOT_FOUND`- Requested deposit for refund has not been found.  
             * `DEPOSIT_NOT_COMPLETED`- Requested deposit was not completed.  
             * `ALREADY_REFUNDED`- Requested deposit has been already refunded.  
@@ -3081,7 +3086,7 @@ components:
             * `INVALID_CURRENCY` - The specified currency is not supported by the MNO specified as the correspondent. 
             * `INVALID_COUNTRY` - The specified country is not supported for the MNO specified as the correspondent. 
             * `PARAMETER_INVALID` - One or more parameters are invalid. 
-            * `INVALID_INPUT` - We were was unable to parse the payload of the request. 
+            * `INVALID_INPUT` - We were unable to parse the payload of the request. 
             * `REFUNDS_NOT_ALLOWED` - Refunds are not allowed for this merchant or the MNO specified as the correspondent.
             * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MNO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MNO availability.
           example: INVALID_AMOUNT
@@ -3108,7 +3113,7 @@ components:
     ManualCommandStatus:
       type: string
       description: |
-        Enumeration presenting the status of the manual command action: 
+        Possible initiation statuses: 
         * `ACCEPTED` - The manual action request has been accepted by pawaPay for processing. 
         * `REJECTED` - The manual action request has been rejected by pawaPay. See rejectionReason for details. 
         * `FAILED` - The manual action request has failed during submitting for processing due to internal reasons.
@@ -3223,7 +3228,7 @@ components:
         required:
           - id
           - key
-        type: object
+        type: object 
         properties:
           id:
             type: string
@@ -3378,7 +3383,7 @@ x-webhooks:
           schema:
             type: string
             format: string
-            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/)
+            description: Signature-Input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/)
           required: false
         - in: header
           name: Signature-Date
@@ -3444,7 +3449,7 @@ x-webhooks:
           schema:
             type: string
             format: string
-            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/)
+            description: Signature-Input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/)
           required: false
         - in: header
           name: Signature-Date
@@ -3510,7 +3515,7 @@ x-webhooks:
           schema:
             type: string
             format: string
-            description: Signature input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/)
+            description: Signature-Input according to [RFC-9421](https://datatracker.ietf.org/doc/rfc9421/)
           required: false
         - in: header
           name: Signature-Date

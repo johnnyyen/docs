@@ -3,15 +3,15 @@ openapi: openapi_v1 post /payouts/bulk
 description: ""
 ---
 
-Bulk payouts operation allows you to initiate multiple disbursements for asynchronous processing. Read more about [Payouts](/payouts).
+Bulk payouts operation allows you to initiate multiple payouts for asynchronous processing. Read more about [Payouts](/payouts).
 
-* Bulk requests with more than 20 payout transactions can be rejected by pawaPay. 
+* Bulk requests with more than 20 payout transactions may be rejected by pawaPay. 
 * This API call is <em>idempotent</em>, which means it is safe to submit a request with the same `payoutId` multiple times. 
 * Duplicate requests with the same `payoutId` will be ignored with the `DUPLICATE_IGNORED` status.
 * Since the request can be rejected, you must check the `status` code in the response for each submitted request. The `rejectionReason` in the response will contain information about the reason of the rejection.
 * Callback will be delivered separately for each payout in the bulk request as the payouts are resolved to their final status.
 
-Each individual request can become either ACCEPTED, ENQUEUED, REJECTED or DUPLICATE_IGNORED:
+Each individual request can get one of the statuses on initiation:
 
 Status | <Tooltip tip="Will a callback be delivered after receiving this status on initiation?">Callback</Tooltip> | Description
 -------|----------|------------

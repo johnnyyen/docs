@@ -90,7 +90,7 @@ As pawaPay's Merchant API is a financial API, status and error handling should b
 
 All our financial transaction endpoints __require you to specify a unique ID for the transaction__. This allows you to always verify whether the payment was received by pawaPay and verify its status.
 
-All statuses of payment initiations, status checks (Get Status and Details) and callbacks should be explicitly handled.
+All statuses of payment initiations, status checks (Check Status) and callbacks should be explicitly handled.
 
 Following handling should NOT be used:
 ```java
@@ -129,7 +129,7 @@ First, you can leave the transaction pending in your system and inform your oper
 All payments accepted for processing are visible in the pawaPay Dashboard. 
 Whether the payment was accepted by pawaPay and what its status is can be verified there.
 
-Second, you can use the corresponding `Get status and details` endpoint to validate if the request was received by pawaPay.
+Second, you can use the corresponding `Check status` endpoint to validate if the request was received by pawaPay.
 Since you always know the unique ID of the transaction, you can always verify the status of the payment on the pawaPay platform, even if no response was received when initiating the payment.
 
 ## Automatic reconciliation
@@ -138,7 +138,7 @@ Implementing the considerations listed above avoids almost all discrepancies of 
 
 When using callbacks to receive the final statuses of payments, issues like network connectivity, system downtime, and configuration errors might cause the callback not to be received by your system.
 To avoid keeping your customers waiting, we strongly recommend implementing a status recheck cycle.
-For example, a periodic job that collects all payments that have been pending for an extended period. It can then query the respective `Get status and details` endpoint to verify the status of the payment. 
+For example, a periodic job that collects all payments that have been pending for an extended period. It can then query the respective `Check status` endpoint to verify the status of the payment. 
 If the status recheck cycle finds a payment in a final state, you can use the respective `Resend callback` endpoint to trigger a callback to be resent. This avoids duplicating processing logic.
 
 ## Backwards compatibility
