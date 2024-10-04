@@ -5,7 +5,7 @@ title: Testing the integration
 ## Overview
 
 As part of using the pawaPay platform, you will have access to our sandbox environment.
-Your sandbox account will have access to all the MNOs available on our platform.
+Your sandbox account will have access to all the MMOs available on our platform.
 This allows you to safely test your integration without using actual mobile money wallets and real funds.
 In the sandbox, we provide special phone numbers (MSISDNs) that allow you to simulate both successful and unsuccessful transactions, helping you verify how your integration handles various payment outcomes.
 
@@ -555,14 +555,14 @@ Failure Code | Operation | Description
 -------------|-----------|------------
 INVALID_RECIPIENT_FORMAT | Payouts | The financial address for the recipient is in an unrecognizable format. Please refer to `recipient` in [Mobile Money Payout Request](/v1/api-reference/payouts/request-payout)
 INVALID_PAYER_FORMAT | Deposits | The financial address for the payer is in an unrecognizable format. Please refer to `payer` in [Mobile Money Deposit Request](/v1/api-reference/deposits/request-deposit).
-INVALID_CURRENCY | Both | The currency is not supported by the MNO specified as the correspondent.
+INVALID_CURRENCY | Both | The currency is not supported by the MMO specified as the correspondent.
 INVALID_AMOUNT | Both | The amount is in an unrecognizable format. Please refer to `amount` in [Mobile Money Deposit Request](/v1/api-reference/deposits/request-deposit).
-INVALID_COUNTRY | Both | The country is not supported by the MNO specified as the correspondent.
-AMOUNT_TOO_SMALL | Both | The specified amount is smaller than the minimum allowed by the MNO specified as the correspondent.
-AMOUNT_TOO_LARGE | Both | The specified amount is larger than the maximum allowed by the MNO specified as the correspondent.
+INVALID_COUNTRY | Both | The country is not supported by the MMO specified as the correspondent.
+AMOUNT_TOO_SMALL | Both | The specified amount is smaller than the minimum allowed by the MMO specified as the correspondent.
+AMOUNT_TOO_LARGE | Both | The specified amount is larger than the maximum allowed by the MMO specified as the correspondent.
 PARAMETER_INVALID | Both | An invalid parameter was found as part of the request.
-DEPOSITS_NOT_ALLOWED | Deposits | The MNO specified as the correspondent does not support deposit transactions.
-PAYOUTS_NOT_ALLOWED | Payouts | The MNO specified as the correspondent does not support payout transactions.
+DEPOSITS_NOT_ALLOWED | Deposits | The MMO specified as the correspondent does not support deposit transactions.
+PAYOUTS_NOT_ALLOWED | Payouts | The MMO specified as the correspondent does not support payout transactions.
 AUTHENTICATION_ERROR| Both | The token specified for authentication is not valid or missing. Please refer to [Authentication](/using_the_api#authentication).
 INVALID_INPUT | Both | We were was unable to parse the payload of the request.
 
@@ -573,13 +573,13 @@ Transaction failures are expected to happen during live operation and are intend
 Failure Code | Operation | Description
 -------------|-----------|------------
 PAYER_LIMIT_REACHED | Deposits | The customer has reached a limit on their wallet. Example: Customer is only allowed to transfer a maximum of 1 000 000 a week.
-PAYER_NOT_FOUND | Deposits | The phone number (MSISDN) specified as the payer does not belong to the MNO specified as the correspondent.
+PAYER_NOT_FOUND | Deposits | The phone number (MSISDN) specified as the payer does not belong to the MMO specified as the correspondent.
 PAYMENT_NOT_APPROVED | Deposits | The customer did not authorize the payment. _Example: Customer did not enter their PIN in time._
 INSUFFICIENT_BALANCE | Deposits | The customer does not have enough funds to perform the deposit.
-TRANSACTION_ALREADY_IN_PROCESS | Deposits | The customer is initiating a transaction while an unfinished transaction is still pending. _Note: Some MNOs only allow a single transaction to be processed at any given time. When the customer does not enter the PIN to authorize a payment in time, it might take up to 10 minutes for them to be able to initiate a new transaction._
+TRANSACTION_ALREADY_IN_PROCESS | Deposits | The customer is initiating a transaction while an unfinished transaction is still pending. _Note: Some MMOs only allow a single transaction to be processed at any given time. When the customer does not enter the PIN to authorize a payment in time, it might take up to 10 minutes for them to be able to initiate a new transaction._
 BALANCE_INSUFFICIENT | Payouts | The balance of your pawaPay wallet does not have the funds to initiate this payout.
-RECIPIENT_NOT_FOUND | Payouts | The phone number (MSISDN) specified as the recipient, does not belong to the mobile network operator (MNO) specified as the correspondent.
+RECIPIENT_NOT_FOUND | Payouts | The phone number (MSISDN) specified as the recipient, does not belong to the Mobile Money Operator (MMO) specified as the correspondent.
 RECIPIENT_NOT_ALLOWED_TO_RECEIVE | Payouts | The recipient has reached a limit on their wallet that stops them from being able to accept this payout. _Example: The customers wallet is able to hold up to 1 000 000 and the payout would take their balance over this limit._
 MANUALLY_CANCELLED | Payouts | The payout request was enqueued and subsequently failed manually from the pawaPay Dashboard or through the [Cancel Enqueued Payout](/v1/api-reference/payouts/cancel-enqueued-payout) endpoint.
 OTHER_ERROR | Both | The payment failed due to an unknown error.
-CORRESPONDENT_TEMPORARILY_UNAVAILABLE | Both | The MNO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MNO availability. 
+CORRESPONDENT_TEMPORARILY_UNAVAILABLE | Both | The MMO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MMO availability. 

@@ -1799,8 +1799,8 @@ components:
         The amount to be collected (deposit) or disbursed (payout or refund). 
 
         Amount must follow below requirements or the request will be **rejected**:
-        * Between zero and two decimal places can be supplied, depending on what the specific MNO supports. Learn about all [MNO supported decimal places](/using_the_api#correspondents).
-        * The minimum and maximum amount depends on the limits of the specific MNO. You can find them from the [Active Configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
+        * Between zero and two decimal places can be supplied, depending on what the specific MMO supports. Learn about all [MMO supported decimal places](/using_the_api#correspondents).
+        * The minimum and maximum amount depends on the limits of the specific MMO. You can find them from the [Active Configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
         * Leading zeroes are not permitted except where the value is less than 1. For any value less than one, one and only one leading zero must be supplied.
         * Trailing zeroes are permitted.
         
@@ -1813,7 +1813,7 @@ components:
     Correspondent:
       type: string
       description: |
-        The correspondent code refers to the specific MNO that the specified phone number (MSISDN) has an active mobile money wallet with. 
+        The correspondent code refers to the specific MMO that the specified phone number (MSISDN) has an active mobile money wallet with. 
         
         You can find all the supported correspondents [listed here](/using_the_api#correspondents). 
         
@@ -1824,7 +1824,7 @@ components:
     Country:
       type: string
       description: |
-        The country in which the MNO operates. 
+        The country in which the MMO operates. 
         
         Format is ISO 3166-1 alpha-3, three character country code in upper case. Read more from [Wikipedia](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements).
       example: ZMB
@@ -1883,7 +1883,7 @@ components:
           pattern: ^[a-zA-Z0-9 ]+$
           description: |
             Short description for the transaction. 
-            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            Depending on the specific MMO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
 
             Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
@@ -1896,14 +1896,14 @@ components:
           $ref: '#/components/schemas/Amount'
         respondedByPayer:
           type: string
-          description: When the MNO responded to this deposit request. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: When the MMO responded to this deposit request. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:30Z'
         correspondentIds:
           type: object
           additionalProperties:
             type: string
-          description: The unique ID for this financial transaction assigned by the MNO.
+          description: The unique ID for this financial transaction assigned by the MMO.
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -1957,7 +1957,7 @@ components:
           pattern: ^[a-zA-Z0-9 ]+$
           description: |
             Short description for the transaction. 
-            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            Depending on the specific MMO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
             
             Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
@@ -1970,14 +1970,14 @@ components:
           $ref: '#/components/schemas/Amount'
         respondedByPayer:
           type: string
-          description: When the MNO responded to this deposit request. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
+          description: When the MMO responded to this deposit request. Format defined by 'date-time' in RFC3339 section 5.6 from [IETF](https://tools.ietf.org/html/rfc3339#section-5.6)
           format: date-time
           example: '2020-02-21T17:32:30Z'
         correspondentIds:
           type: object
           additionalProperties:
             type: string
-          description: The unique ID for this financial transaction assigned by the MNO.
+          description: The unique ID for this financial transaction assigned by the MMO.
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -2027,7 +2027,7 @@ components:
           pattern: ^[a-zA-Z0-9 ]+$
           description: |
             Short description for the transaction. 
-            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            Depending on the specific MMO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
 
             Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
@@ -2036,7 +2036,7 @@ components:
           maxLength: 36
           type: string
           pattern: ^[a-zA-Z0-9]+$
-          description: For MNOs (correspondents) that use a preauthorisation code instead of a PIN prompt for authorising the deposit.
+          description: For MMOs (correspondents) that use a preauthorisation code instead of a PIN prompt for authorising the deposit.
         metadata:
           $ref: '#/components/schemas/TransactionMetadataRequest'
     CheckBalanceRequest:
@@ -2083,7 +2083,7 @@ components:
           example: 'ZMW'
         mno:
           type: string
-          description: If you are using a wallet that is only used by a single MNO, that MNO-s correspondent code will be shown here.
+          description: If you are using a wallet that is only used by a single MMO, that MMO-s correspondent code will be shown here.
           example: 'MTN_MOMO_BEN'
     DepositIdRequest:
       required:
@@ -2158,11 +2158,11 @@ components:
           type: string
           description: |
             Possible deposit failure codes: 
-            * `PAYER_NOT_FOUND` - The phone number specified as the Payer does not belong to the MNO specified as the correspondent. 
+            * `PAYER_NOT_FOUND` - The phone number specified as the Payer does not belong to the MMO specified as the correspondent. 
             * `PAYMENT_NOT_APPROVED` - Payer did not approve the payment. 
             * `PAYER_LIMIT_REACHED` - Payer has reached a transaction limit of their mobile money wallet. 
             * `INSUFFICIENT_BALANCE` - Payer does not have enough funds. 
-            * `TRANSACTION_ALREADY_IN_PROCESS` - Payer already has an unfinalized transaction being processed by the MNO. 
+            * `TRANSACTION_ALREADY_IN_PROCESS` - Payer already has an unfinalized transaction being processed by the MMO. 
             * `OTHER_ERROR` - Any other error. Please refer to `failureMessage`.
           example: OTHER_ERROR
           enum:
@@ -2188,14 +2188,14 @@ components:
             * `INVALID_PAYER_FORMAT` - The payer address (phone number) is invalid.
             * `INVALID_CORRESPONDENT` - The specified correspondent is not supported.
             * `INVALID_AMOUNT` - The specified amount is not supported. 
-            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minimum allowed by the MNO specified as the correspondent. 
-            * `AMOUNT_TOO_LARGE` - The specified amount is larger than the maximum allowed by the MNO specified as the correspondent. 
-            * `INVALID_CURRENCY` - The specified currency is not supported for the MNO specified as the correspondent. 
-            * `INVALID_COUNTRY` - The specified country is not supported for this MNO specified as the correspondent. 
+            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minimum allowed by the MMO specified as the correspondent. 
+            * `AMOUNT_TOO_LARGE` - The specified amount is larger than the maximum allowed by the MMO specified as the correspondent. 
+            * `INVALID_CURRENCY` - The specified currency is not supported for the MMO specified as the correspondent. 
+            * `INVALID_COUNTRY` - The specified country is not supported for this MMO specified as the correspondent. 
             * `PARAMETER_INVALID` - One or more parameters are invalid. 
             * `INVALID_INPUT` - We were unable to parse the payload of the request. 
-            * `DEPOSITS_NOT_ALLOWED` - Deposits are not allowed for the merchant or the MNO specified as the correspondent.
-            * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MNO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MNO availability.
+            * `DEPOSITS_NOT_ALLOWED` - Deposits are not allowed for the merchant or the MMO specified as the correspondent.
+            * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MMO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MMO availability.
           example: INVALID_AMOUNT
           enum:
             - INVALID_PAYER_FORMAT
@@ -2222,7 +2222,7 @@ components:
       description: |
         Possible deposit statuses: 
         * `ACCEPTED` - The deposit request has been **accepted** by pawaPay for processing. 
-        * `SUBMITTED` - The deposit request has been submitted to the MNO and is being processed. 
+        * `SUBMITTED` - The deposit request has been submitted to the MMO and is being processed. 
         * `COMPLETED` - The deposit request has been successfully processed. This is a **final state.**
         * `FAILED` - The deposit request has been processed, but failed. This is a **final state.**
       enum:
@@ -2286,7 +2286,7 @@ components:
           pattern: ^[a-zA-Z0-9 ]+$
           description: |
             Short description for the transaction. 
-            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            Depending on the specific MMO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
 
             Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
@@ -2301,8 +2301,8 @@ components:
             If not specified, the customer will have to specify the amount they wish to pay. For example, when depositing money into their eWallet.
     
             Amount must follow below requirements or the request will be **rejected**:
-            * Between zero and two decimal places can be supplied, depending on what the specific MNO supports. Learn about all [MNO supported decimal places](/using_the_api#correspondents).
-            * The minimum and maximum amounts depend on the limits of the specific MNO. You can find them from the [Active Configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
+            * Between zero and two decimal places can be supplied, depending on what the specific MMO supports. Learn about all [MMO supported decimal places](/using_the_api#correspondents).
+            * The minimum and maximum amounts depend on the limits of the specific MMO. You can find them from the [Active Configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
             * Leading zeroes are not permitted except where the value is less than 1. For any value less than one, one and only one leading zero must be supplied.
             * Trailing zeroes are permitted.
             
@@ -2345,7 +2345,7 @@ components:
             If specifified, allows payment from phone numbers only from a specific country. 
             If not specified, the customer can select any country that is configured for your account in pawaPay. 
             
-            You can use the [active configuration](#operation/active-conf) endpoint to verify which counrties and MNOs have been configured for your account. 
+            You can use the [active configuration](#operation/active-conf) endpoint to verify which counrties and MMOs have been configured for your account. 
         
             Format must be the ISO 3166-1 alpha-3, three character country code in upper case. Read more from [Wikipedia](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3#Officially_assigned_code_elements).
           example: ZMB
@@ -2382,9 +2382,9 @@ components:
       type: string
       description: |
         Possible operation statuses for correspondents and their operation types: 
-        * `OPERATIONAL` -  The MNO (correspondent) is operational and open for processing requests.
-        * `DELAYED` - The MNO (correspondent) is having problems processing payouts. Our payment operations team is currently monitoring the MNO. Payouts are being enqueued and will be processed once the problems have been resolved.  
-        * `CLOSED` - The MNO (correspondent) is having problems and all requests are being rejected by pawaPay.
+        * `OPERATIONAL` -  The MMO (correspondent) is operational and open for processing requests.
+        * `DELAYED` - The MMO (correspondent) is having problems processing payouts. Our payment operations team is currently monitoring the MMO. Payouts are being enqueued and will be processed once the problems have been resolved.  
+        * `CLOSED` - The MMO (correspondent) is having problems and all requests are being rejected by pawaPay.
       enum:
         - OPERATIONAL
         - DELAYED
@@ -2506,7 +2506,7 @@ components:
           pattern: ^[a-zA-Z0-9 ]+$
           description: |
             Short description for the transaction. 
-            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            Depending on the specific MMO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
             
             Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
@@ -2524,7 +2524,7 @@ components:
           type: object
           additionalProperties:
             type: string
-          description: The unique ID for this financial transaction assigned by the MNO.
+          description: The unique ID for this financial transaction assigned by the MMO.
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -2576,7 +2576,7 @@ components:
           pattern: ^[a-zA-Z0-9 ]+$
           description: |
             Short description for the transaction. 
-            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            Depending on the specific MMO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
 
             Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
@@ -2594,7 +2594,7 @@ components:
           type: object
           additionalProperties:
             type: string
-          description: The unique ID for this financial transaction assigned by the MNO.
+          description: The unique ID for this financial transaction assigned by the MMO.
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -2642,7 +2642,7 @@ components:
           pattern: ^[a-zA-Z0-9 ]+$
           description: |
             Short description for the transaction. 
-            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            Depending on the specific MMO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
             
             Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
@@ -2743,7 +2743,7 @@ components:
           description: |
             Possible payout failure codes: 
             * `BALANCE_INSUFFICIENT` - The pawaPay wallet balance is insufficient to proceed with the payout. 
-            * `RECIPIENT_NOT_FOUND` - The financial address (phone number) specified as the recipient does not belong to the MNO specified as the correspondent. 
+            * `RECIPIENT_NOT_FOUND` - The financial address (phone number) specified as the recipient does not belong to the MMO specified as the correspondent. 
             * `RECIPIENT_NOT_ALLOWED_TO_RECEIVE` - The recipient has reached a limit on their wallet that stops them from being able to accept this payout. 
             * `MANUALLY_CANCELLED` - The payout request was enqueued and subsequently cancelled from the pawaPay Dashboard or through the [Cancel Enqueued Payout](/v1/api-reference/payouts/cancel-enqueued-payout) endpoint.
             * `OTHER_ERROR` - Any other error. Please refer to `failureMessage`.
@@ -2771,14 +2771,14 @@ components:
             * `INVALID_CORRESPONDENT` - The specified correspondent is not supported.
             * `INVALID_RECIPIENT_FORMAT` - The phone number (MISISDN) specified for the recipient is in an unrecognizable format.
             * `INVALID_AMOUNT`- The specified amount is not supported. 
-            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minimum allowed by the MNO specified as the correspondent. 
-            * `AMOUNT_TOO_LARGE` - The specified amount is larger than the maximum allowed by the MNO specified as the correspondent. 
-            * `INVALID_CURRENCY` - The specified currency is not supported by the MNO specified as the correspondent. 
-            * `INVALID_COUNTRY` - The specified country is not supported for the MNO specified as the correspondent. 
+            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minimum allowed by the MMO specified as the correspondent. 
+            * `AMOUNT_TOO_LARGE` - The specified amount is larger than the maximum allowed by the MMO specified as the correspondent. 
+            * `INVALID_CURRENCY` - The specified currency is not supported by the MMO specified as the correspondent. 
+            * `INVALID_COUNTRY` - The specified country is not supported for the MMO specified as the correspondent. 
             * `PARAMETER_INVALID` - One or more parameters are invalid. 
             * `INVALID_INPUT` - We were unable to parse the payload of the request. 
-            * `PAYOUTS_NOT_ALLOWED` - Payouts are not allowed for this merchant or the MNO specified as the correspondent.
-            * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MNO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MNO availability.
+            * `PAYOUTS_NOT_ALLOWED` - Payouts are not allowed for this merchant or the MMO specified as the correspondent.
+            * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MMO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MMO availability.
           example: INVALID_AMOUNT
           enum:
             - BALANCE_INSUFFICIENT
@@ -2796,7 +2796,7 @@ components:
         rejectionMessage:
           type: string
           description: Additional optional rejection message
-          example: You don't have access to this correspondent (MNO)
+          example: You don't have access to this correspondent (MMO)
     PayoutSearchResult:
       type: array
       items:
@@ -2807,7 +2807,7 @@ components:
         Possible payout statuses: 
         * `ACCEPTED` - The payout request has been **accepted** by pawaPay for processing. 
         * `ENQUEUED` - The payout request has been **accepted**, but has been enqueued for processing later. Read more about [enqueued payouts](/payouts#enqueued-payouts). 
-        * `SUBMITTED` - The payout request has been submitted to the MNO and is being processed.
+        * `SUBMITTED` - The payout request has been submitted to the MMO and is being processed.
         * `COMPLETED` - The payout request has been successfully processed. This is a **Final state.**
         * `FAILED` - The payout request has been processed, but failed. **Final state.**
       enum:
@@ -2860,7 +2860,7 @@ components:
           pattern: ^[a-zA-Z0-9 ]+$
           description: |
             Short description for the transaction. 
-            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            Depending on the specific MMO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
             
             Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
@@ -2878,7 +2878,7 @@ components:
           type: object
           additionalProperties:
             type: string
-          description: The financial ids used by the MNO to uniquely identify this payment
+          description: The financial ids used by the MMO to uniquely identify this payment
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -2930,7 +2930,7 @@ components:
           pattern: ^[a-zA-Z0-9 ]+$
           description: |
             Short description for the transaction. 
-            Depending on the specific MNO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
+            Depending on the specific MMO performing the transaction this message may be visible to the customer in the SMS receipt or within their transaction history.
 
             Must be between **4 and 22 alphanumeric characters**.
           example: Note of 4 to 22 chars
@@ -2948,7 +2948,7 @@ components:
           type: object
           additionalProperties:
             type: string
-          description: The financial ids used by the MNO to uniquely identify this payment
+          description: The financial ids used by the MMO to uniquely identify this payment
           example:
             MTN_INIT: ABC123
             MTN_FINAL: DEF456
@@ -3054,7 +3054,7 @@ components:
           description: |
             Possible refund failure codes: 
             * `BALANCE_INSUFFICIENT` - The pawaPay wallet balance is insufficient to proceed with the refund. 
-            * `RECIPIENT_NOT_FOUND` - The phone number specified for the recipient does not belong to the MNO specified as the correspondent. 
+            * `RECIPIENT_NOT_FOUND` - The phone number specified for the recipient does not belong to the MMO specified as the correspondent. 
             * `RECIPIENT_NOT_ALLOWED_TO_RECEIVE` - The recipient has reached a limit on their wallet that stops them from receiving this refund. 
             * `OTHER_ERROR` - Any other error. Please refer to `failureMessage`.
           example: OTHER_ERROR
@@ -3081,14 +3081,14 @@ components:
             * `ALREADY_REFUNDED`- Requested deposit has been already refunded.  
             * `IN_PROGRESS`- Another refund transaction is already in progress.  
             * `INVALID_AMOUNT`- The specified amount is not supported. 
-            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minimum allowed by the MNO specified as the correspondent. 
-            * `AMOUNT_TOO_LARGE` - The specified amount is larger than the maximum allowed by the MNO specified as the correspondent. 
-            * `INVALID_CURRENCY` - The specified currency is not supported by the MNO specified as the correspondent. 
-            * `INVALID_COUNTRY` - The specified country is not supported for the MNO specified as the correspondent. 
+            * `AMOUNT_TOO_SMALL` - The specified amount is smaller than the minimum allowed by the MMO specified as the correspondent. 
+            * `AMOUNT_TOO_LARGE` - The specified amount is larger than the maximum allowed by the MMO specified as the correspondent. 
+            * `INVALID_CURRENCY` - The specified currency is not supported by the MMO specified as the correspondent. 
+            * `INVALID_COUNTRY` - The specified country is not supported for the MMO specified as the correspondent. 
             * `PARAMETER_INVALID` - One or more parameters are invalid. 
             * `INVALID_INPUT` - We were unable to parse the payload of the request. 
-            * `REFUNDS_NOT_ALLOWED` - Refunds are not allowed for this merchant or the MNO specified as the correspondent.
-            * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MNO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MNO availability.
+            * `REFUNDS_NOT_ALLOWED` - Refunds are not allowed for this merchant or the MMO specified as the correspondent.
+            * `CORRESPONDENT_TEMPORARILY_UNAVAILABLE` - The MMO specified as the correspondent is currently experiencing an outage and processing of payments has been temporarily halted. Please refer to our [Status Page](https://status.pawapay.cloud) for live information about MMO availability.
           example: INVALID_AMOUNT
           enum:
             - DEPOSIT_NOT_FOUND
@@ -3105,7 +3105,7 @@ components:
         rejectionMessage:
           type: string
           description: Additional optional rejection message
-          example: You don't have access to this correspondent (MNO)
+          example: You don't have access to this correspondent (MMO)
     RefundSearchResult:
       type: array
       items:
@@ -3214,7 +3214,7 @@ components:
           $ref: '#/components/schemas/Country'
         operator:
           type: string
-          description: The name of the MNO associated with the specified MSISDN.
+          description: The name of the MMO associated with the specified MSISDN.
           example: MTN
         correspondent:
           $ref: '#/components/schemas/Correspondent'

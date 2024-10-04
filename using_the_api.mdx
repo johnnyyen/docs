@@ -23,7 +23,7 @@ title: Using the API
 
 ## Authentication
 
-    The pawaPay Merchant API uses bearer token for authentication. An authorization header is required for all calls to the pawaPay Merchant APIs except for [MNO Availability](/v1/api-reference/toolkit/availability). 
+    The pawaPay Merchant API uses bearer token for authentication. An authorization header is required for all calls to the pawaPay Merchant APIs except for [MMO Availability](/v1/api-reference/toolkit/availability). 
 
     The token can be generated from the pawaPay Dashboard. Instructions on how to do that can be found in the **[pawaPay Dashboard documentation](/dashboard/other/system_conf/api_tokens)**.
     
@@ -324,109 +324,109 @@ Using the retrieved public key, the generated signature base and the signature, 
 
 ## Correspondents
 
-Correspondents in our Merchant API refer to the specific Mobile Network Operators (MNOs) that are available through our platform. 
+Correspondents in our Merchant API refer to the specific Mobile Money Operators (MMOs) that are available through our platform. 
 The parameters that define the destination of the payment are `correspondent` and `payer` for [Deposits](/v1/api-reference/deposits/request-deposit) or `recipient` for [Payouts](/v1/api-reference/payouts/request-payout). 
 This routes the payment to the correct person (specified by the MSISDN) on the correct mobile network (specified by the `correspondent`).
 
 You can always check which correspondents are available on your account from the [active configuration](/v1/api-reference/toolkit/active-configuration) endpoint.
 
-You can use the [predict-correspondent](/v1/api-reference/toolkit/predict-correspondent) endpoint to predict the MNO for a phone number (MSISDN).
+You can use the [predict-correspondent](/v1/api-reference/toolkit/predict-correspondent) endpoint to predict the MMO for a phone number (MSISDN).
 
-The amount of decimal places that can be specified as the `amount` of the transaction vary between different MNOs. 
+The amount of decimal places that can be specified as the `amount` of the transaction vary between different MMOs. 
 You can find the list of all available correspondents, their currency and supported decimal places  below.
 
 <AccordionGroup>
     <Accordion title="Benin">
-        | MNO | Correspondent | Country       | Currency | <Tooltip tip="Does this MNO support decimals in amount. For example: 10.50">Decimals in amount</Tooltip> |
+        | MMO | Correspondent | Country       | Currency | <Tooltip tip="Does this MMO support decimals in amount. For example: 10.50">Decimals in amount</Tooltip> |
         |------|---------------|---------------|----------|----------------------------------------------------------------------------------------------------------|
         | MTN | MTN_MOMO_BEN  | BEN           | XOF      | Not supported                                                                                            |
         | Moov | MOOV_BEN      | BEN           | XOF      | Not supported                                                                                            |
 
     </Accordion>
     <Accordion title="Burkina Faso">
-        MNO | Correspondent | Country | Currency | <Tooltip tip="Does this MNO support decimals in amount. For example: 10.50">Decimals in amount</Tooltip>
+        MMO | Correspondent | Country | Currency | <Tooltip tip="Does this MMO support decimals in amount. For example: 10.50">Decimals in amount</Tooltip>
         ----|---------------|---------|----------|-------------------
         Moov | MOOV_BFA | BFA | XOF | Not supported
         Orange | ORANGE_BFA | BFA | XOF | Not supported
     </Accordion>
     <Accordion title="Cameroon">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         MTN | MTN_MOMO_CMR | CMR | XAF | Not supported
         Orange | ORANGE_CMR | CMR | XAF | Not supported
     </Accordion>
     <Accordion title="Côte d'Ivoire (Ivory Coast)">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         MTN | MTN_MOMO_CIV | CIV | XOF | Not supported
         Orange | ORANGE_CIV | CIV | XOF | Not supported
     </Accordion>
     <Accordion title="Democratic Republic of the Congo (DRC)">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Vodacom | VODACOM_MPESA_COD | COD | CDF | 2 places
         Airtel | AIRTEL_COD | COD | CDF | 2 places
         Orange | ORANGE_COD | COD | CDF | 2 places
     </Accordion>
     <Accordion title="Gabon">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Airtel | AIRTEL_GAB | GAB | XAF | 2 places
     </Accordion>
     <Accordion title="Ghana">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         MTN | MTN_MOMO_GHA | GHA | GHS | 2 places
         AT | AIRTELTIGO_GHA | GHA | GHS | 2 places
         Vodafone | VODAFONE_GHA | GHA | GHS | 2 places
     </Accordion>
     <Accordion title="Kenya">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         MPesa | MPESA_KEN | KEN | KES | Deposits: not supported; payouts: 2 places
     </Accordion>
     <Accordion title="Malawi">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Airtel | AIRTEL_MWI | MWI | MWK | 2 places
         TNM | TNM_MWI | MWI | MWK | 2 places
     </Accordion>
     <Accordion title="Mozambique">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Vodacom | VODACOM_MOZ | MOZ | MZN | 2 places
     </Accordion>
     <Accordion title="Nigeria">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Airtel | AIRTEL_NGA | NGA | NGN | Not supported
         MTN | MTN_MOMO_NGA | NGA | NGN | 2 places
     </Accordion>
     <Accordion title="Republic of the Congo">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         AIRTEL | AIRTEL_COG | COG | XAF | Not supported        
         MTN | MTN_MOMO_COG | COG | XAF | Not supported 
     </Accordion>
     <Accordion title="Rwanda">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Airtel | AIRTEL_RWA | RWA | RWF | Not supported
         MTN | MTN_MOMO_RWA | RWA | RWF | Not supported
     </Accordion>
     <Accordion title="Senegal">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Free | FREE_SEN | SEN | XOF | Not supported
         Orange | ORANGE_SEN | SEN | XOF | Not supported
     </Accordion>
     <Accordion title="Sierra Leone">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Orange | ORANGE_SLE | SLE | SLE | 2 places
     </Accordion>
     <Accordion title="Tanzania">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Airtel | AIRTEL_TZA | TZA | TZS | 2 places
         Vodacom | VODACOM_TZA | TZA | TZS | 2 places
@@ -434,13 +434,13 @@ You can find the list of all available correspondents, their currency and suppor
         Halotel | HALOTEL_TZA | TZA | TZS | Not supported
     </Accordion>
     <Accordion title="Uganda">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Airtel | AIRTEL_OAPI_UGA | UGA | UGX | Not supported
         MTN | MTN_MOMO_UGA | UGA | UGX | 2 places
     </Accordion>
     <Accordion title="Zambia">
-        MNO | Correspondent | Country | Currency | Decimals in amount
+        MMO | Correspondent | Country | Currency | Decimals in amount
         ------------------------------|---------------|---------|----------|-------------------
         Airtel | AIRTEL_OAPI_ZMB | ZMB | ZMW | 2 places
         MTN | MTN_MOMO_ZMB | ZMB | ZMW | 2 places

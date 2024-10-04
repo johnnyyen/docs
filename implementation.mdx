@@ -3,28 +3,28 @@ title: Implementation considerations
 ---
 
 The pawaPay Merchant API simplifies integrating mobile money into your payment flows. 
-It provides a single standardised API to connect to Mobile Network Operators (MNOs) providing mobile money services across Africa.
+It provides a single standardised API to connect to Mobile Money Operators (MMOs) providing mobile money services across Africa.
 The following chapters introduce some important aspects of mobile money and working with financial APIs to help you build a high-quality integration that your customers will love and that is easy to operate.
 
-## MNO stability
+## MMO stability
 
 As described in the [Introduction](/about_mobile_money#what-does-a-payment-look-like), mobile money transaction chains are complex. 
 This means that the stability of payment services needs to be taken into account when implementing a high-quality payment flow. 
 pawaPay provides multiple solutions to make this easy to manage.
 
-Our 24/7 payment operations team monitors all MNOs on our platform for instability and downtime. We stop accepting payments to those MNOs if the success rate is too low. 
+Our 24/7 payment operations team monitors all MMOs on our platform for instability and downtime. We stop accepting payments to those MMOs if the success rate is too low. 
 This information is accessible from our [availability](/v1/api-reference/toolkit/availability) endpoint. 
-You can verify before initiating the payment if the MNO is currently experiencing any problems and inform the user before they attempt the payment. 
+You can verify before initiating the payment if the MMO is currently experiencing any problems and inform the user before they attempt the payment. 
 Knowing that your mobile money provider is currently unavailable is a better customer experience than having your payment fail. 
 Failed payments usually take longer to process, leaving the customer waiting for the final result. Read more about our [availability](/v1/api-reference/toolkit/availability) endpoint.
 
-To provide the best support for your customers, information about MNO availability is also published on our [dashboard](http://localhost:3000/dashboard/status) and [status page](https://status.pawapay.cloud).
-You can subscribe to updates over e-mail, Slack and other channels to ensure your support team is always informed about any potential problems with the MNOs.
+To provide the best support for your customers, information about MMO availability is also published on our [dashboard](http://localhost:3000/dashboard/status) and [status page](https://status.pawapay.cloud).
+You can subscribe to updates over e-mail, Slack and other channels to ensure your support team is always informed about any potential problems with the MMOs.
 
-When an MNO is experiencing difficulties in successfully processing disbursements, our platform will enqueue them to be processed once the MNO is operational. 
+When an MMO is experiencing difficulties in successfully processing disbursements, our platform will enqueue them to be processed once the MMO is operational. 
 Read more about [enqueued payouts](/payouts#enqueued-payouts).
 
-Occasionally, MNOs experience degraded system performance, which can prevent their APIs from returning the final status of payments. 
+Occasionally, MMOs experience degraded system performance, which can prevent their APIs from returning the final status of payments. 
 During these periods, our platform continues to accept and process payments. 
 We reconcile these transactions through alternative methods using our reconciliation engine. 
 This ensures that, when using pawaPay, all payments are eventually reconciled to their final status. 
@@ -37,12 +37,12 @@ Mobile money wallets have different limits for transactions. Most common and rel
 * Maximum number of deposits/payouts in a day/week/month.
 * Maximum balance of a mobile money wallet.
 
-All MNOs that you transact with through pawaPay have transaction limits. 
-These are the lowest and highest amounts that can be collected, disbursed or refunded with the specific MNO. 
-They are based on the limits of the most common wallet types of this MNO. 
+All MMOs that you transact with through pawaPay have transaction limits. 
+These are the lowest and highest amounts that can be collected, disbursed or refunded with the specific MMO. 
+They are based on the limits of the most common wallet types of this MMO. 
 As the effective limits depend on the specific user's transaction history, transactions may still fail due to hitting limits. 
 
-> For example, an MNO has a 1,000 GHS maximum deposit amount. 
+> For example, an MMO has a 1,000 GHS maximum deposit amount. 
 > In reality the wallet has a limitation of 1,000 GHS total transaction value per day/week/month. 
 > If the user has already transacted 500 GHS during this period, a transaction of 700 GHS might still fail even though it is **accepted** by pawaPay.
 
@@ -53,7 +53,7 @@ You can easily find the transaction limits from our [active configuration](/v1/a
 The pawaPay Merchant API is asynchronous. This is necessary to provide high performance and quality payment infrastructure that is able to process millions of payments every day.
 
 When you call any financial endpoint ([payout](/v1/api-reference/payouts/request-payout), [deposit](/v1/api-reference/deposits/request-deposit), [refund](/v1/api-reference/refunds/request-refund)), the response will confirm whether the transaction has been **accepted** or **rejected** for processing. 
-Reasons for rejecting a transaction might be using the same ID for transactions more than once or the MNO being unavailable at the moment.
+Reasons for rejecting a transaction might be using the same ID for transactions more than once or the MMO being unavailable at the moment.
 
 If the response confirms that the payment has been **accepted** for processing, it will take some time for it to process (remember that for deposits, the user needs to enter their PIN on their phone). 
 There are two ways to __find out about the final status__ of a payment.
@@ -147,7 +147,7 @@ The pawaPay Merchant API is always backwards compatible, but should not be stric
 
 ## Brand guidelines
 
-When integrating with mobile network operators, refer to the provided brand guidelines in this section. 
+When integrating with Mobile Money Operators (MMOs), refer to the provided brand guidelines in this section. 
 These documents outline the proper use of logos, color schemes, and typography, ensuring consistent and compliant representation of each operator's brand identity.
 
 * __MTN__ - https://momodeveloper.mtn.com/api-documentation/brand-guidelines
