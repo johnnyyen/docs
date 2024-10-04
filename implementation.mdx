@@ -4,6 +4,7 @@ title: Implementation considerations
 
 The pawaPay Merchant API simplifies integrating mobile money into your payment flows. 
 It provides a single standardised API to connect to Mobile Money Operators (MMOs) providing mobile money services across Africa.
+
 The following chapters introduce some important aspects of mobile money and working with financial APIs to help you build a high-quality integration that your customers will love and that is easy to operate.
 
 ## MMO stability
@@ -14,8 +15,10 @@ pawaPay provides multiple solutions to make this easy to manage.
 
 Our 24/7 payment operations team monitors all MMOs on our platform for instability and downtime. We stop accepting payments to those MMOs if the success rate is too low. 
 This information is accessible from our [availability](/v1/api-reference/toolkit/availability) endpoint. 
+
 You can verify before initiating the payment if the MMO is currently experiencing any problems and inform the user before they attempt the payment. 
 Knowing that your mobile money provider is currently unavailable is a better customer experience than having your payment fail. 
+
 Failed payments usually take longer to process, leaving the customer waiting for the final result. Read more about our [availability](/v1/api-reference/toolkit/availability) endpoint.
 
 To provide the best support for your customers, information about MMO availability is also published on our [dashboard](http://localhost:3000/dashboard/status) and [status page](https://status.pawapay.cloud).
