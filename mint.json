@@ -277,5 +277,11 @@
     "website": "https://pawapay.io",
     "discord": "https://discord.gg/qng8y8Y7pm",
     "linkedin": "https://www.linkedin.com/company/pawapay"
-  }
+  },
+  "redirects": [
+    {
+      "source": "#section/Using-the-API",
+      "destination": "/using_the_api"
+    }
+  ]
 }
